@@ -11,6 +11,9 @@ namespace West.Presence.CMA.Api.Controllers
     [ApiController]
     public class ChannelsController : ControllerBase
     {
+        public ChannelsController()
+        { }
+
         [HttpGet("cmaapi/1/channels")]
         public IActionResult GetAll([FromQuery] string baseUrl = "")
         {

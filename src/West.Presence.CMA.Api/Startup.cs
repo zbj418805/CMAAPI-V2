@@ -21,6 +21,7 @@ using Newtonsoft.Json.Serialization;
 using Pivotal.Extensions.Configuration.ConfigServer;
 using Serilog;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
+using Steeltoe.Extensions.Configuration.ConfigServer;
 using West.Presence.CMA.Api.Infrastructure;
 
 namespace West.Presence.CMA.Api
@@ -70,6 +71,9 @@ namespace West.Presence.CMA.Api
 
             // Add our own DI components using .NET Core DI syntax
             ConfigApplicationServices(services);
+
+            // Add Distributed Cache Service.
+            ConfigureDistributedCache(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,8 +105,11 @@ namespace West.Presence.CMA.Api
             // }
 
             app.UseStaticFiles();
+            //Enable ResponseCompression
             //app.UseResponseCompression();
-            app.UseHttpsRedirection();
+
+            //Enable Https
+            //app.UseHttpsRedirection();
             app.UseMvc();
 
             UseSwagger(app);
@@ -111,7 +118,7 @@ namespace West.Presence.CMA.Api
         [ExcludeFromCodeCoverage]
         private void UseSwagger(IApplicationBuilder app)
         {
-            if (_env == null || _env.IsEnvironment("IntegrationTests")) return;
+            //if (_env == null || _env.IsEnvironment("IntegrationTests")) return;
 
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger();
@@ -123,7 +130,7 @@ namespace West.Presence.CMA.Api
         [ExcludeFromCodeCoverage]
         private void AddSwagger(IServiceCollection services)
         {
-            if (_env == null ||  _env.IsEnvironment("IntegrationTests")) return;
+            //if (_env == null ||  _env.IsEnvironment("IntegrationTests")) return;
             // Add Swagger
             services.AddSwaggerGen(SwaggerConfig.SetupSwaggerGenOptions());
         }
@@ -186,6 +193,25 @@ namespace West.Presence.CMA.Api
             // services.AddTransient<ISsoClientRepository, SsoClientRepository>();
             // services.AddTransient<IWatchRequestRepository, WatchRequestRepository>();
             // services.AddSingleton<IMassTransitService, MassTransitService>();
+        }
+
+        private void ConfigureDistributedCache(IServiceCollection services)
+        {
+            services.AddDistributedRedisCache(option => {
+                option.Configuration = "localhost";
+            });
+
+
+            //if (_env == null || _env.IsEnvironment("IntegrationTests"))
+            //    services.AddDistributedMemoryCache();
+            //else
+            //{
+            //    services.AddDistributedRedisCache(options =>
+            //    {
+            //        options.Configuration = "localhost";
+            //        options.InstanceName = "CMAAPI";
+            //    });
+            //}
         }
     }
 }

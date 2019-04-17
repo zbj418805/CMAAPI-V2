@@ -13,6 +13,8 @@ namespace West.Presence.CMA.Api.Controllers
     {
         private readonly ILogger _logger = Log.ForContext<SchemaController>();
 
+        public SchemaController() { }
+
         [HttpGet("cmaapi/1/schemas")]
         public IActionResult AllSchemas()
         {

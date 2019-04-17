@@ -14,6 +14,8 @@ namespace West.Presence.CMA.Api.Controllers
     {
         private readonly ILogger _logger = Log.ForContext<PeopleController>();
 
+        public PeopleController() { }
+
         [HttpGet("cmaapi/1/resources/school-messenger.people")]
         public IActionResult GetPeople([FromQuery]QueryPagination page, [FromQuery]QueryFilter filter, [FromQuery]string query = null)
         {

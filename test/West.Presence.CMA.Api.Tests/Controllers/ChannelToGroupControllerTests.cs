@@ -3,19 +3,22 @@ using Moq;
 using West.Presence.CMA.Api.Controllers;
 using Xunit;
 
+
 namespace West.Presence.CMA.Api.Tests.Controllers
 {
-    public class HealthControllerTests
+    public class ChannelToGroupControllerTests
     {
-        private HealthController _sut;
+        private ChannelToGroupController _sut;
 
         [Fact]
-        public void Test_HealthEndpoint_Returns_OK()
+        public void Test_ChannelToGroupEndpoint_Returns_OK()
         {
+            var appid = 123;
+            
             // Arrange
-            _sut = new HealthController();
+            _sut = new ChannelToGroupController();
             // Act
-            var result = _sut.Ping();
+            var result = _sut.GetChannelsToGroups(appid);
 
             // Assert
             Assert.IsType<OkResult>(result);

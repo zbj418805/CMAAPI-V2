@@ -13,6 +13,9 @@ namespace West.Presence.CMA.Api.Controllers
     {
         private readonly ILogger _logger = Log.ForContext<CategoriesController>();
 
+        public CategoriesController()
+        { }
+
         [HttpGet("cmaapi/1/categories")]
         public IActionResult GetAll()
         {

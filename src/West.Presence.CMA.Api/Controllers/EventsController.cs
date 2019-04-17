@@ -11,6 +11,8 @@ namespace West.Presence.CMA.Api.Controllers
     [ApiController]
     public class EventsController : ControllerBase
     {
+        public EventsController() { }
+
         [HttpGet("cmaapi/1/resources/school-messenger.events")]
         public IActionResult GetEvents([FromQuery]QueryPagination page, [FromQuery]QueryFilter filter, [FromQuery]string query = null)
         {

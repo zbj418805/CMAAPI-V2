@@ -10,6 +10,8 @@ namespace West.Presence.CMA.Api.Controllers
     [ApiController]
     public class ChannelToGroupController : ControllerBase
     {
+        public ChannelToGroupController() { }
+
         [HttpGet("cmaapi/1/shoutem/integration/{appId}/groups")]
         public IActionResult GetChannelsToGroups(int appId)
         {

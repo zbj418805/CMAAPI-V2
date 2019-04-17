@@ -5,17 +5,17 @@ using Xunit;
 
 namespace West.Presence.CMA.Api.Tests.Controllers
 {
-    public class HealthControllerTests
+    public class PeopleControllerTests
     {
-        private HealthController _sut;
+        private PeopleController _sut;
 
         [Fact]
-        public void Test_HealthEndpoint_Returns_OK()
+        public void Test_PeopleEndpoint_Returns_OK()
         {
             // Arrange
-            _sut = new HealthController();
+            _sut = new PeopleController();
             // Act
-            var result = _sut.Ping();
+            var result = _sut.GetPeople(null, null, null);
 
             // Assert
             Assert.IsType<OkResult>(result);

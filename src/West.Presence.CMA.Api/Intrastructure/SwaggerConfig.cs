@@ -27,8 +27,8 @@ namespace West.Presence.CMA.Api.Infrastructure
 				var basePath = AppContext.BaseDirectory;
 
 				// set the comments path for the Swagger json and ui
-				var xmlPath = Path.Combine(basePath, "West.Presence.GoogleUpdater.WebApi.xml");
-				options.IncludeXmlComments(xmlPath);
+				//var xmlPath = Path.Combine(basePath, "West.Presence.GoogleUpdater.WebApi.xml");
+				//options.IncludeXmlComments(xmlPath);
 
 				options.EnableAnnotations();
 				options.DocumentFilter<SecurityRequirementsDocumentFilter>();
