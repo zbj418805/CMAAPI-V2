@@ -1,5 +1,5 @@
-﻿PresenceCMAOptions:
-    Connection: data source=.;initial catelog=Presence_QA;User ID=sa;Password=P@ssw0rd;Persist Security=False;
+PresenceCMAOptions:
+    ConnectionString: data source=.;initial catelog=Presence_QA;User ID=sa;Password=P@ssw0rd;Persist Security=False;
     CacheNewsKey: cma_news_cache
     CachePeopleKey: cma_people_cache
     CacheEventKey: cma_event_cache

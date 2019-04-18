@@ -23,6 +23,9 @@ using Serilog;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 using Steeltoe.Extensions.Configuration.ConfigServer;
 using West.Presence.CMA.Api.Infrastructure;
+using West.Presence.CMA.Core.Models;
+using West.Presence.CMA.Api.Utilities;
+using West.Presence.CMA.Core.Helper;
 
 namespace West.Presence.CMA.Api
 {
@@ -30,11 +33,6 @@ namespace West.Presence.CMA.Api
     {
         private readonly IHostingEnvironment _env;
         private readonly ILogger _logger;
-
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
@@ -47,7 +45,7 @@ namespace West.Presence.CMA.Api
             Configuration = configuration;
             _env = env;
             _logger = Log.ForContext<Startup>();
-            _logger.Information($"Starting: CMAAPI"); // Utility.ApplicationName()
+            _logger.Information($"Starting: {Utility.ApplicationName()}");
         }
 
         public IConfiguration Configuration { get; }
@@ -118,7 +116,7 @@ namespace West.Presence.CMA.Api
         [ExcludeFromCodeCoverage]
         private void UseSwagger(IApplicationBuilder app)
         {
-            //if (_env == null || _env.IsEnvironment("IntegrationTests")) return;
+            if (_env.IsEnvironment("IntegrationTests")) return;
 
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger();
@@ -130,7 +128,7 @@ namespace West.Presence.CMA.Api
         [ExcludeFromCodeCoverage]
         private void AddSwagger(IServiceCollection services)
         {
-            //if (_env == null ||  _env.IsEnvironment("IntegrationTests")) return;
+            if (_env.IsEnvironment("IntegrationTests")) return;
             // Add Swagger
             services.AddSwaggerGen(SwaggerConfig.SetupSwaggerGenOptions());
         }
@@ -173,20 +171,20 @@ namespace West.Presence.CMA.Api
         //Add ConfigrationAndOptions
         private void ConfigureOptionsAndConfigurations(IServiceCollection services)
         {
-            services.AddConfiguration(Configuration);
+            //services.AddConfiguration(Configuration);
             services.AddOptions();
             // Adds CloudFoundryApplicationOptions and CloudFoundryServicesOptions to service container
             services.ConfigureCloudFoundryOptions(Configuration);
             // Adds ConfigServerClientOptions to service container
-            services.ConfigureConfigServerClientOptions(Configuration);
-            //services.Configure<GoogleUpdaterOptions>(Configuration.GetSection("GoogleUpdaterOptions"));
+            //services.ConfigureConfigServerClientOptions(Configuration);
+            services.Configure<CMAOptions>(Configuration.GetSection("CMAOptions"));
             //services.Configure<RabbitMqOptions>(Configuration.GetSection("RabbitMqOptions"));
         }
 
         //Dependency Injection for applciation services
         protected virtual void ConfigApplicationServices(IServiceCollection services)
         {
-            // services.AddTransient<IGoogleUpdaterRepository, GoogleUpdaterRepository>();
+            services.AddTransient<ICacheProvider, CacheProvider>();
             // services.AddTransient<IDatabaseConnectionFactory, SqlConnectionFactory>();
             // //services.AddTransient<IQueueService, QueueService>();
             // services.AddTransient<INotificationRepository, NotificationRepository>();
@@ -197,9 +195,13 @@ namespace West.Presence.CMA.Api
 
         private void ConfigureDistributedCache(IServiceCollection services)
         {
-            services.AddDistributedRedisCache(option => {
-                option.Configuration = "localhost";
-            });
+            if (_env.IsEnvironment("IntegrationTests"))
+                services.AddDistributedMemoryCache();
+            else
+                services.AddDistributedRedisCache(option =>
+                {
+                    option.Configuration = "localhost";
+                });
 
 
             //if (_env == null || _env.IsEnvironment("IntegrationTests"))

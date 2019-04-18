@@ -1,7 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <UserSecretsId>ae46a4a4-d312-46ef-afb3-b7efdb7cd538</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="GlobalExceptionHandler" Version="4.0.2" />
@@ -23,5 +24,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="4.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\West.Presence.CMA.Core\West.Presence.CMA.Core.csproj" />
   </ItemGroup>
 </Project>

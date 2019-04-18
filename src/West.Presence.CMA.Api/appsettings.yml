@@ -1,0 +1,61 @@
+LoggingOptions:
+    RollingFile:
+        Enable: false
+        FilePath: C:\Logs\West.Presence.CMA.Api
+
+Logging:
+    LogLevel:
+        Default: Error
+
+Serilog:
+    MinimumLevel:
+        Default: Information
+        Override:
+            Microsoft: Warning
+            System: Warning
+            Pivotal: Warning
+            Steeltoe: Warning
+            West: Warning
+        WriteTo:
+        - Name: Console
+          Args:
+            outputTemplate: "[{level}] {ReqestTraceInfo} => RequestId: {RequestId} => {RequestsPath} => {SourceContext} => {Message} => {Exception} {Newline}"
+        - Name: Debug
+          Args:
+            outputTemplate: "[{level}] {ReqestTraceInfo} => RequestId: {RequestId} => {RequestsPath} => {SourceContext} => {Message} => {Exception} {Newline}"
+        Enrich:
+        - Name: ByExcluding
+          Args:
+            expression: Contain(@Message, 'cloudfoudryappliation')
+    
+# Configration for spring appliation services
+spring:
+    application:
+        name: "Presnce_CMA_API"
+    cloud:
+        config:
+            name: "Presence_CMA_API"
+            enable: false
+            failFast : false
+#Configuration for server discovery
+eureka:
+    client:
+        shouldFetchRegistry: false
+        ValidateCertificates: false
+    instance:
+        appName: "Presence_CMA_API"
+    
+# Configuration for cloud foundry actuators
+management:
+    endpoints:
+        path: "/cloudfoudryapplication"
+        cloudfoudry:
+            ValidateCertificates : false
+
+#Configration for CMAAPI
+PresenceCMAOptions:
+    Connection: data source=.;initial catelog=Presence_QA;User ID=sa;Password=P@ssw0rd;Persist Security=False;
+    CacheNewsKey: cma_news_cache
+    CachePeopleKey: cma_people_cache
+    CacheEventKey: cma_event_cache
+    CacheSchoolKey: cma_school_cache

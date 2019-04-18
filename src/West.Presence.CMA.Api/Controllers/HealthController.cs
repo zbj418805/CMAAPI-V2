@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
 using Serilog;
+using West.Presence.CMA.Core.Helper;
 
 namespace West.Presence.CMA.Api.Controllers
 {
@@ -14,11 +13,11 @@ namespace West.Presence.CMA.Api.Controllers
     public class HealthController : ControllerBase
     {
         private readonly ILogger _logger = Log.ForContext<HealthController>();
-        private readonly IDistributedCache _distributedCache;
+        private readonly ICacheProvider _cacheProvider;
 
-        public HealthController(IDistributedCache distributedCache)
+        public HealthController(ICacheProvider cacheProvider)
         {
-            _distributedCache = distributedCache;
+            _cacheProvider = cacheProvider;
         }
 
         [HttpGet("api/health/ping")]
@@ -31,12 +30,7 @@ namespace West.Presence.CMA.Api.Controllers
                 time = DateTime.UtcNow
             };
 
-            var cacheEntryOptions = new DistributedCacheEntryOptions()
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(300)
-            };
-
-            _distributedCache.Set("test_object", ObjectToByteArray(tempObject), cacheEntryOptions);
+            _cacheProvider.Add("test_object", tempObject, 300);
 
             return Ok();
         }
@@ -45,34 +39,12 @@ namespace West.Presence.CMA.Api.Controllers
         [HttpGet("api/health/pong")]
         public IActionResult Pong()
         {
-
-            var obj = ByteArrayToObject(_distributedCache.Get("test_object"));
+            var obj = _cacheProvider.Get<tempClass>("test_object");
 
             return Ok(obj);
         }
 
-        private byte[] ObjectToByteArray(Object obj)
-        {
-            if (obj == null)
-                return null;
-            BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream();
-            bf.Serialize(ms, obj);
-            return ms.ToArray();
-        }
 
-
-        private Object ByteArrayToObject(byte[] arrBytes)
-        {
-            if (arrBytes == null) { return null; };
-            MemoryStream memStream = new MemoryStream();
-            BinaryFormatter binForm = new BinaryFormatter();
-
-            memStream.Write(arrBytes, 0, arrBytes.Length);
-            memStream.Seek(0, SeekOrigin.Begin);
-            Object obj = (Object)binForm.Deserialize(memStream);
-            return obj;
-        }
     }
     [Serializable]
     public class tempClass

@@ -12,6 +12,8 @@ using Pivotal.Extensions.Configuration.ConfigServer;
 using Serilog;
 using Serilog.Formatting.Json;
 using Steeltoe.Extensions.Logging;
+using West.Presence.CMA.Api.Utilities;
+using West.Presence.CMA.Core.Models;
 
 namespace West.Presence.CMA.Api
 {
@@ -24,7 +26,6 @@ namespace West.Presence.CMA.Api
 
         /// <summary>
         /// Initializes a new instance of the WebHostBuilder class with pre-configured defaults.
-        /// https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.webhost.createdefaultbuilder?view=aspnetcore-2.0
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
@@ -54,12 +55,12 @@ namespace West.Presence.CMA.Api
                 })
                 .UseStartup<Startup>()
                 .ConfigureLogging((hostingContext, logging)=> {
-                    //var loggingOptions = hostingContext.Configuration.GetSection("LoggingOptions").Get<LoggingOptions>();
+                    var loggingOptions = hostingContext.Configuration.GetSection("LoggingOptions").Get<LoggingOptions>();
 
                     var loggerConfiguration = new Serilog.LoggerConfiguration()
                         .ReadFrom.ConfigurationSection(hostingContext.Configuration.GetSection("LoggingLevels"))
                         .Enrich.FromLogContext()
-                        .Enrich.WithProperty("ApplicationName", "CMAAPI") //Utility.ApplicationName()
+                        .Enrich.WithProperty("ApplicationName", Utility.ApplicationName())
                         .Enrich.WithMachineName();
 
                     // check to see if deployed to PCF
