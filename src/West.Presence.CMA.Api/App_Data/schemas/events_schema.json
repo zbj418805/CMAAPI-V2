@@ -1,0 +1,38 @@
+{
+    "data": {
+        "id": "school-messenger.events",
+        "type": "school-messenger.schemas",
+        "attributes": {
+            "name": "school-messenger.events",
+            "title": "Events",
+            "type": "object",
+            "titleProperty": "name",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "format": "single-line",
+                    "title": "Name",
+                    "name":  "name"
+                },
+                "description": {
+                    "type": "string",
+                    "format": "html",
+                    "title": "Description",
+                    "name": "description"
+                },
+                "starttime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "Start time",
+                    "name":  "startTime"
+                },
+                "endtime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "End time",
+                    "name": "endTime"
+                }
+            }
+        }
+    }
+}

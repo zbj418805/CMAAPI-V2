@@ -19,7 +19,7 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             var result = _sut.GetAll();
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<OkObjectResult>(result);
             Assert.Equal(0, _sut.ModelState.ErrorCount);
         }
     }

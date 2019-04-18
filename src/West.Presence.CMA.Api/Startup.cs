@@ -1,31 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
-using System.IO.Compression;
-using System.Net.Security;
-using System.Security.Authentication;
+﻿using GlobalExceptionHandler.WebApi;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-//using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using GlobalExceptionHandler.WebApi;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Pivotal.Extensions.Configuration.ConfigServer;
 using Serilog;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
-using Steeltoe.Extensions.Configuration.ConfigServer;
+using System.Diagnostics.CodeAnalysis;
 using West.Presence.CMA.Api.Infrastructure;
-using West.Presence.CMA.Core.Models;
 using West.Presence.CMA.Api.Utilities;
 using West.Presence.CMA.Core.Helper;
+using West.Presence.CMA.Core.Models;
 
 namespace West.Presence.CMA.Api
 {
@@ -195,7 +182,7 @@ namespace West.Presence.CMA.Api
 
         private void ConfigureDistributedCache(IServiceCollection services)
         {
-            if (_env.IsEnvironment("IntegrationTests"))
+            if (_env.IsEnvironment("IntegrationTests")|| _env.IsEnvironment("Deveploment"))
                 services.AddDistributedMemoryCache();
             else
                 services.AddDistributedRedisCache(option =>

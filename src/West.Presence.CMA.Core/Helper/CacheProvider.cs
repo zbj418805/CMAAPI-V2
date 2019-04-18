@@ -16,7 +16,7 @@ namespace West.Presence.CMA.Core.Helper
         IDictionary<string, object> Get(params string[] keys);
         bool Remove(string key);
         bool TryGetValue(string key, out object value);
-        bool TryGetValue<T>(string key, out object value);
+        bool TryGetValue<T>(string key, out T value);
     }
 
 
@@ -35,7 +35,7 @@ namespace West.Presence.CMA.Core.Helper
             {
                 if (durationSeconds == 0)
                 {
-                    _distributedCache.Set(key, ObjectToByteArray(value));
+                    _distributedCache.SetAsync(key, ObjectToByteArray(value));
                 }
                 else
                 {
@@ -43,7 +43,7 @@ namespace West.Presence.CMA.Core.Helper
                     {
                         AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(durationSeconds)
                     };
-                    _distributedCache.Set(key, ObjectToByteArray(value), cacheEntryOptions);
+                    _distributedCache.SetAsync(key, ObjectToByteArray(value), cacheEntryOptions);
                 }
 
                 return true;
@@ -78,6 +78,7 @@ namespace West.Presence.CMA.Core.Helper
             try {
                 var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = 5 };
                 var keyValues = new Dictionary<string, object>();
+                //TODO: It may lost value in parallel filling, to be investigated
                 Parallel.ForEach(keys, parallelOptions, (key) => {
                     keyValues[key] = Get(key);
                 });
@@ -103,15 +104,13 @@ namespace West.Presence.CMA.Core.Helper
             }
         }
 
-        
-
         public bool TryGetValue(string key, out object value)
         {
             value = Get(key);
             return value != null;
         }
 
-        public bool TryGetValue<T>(string key, out object value)
+        public bool TryGetValue<T>(string key, out T value)
         {
             value = Get<T>(key);
             return value != null;
@@ -126,6 +125,7 @@ namespace West.Presence.CMA.Core.Helper
             bf.Serialize(ms, obj);
             return ms.ToArray();
         }
+
         private Object ByteArrayToObject(byte[] arrBytes)
         {
             if (arrBytes == null) { return null; };

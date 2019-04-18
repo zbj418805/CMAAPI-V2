@@ -22,7 +22,7 @@ namespace West.Presence.CMA.Api.Integ.Tests.Controllers
             var response = await _client.GetAsync("cmaapi/1/schemas");
 
             response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace West.Presence.CMA.Api.Integ.Tests.Controllers
             var response = await _client.GetAsync("cmaapi/1/schemas/school-messenger.schools");
 
             response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace West.Presence.CMA.Api.Integ.Tests.Controllers
             var response = await _client.GetAsync("cmaapi/1/schemas/school-messenger.news");
 
             response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace West.Presence.CMA.Api.Integ.Tests.Controllers
             var response = await _client.GetAsync("cmaapi/1/schemas/school-messenger.events");
 
             response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace West.Presence.CMA.Api.Integ.Tests.Controllers
             var response = await _client.GetAsync("cmaapi/1/schemas/school-messenger.people");
 
             response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
     }
 }
