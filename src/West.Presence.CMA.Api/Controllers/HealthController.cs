@@ -23,16 +23,7 @@ namespace West.Presence.CMA.Api.Controllers
         [HttpGet("api/health/ping")]
         public IActionResult Ping()
         {
-            var tempObject = new tempClass()
-            {
-                oid = 123123,
-                name = "javdi",
-                time = DateTime.UtcNow
-            };
 
-            _cacheProvider.Add("test_object", tempObject, 300);
-
-            return Ok();
         }
 
 
