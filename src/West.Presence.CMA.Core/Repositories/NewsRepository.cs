@@ -7,7 +7,7 @@ namespace West.Presence.CMA.Core.Repositories
 {
     public interface INewsRepository
     {
-        IEnumerable<News> GetNews(int serverId, string searchKey);
+        IEnumerable<News> GetNews(int serverId);
     }
 
     public class NewsRepository : INewsRepository
@@ -17,7 +17,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         }
 
-        public IEnumerable<News> GetNews(int serverId, string searchKey)
+        public IEnumerable<News> GetNews(int serverId)
         {
             throw new NotImplementedException();
         }

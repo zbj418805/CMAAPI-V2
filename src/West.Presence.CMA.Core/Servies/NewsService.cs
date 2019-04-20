@@ -29,30 +29,26 @@ namespace West.Presence.CMA.Core.Servies
         {
             List<News> allNews = new List<News>();
             int cacheDuration = _options.Value.CacheNewsDurationInSeconds;
-            if (searchKey == "")
+
+            foreach (string serverId in serverIds.Split(','))
             {
-                foreach (string serverId in serverIds.Split(','))
+                //Set Key
+                string cacheKey = $"{_options.Value.CacheNewsKey}_{_options.Value.Environment}_{serverId}";
+
+                IEnumerable<News> news;
+                if (_cacheProvider.TryGetValue<IEnumerable<News>>(cacheKey, out news))
                 {
-                    string cacheKey = $"{_options.Value.CacheNewsKey}_{serverId}";
-                    
-                    IEnumerable<News> news;
-                    if (_cacheProvider.TryGetValue<IEnumerable<News>>(cacheKey, out news))
-                    {
-                        allNews.AddRange(news);
-                    }
-                    else
-                    {
-                        news = _newsRepository.GetNews(int.Parse(serverId), "");
-                        allNews.AddRange(news);
-                        _cacheProvider.Add(cacheKey, news, cacheDuration);
-                    }
+                    //Collect News
+                    allNews.AddRange(searchKey == "" ? news : news.Where(n => n.title.Contains(searchKey)));
                 }
-            }
-            else
-            {
-                foreach (string serverId in serverIds.Split(','))
+                else
                 {
-                    allNews.AddRange(_newsRepository.GetNews(int.Parse(serverId), searchKey));
+                    //Get News From Repo
+                    news = _newsRepository.GetNews(int.Parse(serverId));
+                    //Add to cache
+                    _cacheProvider.Add(cacheKey, news, cacheDuration);
+                    //Collect News
+                    allNews.AddRange(searchKey == "" ? news : news.Where(n => n.title.Contains(searchKey)));
                 }
             }
 

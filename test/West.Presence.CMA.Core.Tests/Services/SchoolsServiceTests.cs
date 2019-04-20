@@ -21,6 +21,7 @@ namespace West.Presence.CMA.Core.Tests.Services
         {
             CMAOptions option = new CMAOptions
             {
+                Environment = "Dev",
                 CacheSchoolsKey = "CMASchoolKey",
                 CacheSchoolsDurationInSeconds = 300
             };
@@ -46,10 +47,10 @@ namespace West.Presence.CMA.Core.Tests.Services
             var schools = lsSchools.AsEnumerable();
 
             mockCacheProvider = new Mock<ICacheProvider>();
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<School>>("CMASchoolKey_1", out schools)).Returns(true);
+            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<School>>("CMASchoolKey_Dev_1", out schools)).Returns(true);
 
             mockSchoolsRepository = new Mock<ISchoolsRepository>();
-            mockSchoolsRepository.Setup(p => p.GetSchools(1)).Returns(new List<School>());
+            //mockSchoolsRepository.Setup(p => p.GetSchools(1)).Returns(new List<School>());
 
             schoolsService = new SchoolsService(mockCacheProvider.Object, mockOptions.Object, mockSchoolsRepository.Object);
             var resultSchools = schoolsService.GetSchools(1, "");
@@ -64,7 +65,7 @@ namespace West.Presence.CMA.Core.Tests.Services
             IEnumerable<School> sch;
 
             mockCacheProvider = new Mock<ICacheProvider>();
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<School>>("CMASchoolKey_1", out sch)).Returns(false);
+            //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<School>>("CMASchoolKey_Dev_1", out sch)).Returns(false);
 
             List<School> schools = new List<School>();
 
@@ -104,7 +105,7 @@ namespace West.Presence.CMA.Core.Tests.Services
             var schools = lsSchools.AsEnumerable();
 
             mockCacheProvider = new Mock<ICacheProvider>();
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<School>>("CMASchoolKey_1", out schools)).Returns(true);
+            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<School>>("CMASchoolKey_Dev_1", out schools)).Returns(true);
 
             mockSchoolsRepository = new Mock<ISchoolsRepository>();
             mockSchoolsRepository.Setup(p => p.GetSchools(1)).Returns(new List<School>());
@@ -119,10 +120,10 @@ namespace West.Presence.CMA.Core.Tests.Services
         [Fact]
         public void Test_Schools_From_Repository_With_Search()
         {
-            IEnumerable<School> sch;
+            //IEnumerable<School> sch;
 
             mockCacheProvider = new Mock<ICacheProvider>();
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<School>>("CMASchoolKey_1", out sch)).Returns(false);
+            //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<School>>("CMASchoolKey_Dev_1", out sch)).Returns(false);
 
             List<School> schools = new List<School>();
 

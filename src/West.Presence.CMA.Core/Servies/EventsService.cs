@@ -30,29 +30,20 @@ namespace West.Presence.CMA.Core.Servies
         {
             List<Event> allEvents = new List<Event>();
             int cacheDuration = _options.Value.CacheEventsDurationInSeconds;
-            if (searchKey == "")
+
+            foreach (string serverId in serverIds.Split(','))
             {
-                foreach (string serverId in serverIds.Split(','))
+                string cacheKey = $"{_options.Value.CacheEventsKey}_{_options.Value.Environment}_{serverId}_{startDate.ToString("yyyyMMdd")}";
+                IEnumerable<Event> events;
+                if (_cacheProvider.TryGetValue<IEnumerable<Event>>(cacheKey, out events))
                 {
-                    string cacheKey = $"{_options.Value.CacheEventsKey}_{serverId}";
-                    IEnumerable<Event> events;
-                    if (_cacheProvider.TryGetValue<IEnumerable<Event>>(cacheKey, out events))
-                    {
-                        allEvents.AddRange(events);
-                    }
-                    else
-                    {
-                        events = _eventsRepository.GetEvents(int.Parse(serverId), "", startDate, endDate);
-                        allEvents.AddRange(events);
-                        _cacheProvider.Add(cacheKey, events, cacheDuration);
-                    }
+                    allEvents.AddRange(searchKey == "" ? events : events.Where(e => e.name.Contains(searchKey)));
                 }
-            }
-            else
-            {
-                foreach (string serverId in serverIds.Split(','))
+                else
                 {
-                    allEvents.AddRange(_eventsRepository.GetEvents(int.Parse(serverId), searchKey, startDate, endDate));
+                    events = _eventsRepository.GetEvents(int.Parse(serverId), startDate, endDate);
+                    _cacheProvider.Add(cacheKey, events, cacheDuration);
+                    allEvents.AddRange(searchKey == "" ? events : events.Where(e => e.name.Contains(searchKey)));
                 }
             }
 

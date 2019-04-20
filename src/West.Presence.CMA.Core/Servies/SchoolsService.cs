@@ -29,7 +29,7 @@ namespace West.Presence.CMA.Core.Servies
         public IEnumerable<School> GetSchools(int districtServerId, string searchKey)
         {
             int cacheDuration = _options.Value.CacheSchoolsDurationInSeconds;
-            string cacheKey = $"{_options.Value.CacheSchoolsKey}_{districtServerId}";
+            string cacheKey = $"{_options.Value.CacheSchoolsKey}_{_options.Value.Environment}_{districtServerId}";
 
             IEnumerable<School> schools;
 

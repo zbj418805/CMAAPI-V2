@@ -29,11 +29,29 @@ namespace West.Presence.CMA.Core.Servies
         {
             List<Person> allPeople = new List<Person>();
             int cacheDuration = _options.Value.CachePeopleDurationInSeconds;
+
+            //foreach (string serverId in serverIds.Split(','))
+            //{
+            //    string cacheKey = $"{_options.Value.CachePeopleKey}_{_options.Value.Environment}_{serverId}";
+            //    IEnumerable<Person> people;
+            //    if (_cacheProvider.TryGetValue<IEnumerable<Person>>(cacheKey, out people))
+            //    {
+            //        allPeople.AddRange(people);
+            //    }
+            //    else
+            //    {
+            //        people = _peopleRepository.GetPeople(int.Parse(serverId), "");
+            //        allPeople.AddRange(people);
+            //        _cacheProvider.Add(cacheKey, people, cacheDuration);
+            //    }
+            //}
+
+
             if (searchKey == "")
             {
                 foreach (string serverId in serverIds.Split(','))
                 {
-                    string cacheKey = $"{_options.Value.CachePeopleKey}_{serverId}";
+                    string cacheKey = $"{_options.Value.CachePeopleKey}_{_options.Value.Environment}_{serverId}";
                     IEnumerable<Person> people;
                     if (_cacheProvider.TryGetValue<IEnumerable<Person>>(cacheKey, out people))
                     {

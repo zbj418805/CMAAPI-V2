@@ -6,7 +6,7 @@ namespace West.Presence.CMA.Core.Repositories
 {
     public interface IEventsRepository
     {
-        IEnumerable<Event> GetEvents(int serverId, string searchKey, DateTime startDate, DateTime endDate);
+        IEnumerable<Event> GetEvents(int serverId, DateTime startDate, DateTime endDate);
     }
 
     public class EventsRepository : IEventsRepository
@@ -16,7 +16,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         }
 
-        public IEnumerable<Event> GetEvents(int serverId, string searchKey, DateTime startDate, DateTime endDate)
+        public IEnumerable<Event> GetEvents(int serverId, DateTime startDate, DateTime endDate)
         {
             throw new NotImplementedException();
         }
