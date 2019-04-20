@@ -32,24 +32,18 @@ namespace West.Presence.CMA.Core.Servies
 
             foreach (string serverId in serverIds.Split(','))
             {
-                //Set Key
+                //Set Cache Key
                 string cacheKey = $"{_options.Value.CacheNewsKey}_{_options.Value.Environment}_{serverId}";
-
                 IEnumerable<News> news;
-                if (_cacheProvider.TryGetValue<IEnumerable<News>>(cacheKey, out news))
-                {
-                    //Collect News
-                    allNews.AddRange(searchKey == "" ? news : news.Where(n => n.title.Contains(searchKey)));
-                }
-                else
+                if (!_cacheProvider.TryGetValue<IEnumerable<News>>(cacheKey, out news))
                 {
                     //Get News From Repo
                     news = _newsRepository.GetNews(int.Parse(serverId));
                     //Add to cache
                     _cacheProvider.Add(cacheKey, news, cacheDuration);
-                    //Collect News
-                    allNews.AddRange(searchKey == "" ? news : news.Where(n => n.title.Contains(searchKey)));
                 }
+                //Add to news collection
+                allNews.AddRange(searchKey == "" ? news : news.Where(n => n.title.Contains(searchKey)));
             }
 
             return allNews.OrderByDescending(x => x.publishDate);

@@ -34,16 +34,15 @@ namespace West.Presence.CMA.Core.Servies
             //{
             //    string cacheKey = $"{_options.Value.CachePeopleKey}_{_options.Value.Environment}_{serverId}";
             //    IEnumerable<Person> people;
-            //    if (_cacheProvider.TryGetValue<IEnumerable<Person>>(cacheKey, out people))
+            //    if (!_cacheProvider.TryGetValue<IEnumerable<Person>>(cacheKey, out people))
             //    {
-            //        allPeople.AddRange(people);
-            //    }
-            //    else
-            //    {
+            //        //Get people from repo
             //        people = _peopleRepository.GetPeople(int.Parse(serverId), "");
-            //        allPeople.AddRange(people);
+            //        //set to cache
             //        _cacheProvider.Add(cacheKey, people, cacheDuration);
             //    }
+            //    //Add to collection
+            //    allPeople.AddRange(searchKey == "" ? people : people.Where(p => p.firstName.Contains(searchKey) || p.lastName.Contains(searchKey)));
             //}
 
 
@@ -51,27 +50,23 @@ namespace West.Presence.CMA.Core.Servies
             {
                 foreach (string serverId in serverIds.Split(','))
                 {
+                    //Set Cachekey
                     string cacheKey = $"{_options.Value.CachePeopleKey}_{_options.Value.Environment}_{serverId}";
                     IEnumerable<Person> people;
-                    if (_cacheProvider.TryGetValue<IEnumerable<Person>>(cacheKey, out people))
+                    if (!_cacheProvider.TryGetValue<IEnumerable<Person>>(cacheKey, out people))
                     {
-                        allPeople.AddRange(people);
-                    }
-                    else
-                    {
+                        //Get people from repo
                         people = _peopleRepository.GetPeople(int.Parse(serverId), "");
-                        allPeople.AddRange(people);
+                        //set to cache
                         _cacheProvider.Add(cacheKey, people, cacheDuration);
                     }
+                    //Add to collection
+                    allPeople.AddRange(people);
                 }
             }
             else
-            {
                 foreach (string serverId in serverIds.Split(','))
-                {
                     allPeople.AddRange(_peopleRepository.GetPeople(int.Parse(serverId), searchKey));
-                }
-            }
 
             return allPeople.OrderBy(x => x.firstName);
         }

@@ -29,22 +29,23 @@ namespace West.Presence.CMA.Core.Servies
         public IEnumerable<Event> GetEvents(string serverIds, string searchKey, DateTime startDate, DateTime endDate)
         {
             List<Event> allEvents = new List<Event>();
+            //Get Cache duration
             int cacheDuration = _options.Value.CacheEventsDurationInSeconds;
 
             foreach (string serverId in serverIds.Split(','))
             {
+                //Set CacheKey
                 string cacheKey = $"{_options.Value.CacheEventsKey}_{_options.Value.Environment}_{serverId}_{startDate.ToString("yyyyMMdd")}";
                 IEnumerable<Event> events;
-                if (_cacheProvider.TryGetValue<IEnumerable<Event>>(cacheKey, out events))
+                if (!_cacheProvider.TryGetValue<IEnumerable<Event>>(cacheKey, out events))
                 {
-                    allEvents.AddRange(searchKey == "" ? events : events.Where(e => e.name.Contains(searchKey)));
-                }
-                else
-                {
+                    //Get Events From Repo
                     events = _eventsRepository.GetEvents(int.Parse(serverId), startDate, endDate);
+                    //Set Cache
                     _cacheProvider.Add(cacheKey, events, cacheDuration);
-                    allEvents.AddRange(searchKey == "" ? events : events.Where(e => e.name.Contains(searchKey)));
                 }
+                //Add to news collection
+                allEvents.AddRange(searchKey == "" ? events : events.Where(e => e.name.Contains(searchKey)));
             }
 
             return allEvents.OrderBy(x => x.startTime);

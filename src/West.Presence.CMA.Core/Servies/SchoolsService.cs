@@ -35,14 +35,13 @@ namespace West.Presence.CMA.Core.Servies
 
             if (!_cacheProvider.TryGetValue<IEnumerable<School>>(cacheKey, out schools))
             {
+                //Get Schools from repo
                 schools = _schoolsRepository.GetSchools(districtServerId);
+                //Set to Cache
                 _cacheProvider.Add(cacheKey, schools, cacheDuration);
             }
 
-            if (searchKey == "")
-                return schools;
-            else
-                return schools.Where(x => x.name.Contains(searchKey));
+            return searchKey == "" ? schools : schools.Where(x => x.name.Contains(searchKey));
         }
     }
 }
