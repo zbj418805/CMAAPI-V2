@@ -6,7 +6,8 @@ namespace West.Presence.CMA.Core.Models
 {
     public class Person
     {
-        public string name{ get; set; }
-        public string description { get; set; }
+        public int userId { get; set; }
+        public string firstName{ get; set; }
+        public string lastName { get; set; }
     }
 }

@@ -22,8 +22,9 @@ namespace West.Presence.CMA.Core.Tests.Presentation
             {
                 people.Add(new Person()
                 {
-                    name = $"Name {i}",
-                    description = $"Decription {i} ..."
+                    userId = i,
+                    firstName = $"First_{i}",
+                    lastName = $"Last_{i}"
                 });
             }
 
@@ -48,9 +49,9 @@ namespace West.Presence.CMA.Core.Tests.Presentation
 
             Assert.NotNull(samplePeople);
             Assert.Equal(3, samplePeople.Count());
-            Assert.Equal("Name 3", samplePeople.FirstOrDefault().name);
-            Assert.Equal("Name 4", samplePeople.Skip(1).Take(1).FirstOrDefault().name);
-            Assert.Equal("Name 5", samplePeople.LastOrDefault().name);
+            Assert.Equal("First_3", samplePeople.FirstOrDefault().firstName);
+            Assert.Equal("First_4", samplePeople.Skip(1).Take(1).FirstOrDefault().firstName);
+            Assert.Equal("First_5", samplePeople.LastOrDefault().firstName);
         }
 
 

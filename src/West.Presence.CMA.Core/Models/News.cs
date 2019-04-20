@@ -9,5 +9,7 @@ namespace West.Presence.CMA.Core.Models
         public string title { get; set; }
 
         public string body {get; set; }
+
+        public DateTime publishDate { get; set; }
     }
 }

@@ -5,15 +5,15 @@ using West.Presence.CMA.Core.Servies;
 
 namespace West.Presence.CMA.Core.Presentations
 {
-    public interface ISchoolPresentation
+    public interface ISchoolsPresentation
     {
         IEnumerable<School> GetSchools(int distrctServerId, string searchKey, int pageIndex, int pageSize);
     }
-    public class SchoolsPresentation : PresentationBase, ISchoolPresentation
+    public class SchoolsPresentation : PresentationBase, ISchoolsPresentation
     {
-        private readonly ISchoolService _schoolService;
+        private readonly ISchoolsService _schoolService;
 
-        public SchoolsPresentation(ISchoolService schoolService)
+        public SchoolsPresentation(ISchoolsService schoolService)
         {
             _schoolService = schoolService;
         }

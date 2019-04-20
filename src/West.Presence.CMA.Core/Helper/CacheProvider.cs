@@ -16,7 +16,7 @@ namespace West.Presence.CMA.Core.Helper
         IDictionary<string, object> Get(params string[] keys);
         bool Remove(string key);
         bool TryGetValue(string key, out object value);
-        bool TryGetValue<T>(string key, out object value);
+        bool TryGetValue<T>(string key, out T value);
     }
 
 
@@ -111,7 +111,7 @@ namespace West.Presence.CMA.Core.Helper
             return value != null;
         }
 
-        public bool TryGetValue<T>(string key, out object value)
+        public bool TryGetValue<T>(string key, out T value)
         {
             value = Get<T>(key);
             return value != null;

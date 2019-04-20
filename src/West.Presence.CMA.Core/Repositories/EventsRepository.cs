@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using West.Presence.CMA.Core.Models;
 
 namespace West.Presence.CMA.Core.Repositories
 {
     public interface IEventsRepository
     {
-        IEnumerable<Event> GetEvents(int serverId, string searchKey, DateTime startDate, DateTime endDate)
+        IEnumerable<Event> GetEvents(int serverId, string searchKey, DateTime startDate, DateTime endDate);
     }
 
-    public class EventsRepository
+    public class EventsRepository : IEventsRepository
     {
         public EventsRepository()
         {
@@ -19,7 +18,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<Event> GetEvents(int serverId, string searchKey, DateTime startDate, DateTime endDate)
         {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

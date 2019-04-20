@@ -7,7 +7,6 @@ namespace West.Presence.CMA.Api.Tests.Controllers
 {
     public class CategoriesControllerTests
     {
-
         private CategoriesController _sut;
 
         [Fact]

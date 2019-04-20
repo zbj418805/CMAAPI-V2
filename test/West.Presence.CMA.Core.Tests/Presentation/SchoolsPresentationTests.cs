@@ -9,12 +9,12 @@ using Xunit;
 
 namespace West.Presence.CMA.Core.Tests.Presentation
 {
-    public class SchoolPresentationTests
+    public class SchoolsPresentationTests
     {
-        private Mock<ISchoolService> mockSchoolService;
-        private ISchoolPresentation schoolPresentation;
+        private Mock<ISchoolsService> mockSchoolsService;
+        private ISchoolsPresentation schoolsPresentation;
 
-        public SchoolPresentationTests()
+        public SchoolsPresentationTests()
         {
             List<School> schools = new List<School>();
 
@@ -27,15 +27,15 @@ namespace West.Presence.CMA.Core.Tests.Presentation
                 });
             }
 
-            mockSchoolService = new Mock<ISchoolService>();
-            mockSchoolService.Setup(p => p.GetSchools(1, "")).Returns(schools);
-            schoolPresentation = new SchoolsPresentation(mockSchoolService.Object);
+            mockSchoolsService = new Mock<ISchoolsService>();
+            mockSchoolsService.Setup(p => p.GetSchools(1, "")).Returns(schools);
+            schoolsPresentation = new SchoolsPresentation(mockSchoolsService.Object);
         }
 
         [Fact]
         public void Test_Events_First_Page()
         {
-            IEnumerable<School> sampleSchools = schoolPresentation.GetSchools(1, "", 0, 2);
+            IEnumerable<School> sampleSchools = schoolsPresentation.GetSchools(1, "", 0, 2);
 
             Assert.NotNull(sampleSchools);
             Assert.Equal(2, sampleSchools.Count());
@@ -44,7 +44,7 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_Events_Second_Page()
         {
-            IEnumerable<School> sampleSchools = schoolPresentation.GetSchools(1, "", 1, 3);
+            IEnumerable<School> sampleSchools = schoolsPresentation.GetSchools(1, "", 1, 3);
 
             Assert.NotNull(sampleSchools);
             Assert.Equal(3, sampleSchools.Count());
@@ -57,7 +57,7 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_Events_Page_with_no_items()
         {
-            IEnumerable<School> sampleSchools = schoolPresentation.GetSchools(1, "", 5, 3);
+            IEnumerable<School> sampleSchools = schoolsPresentation.GetSchools(1, "", 5, 3);
             
             Assert.NotNull(sampleSchools);
             Assert.Empty(sampleSchools);
