@@ -13,35 +13,16 @@ namespace West.Presence.CMA.Api.Controllers
     public class HealthController : ControllerBase
     {
         private readonly ILogger _logger = Log.ForContext<HealthController>();
-        private readonly ICacheProvider _cacheProvider;
 
-        public HealthController(ICacheProvider cacheProvider)
+        public HealthController()
         {
-            _cacheProvider = cacheProvider;
+
         }
 
         [HttpGet("api/health/ping")]
         public IActionResult Ping()
         {
-
+            return Ok();
         }
-
-
-        [HttpGet("api/health/pong")]
-        public IActionResult Pong()
-        {
-            var obj = _cacheProvider.Get<tempClass>("test_object");
-
-            return Ok(obj);
-        }
-
-
-    }
-    [Serializable]
-    public class tempClass
-    {
-        public int oid { get; set; }
-        public string name { get; set; }
-        public DateTime time { get; set; }
     }
 }
