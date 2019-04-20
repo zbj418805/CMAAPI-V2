@@ -6,7 +6,7 @@ namespace West.Presence.CMA.Core.Repositories
 {
     public interface IPeopleRepository
     {
-        IEnumerable<Person> GetPeople(int serverId, string searchKey);
+        IEnumerable<Person> GetPeople(int serverId, string baseUrl, string searchKey);
     }
 
     public class PeopleRepository : IPeopleRepository
@@ -16,7 +16,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         }
 
-        public IEnumerable<Person> GetPeople(int serverId, string searchKey)
+        public IEnumerable<Person> GetPeople(int serverId, string baseUrl, string searchKey)
         {
             throw new NotImplementedException();
         }

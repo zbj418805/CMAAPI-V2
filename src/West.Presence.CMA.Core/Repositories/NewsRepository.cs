@@ -7,17 +7,30 @@ namespace West.Presence.CMA.Core.Repositories
 {
     public interface INewsRepository
     {
-        IEnumerable<News> GetNews(int serverId);
+        IEnumerable<News> GetNews(int serverId, string baseUrl);
     }
 
-    public class NewsRepository : INewsRepository
+    public class DBNewsRepository : INewsRepository
     {
-        public NewsRepository()
+        public DBNewsRepository()
         {
 
         }
 
-        public IEnumerable<News> GetNews(int serverId)
+        public IEnumerable<News> GetNews(int serverId, string baseUrl)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class APINewsRepository : INewsRepository
+    {
+        public APINewsRepository()
+        {
+
+        }
+
+        public IEnumerable<News> GetNews(int serverId, string baseUrl)
         {
             throw new NotImplementedException();
         }

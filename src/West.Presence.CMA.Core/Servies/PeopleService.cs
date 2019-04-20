@@ -9,7 +9,7 @@ namespace West.Presence.CMA.Core.Servies
 {
     public interface IPeopleService
     {
-        IEnumerable<Person> GetPeople(string serverIds, string searchKey);
+        IEnumerable<Person> GetPeople(string serverIds, string baseUrl, string searchKey);
     }
 
     public class PeopleService : IPeopleService
@@ -25,7 +25,7 @@ namespace West.Presence.CMA.Core.Servies
             _peopleRepository = peopleRepository;
         }
 
-        public IEnumerable<Person> GetPeople(string serverIds, string searchKey)
+        public IEnumerable<Person> GetPeople(string serverIds, string baseUrl, string searchKey)
         {
             List<Person> allPeople = new List<Person>();
             int cacheDuration = _options.Value.CachePeopleDurationInSeconds;
@@ -56,7 +56,7 @@ namespace West.Presence.CMA.Core.Servies
                     if (!_cacheProvider.TryGetValue<IEnumerable<Person>>(cacheKey, out people))
                     {
                         //Get people from repo
-                        people = _peopleRepository.GetPeople(int.Parse(serverId), "");
+                        people = _peopleRepository.GetPeople(int.Parse(serverId), baseUrl, "");
                         //set to cache
                         _cacheProvider.Add(cacheKey, people, cacheDuration);
                     }
@@ -66,7 +66,7 @@ namespace West.Presence.CMA.Core.Servies
             }
             else
                 foreach (string serverId in serverIds.Split(','))
-                    allPeople.AddRange(_peopleRepository.GetPeople(int.Parse(serverId), searchKey));
+                    allPeople.AddRange(_peopleRepository.GetPeople(int.Parse(serverId), baseUrl, searchKey));
 
             return allPeople.OrderBy(x => x.firstName);
         }

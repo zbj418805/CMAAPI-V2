@@ -28,14 +28,14 @@ namespace West.Presence.CMA.Core.Tests.Presentation
             }
 
             mockNewsService = new Mock<INewsService>();
-            mockNewsService.Setup(p => p.GetNews("1,2", "")).Returns(news);
+            mockNewsService.Setup(p => p.GetNews("1,2", "", "")).Returns(news);
             newsPresentation = new NewsPresentation(mockNewsService.Object);
         }
 
         [Fact]
         public void Test_News_First_Page()
         {
-            IEnumerable<News> sampleEvents = newsPresentation.GetNews("1,2", "", 0, 2);
+            IEnumerable<News> sampleEvents = newsPresentation.GetNews("1,2", "", "", 0, 2);
 
             Assert.NotNull(sampleEvents);
             Assert.Equal(2, sampleEvents.Count());
@@ -44,7 +44,7 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_News_Second_Page()
         {
-            IEnumerable<News> sampleNews = newsPresentation.GetNews("1,2", "", 1,3);
+            IEnumerable<News> sampleNews = newsPresentation.GetNews("1,2", "", "", 1,3);
 
             Assert.NotNull(sampleNews);
             Assert.Equal(3, sampleNews.Count());
@@ -57,7 +57,7 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_News_Page_with_no_items()
         {
-            IEnumerable<News> sampleNews = newsPresentation.GetNews("1,2", "", 5, 3);
+            IEnumerable<News> sampleNews = newsPresentation.GetNews("1,2", "", "", 5, 3);
 
             Assert.NotNull(sampleNews);
             Assert.Empty(sampleNews);

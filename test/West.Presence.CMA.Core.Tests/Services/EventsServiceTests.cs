@@ -66,7 +66,7 @@ namespace West.Presence.CMA.Core.Tests.Services
             mockEventsRepository = new Mock<IEventsRepository>();
             eventsService = new EventsService(mockCacheProvider.Object, mockOptions.Object, mockEventsRepository.Object);
 
-            var resultEvents = eventsService.GetEvents("1,2", "", DateTime.Today,DateTime.Today.AddMonths(12));
+            var resultEvents = eventsService.GetEvents("1,2", "", "", DateTime.Today,DateTime.Today.AddMonths(12));
 
             Assert.NotNull(resultEvents);
             Assert.Equal(20, resultEvents.Count());
@@ -103,12 +103,12 @@ namespace West.Presence.CMA.Core.Tests.Services
             mockCacheProvider = new Mock<ICacheProvider>();
             //mock up repo
             mockEventsRepository = new Mock<IEventsRepository>();
-            mockEventsRepository.Setup(p => p.GetEvents(1, DateTime.Today, DateTime.Today.AddMonths(12))).Returns(lsEvents1);
-            mockEventsRepository.Setup(p => p.GetEvents(2, DateTime.Today, DateTime.Today.AddMonths(12))).Returns(lsEvents2);
+            mockEventsRepository.Setup(p => p.GetEvents(1,"", DateTime.Today, DateTime.Today.AddMonths(12))).Returns(lsEvents1);
+            mockEventsRepository.Setup(p => p.GetEvents(2,"", DateTime.Today, DateTime.Today.AddMonths(12))).Returns(lsEvents2);
 
 
             eventsService = new EventsService(mockCacheProvider.Object, mockOptions.Object, mockEventsRepository.Object);
-            var resultEvents = eventsService.GetEvents("1,2", "", DateTime.Today, DateTime.Today.AddMonths(12));
+            var resultEvents = eventsService.GetEvents("1,2","", "", DateTime.Today, DateTime.Today.AddMonths(12));
 
             Assert.NotNull(resultEvents);
             Assert.Equal(20, resultEvents.Count());
@@ -146,11 +146,11 @@ namespace West.Presence.CMA.Core.Tests.Services
             mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Event>>($"CMAEventsKey_Dev_1_{DateTime.Today.ToString("yyyyMMdd")}", out events1)).Returns(true);
             //mock up repo
             mockEventsRepository = new Mock<IEventsRepository>();
-            mockEventsRepository.Setup(p => p.GetEvents(2, DateTime.Today, DateTime.Today.AddMonths(12))).Returns(lsEvents2);
+            mockEventsRepository.Setup(p => p.GetEvents(2, "", DateTime.Today, DateTime.Today.AddMonths(12))).Returns(lsEvents2);
 
             eventsService = new EventsService(mockCacheProvider.Object, mockOptions.Object, mockEventsRepository.Object);
 
-            var resultEvents = eventsService.GetEvents("1,2", "", DateTime.Today, DateTime.Today.AddMonths(12));
+            var resultEvents = eventsService.GetEvents("1,2", "", "", DateTime.Today, DateTime.Today.AddMonths(12));
 
             Assert.NotNull(resultEvents);
             Assert.Equal(20, resultEvents.Count());
@@ -188,11 +188,11 @@ namespace West.Presence.CMA.Core.Tests.Services
             mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Event>>($"CMAEventsKey_Dev_1_{DateTime.Today.ToString("yyyyMMdd")}", out events1)).Returns(true);
             //mock up repo
             mockEventsRepository = new Mock<IEventsRepository>();
-            mockEventsRepository.Setup(p => p.GetEvents(2, DateTime.Today, DateTime.Today.AddMonths(12))).Returns(lsEvents2);
+            mockEventsRepository.Setup(p => p.GetEvents(2, "", DateTime.Today, DateTime.Today.AddMonths(12))).Returns(lsEvents2);
 
 
             eventsService = new EventsService(mockCacheProvider.Object, mockOptions.Object, mockEventsRepository.Object);
-            var resultEvents = eventsService.GetEvents("1,2", "1-1", DateTime.Today, DateTime.Today.AddMonths(12));
+            var resultEvents = eventsService.GetEvents("1,2", "1-1", "", DateTime.Today, DateTime.Today.AddMonths(12));
 
             Assert.NotNull(resultEvents);
             Assert.Equal(2, resultEvents.Count());

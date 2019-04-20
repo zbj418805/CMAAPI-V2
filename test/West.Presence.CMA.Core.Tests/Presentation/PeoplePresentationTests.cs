@@ -29,14 +29,14 @@ namespace West.Presence.CMA.Core.Tests.Presentation
             }
 
             mockPeopleService = new Mock<IPeopleService>();
-            mockPeopleService.Setup(p => p.GetPeople("1,2", "")).Returns(people);
+            mockPeopleService.Setup(p => p.GetPeople("1,2", "", "")).Returns(people);
             peoplePresentation = new PeoplePresentation(mockPeopleService.Object);
         }
 
         [Fact]
         public void Test_People_First_Page()
         {
-            IEnumerable<Person> samplePeople = peoplePresentation.GetPeople("1,2", "", 0, 2);
+            IEnumerable<Person> samplePeople = peoplePresentation.GetPeople("1,2", "", "", 0, 2);
 
             Assert.NotNull(samplePeople);
             Assert.Equal(2, samplePeople.Count());
@@ -45,7 +45,7 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_People_Second_Page()
         {
-            IEnumerable<Person> samplePeople = peoplePresentation.GetPeople("1,2", "", 1, 3);
+            IEnumerable<Person> samplePeople = peoplePresentation.GetPeople("1,2", "", "", 1, 3);
 
             Assert.NotNull(samplePeople);
             Assert.Equal(3, samplePeople.Count());
@@ -58,7 +58,7 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_People_Page_with_no_items()
         {
-            IEnumerable<Person> samplePeople = peoplePresentation.GetPeople("1,2", "", 5,3);
+            IEnumerable<Person> samplePeople = peoplePresentation.GetPeople("1,2", "", "", 5,3);
             
             Assert.NotNull(samplePeople);
             Assert.Empty(samplePeople);

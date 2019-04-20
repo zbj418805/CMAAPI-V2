@@ -6,7 +6,7 @@ namespace West.Presence.CMA.Core.Repositories
 {
     public interface ISchoolsRepository
     {
-        IEnumerable<School> GetSchools(int districtServerId);
+        IEnumerable<School> GetSchools(int districtServerId, string baseUrl);
     }
 
     public class SchoolsRepository : ISchoolsRepository
@@ -16,7 +16,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         }
 
-        public IEnumerable<School> GetSchools(int districtServerId)
+        public IEnumerable<School> GetSchools(int districtServerId, string baseUrl)
         {
             List<School> sch = new List<School>();
             return sch;

@@ -10,7 +10,7 @@ namespace West.Presence.CMA.Core.Servies
 {
     public interface ISchoolsService
     {
-        IEnumerable<School> GetSchools(int districtServerId, string searchKey);
+        IEnumerable<School> GetSchools(int districtServerId, string baseUrl, string searchKey);
     }
 
     public class SchoolsService : ISchoolsService
@@ -26,7 +26,7 @@ namespace West.Presence.CMA.Core.Servies
             _schoolsRepository = schoolsRepository;
         }
 
-        public IEnumerable<School> GetSchools(int districtServerId, string searchKey)
+        public IEnumerable<School> GetSchools(int districtServerId, string baseUrl, string searchKey)
         {
             int cacheDuration = _options.Value.CacheSchoolsDurationInSeconds;
             string cacheKey = $"{_options.Value.CacheSchoolsKey}_{_options.Value.Environment}_{districtServerId}";
@@ -36,7 +36,7 @@ namespace West.Presence.CMA.Core.Servies
             if (!_cacheProvider.TryGetValue<IEnumerable<School>>(cacheKey, out schools))
             {
                 //Get Schools from repo
-                schools = _schoolsRepository.GetSchools(districtServerId);
+                schools = _schoolsRepository.GetSchools(districtServerId, baseUrl);
                 //Set to Cache
                 _cacheProvider.Add(cacheKey, schools, cacheDuration);
             }
