@@ -13,6 +13,19 @@ namespace West.Presence.CMA.Core.Repositories
         IEnumerable<School> GetSchools(int districtServerId, string baseUrl);
     }
 
+    public class SchoolsRepository : DBBaseRepository, ISchoolsRepository
+    {
+        public SchoolsRepository()
+        {
+
+        }
+
+        public IEnumerable<School> GetSchools(int districtServerId, string baseUrl)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class APISchoolsRepository : APIBaseRepository, ISchoolsRepository
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -26,7 +39,7 @@ namespace West.Presence.CMA.Core.Repositories
         {
             using(var client = _httpClientFactory.CreateClient("PresnceApi"))
             {
-                string content =  client.GetStringAsync(baseUrl+"/presenceAPi/CMA/"+ districtServerId).Result;
+                string content =  client.GetStringAsync(baseUrl+"/presence/Api/CMA/Schools/"+ districtServerId).Result;
                 return JsonConvert.DeserializeObject<List<School>>(content);
             }
         }
