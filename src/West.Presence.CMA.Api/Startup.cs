@@ -220,5 +220,14 @@ namespace West.Presence.CMA.Api
             //    });
             //}
         }
+
+        private void ConfigureHttpclient(IServiceCollection services)
+        {
+            services.AddHttpClient("PresenceApi", c =>
+            {
+                //c.BaseAddress = new Uri("http://www.boredapi.com/api/");
+                c.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+        }
     }
 }
