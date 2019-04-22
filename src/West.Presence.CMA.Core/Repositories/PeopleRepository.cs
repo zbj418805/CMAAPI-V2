@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using West.Presence.CMA.Core.Models;
@@ -26,29 +25,21 @@ namespace West.Presence.CMA.Core.Repositories
 
     public class APIPeopleRepository : APIBaseRepository, IPeopleRepository
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public APIPeopleRepository(IHttpClientFactory httpClientFactory)
+        public APIPeopleRepository(IHttpClientFactory httpClientFactory) :
+            base(httpClientFactory)
         {
-            _httpClientFactory = httpClientFactory;
+
         }
 
         public IEnumerable<Person> GetPeople(int serverId, string baseUrl, string searchKey)
         {
-            using (var client = _httpClientFactory.CreateClient("PresnceApi"))
-            {
-                string content = client.GetStringAsync(baseUrl + $"/presence/Api/CMA/People/{serverId}/{searchKey}").Result;
-                return JsonConvert.DeserializeObject<List<Person>>(content);
-            }
+            return GetData<Person>(baseUrl + $"/presence/Api/CMA/People/{serverId}/{searchKey}");
+
         }
 
         public IEnumerable<PersonInfo> GetPeopleInfo(int serverId, string baseUrl, string searchKey)
         {
-            using (var client = _httpClientFactory.CreateClient("PresnceApi"))
-            {
-                string content = client.GetStringAsync(baseUrl + $"/presence/Api/CMA/PeopleInfo/{serverId}/{searchKey}").Result;
-                return JsonConvert.DeserializeObject<List<PersonInfo>>(content);
-            }
+            return GetData<PersonInfo>(baseUrl + $"/presence/Api/CMA/People/{serverId}/{searchKey}");
         }
     }
 }

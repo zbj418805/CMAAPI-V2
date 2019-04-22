@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using West.Presence.CMA.Core.Models;
@@ -29,18 +28,15 @@ namespace West.Presence.CMA.Core.Repositories
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public APINewsRepository(IHttpClientFactory httpClientFactory)
+        public APINewsRepository(IHttpClientFactory httpClientFactory) :
+            base(httpClientFactory)
         {
-            _httpClientFactory = httpClientFactory;
+
         }
 
         public IEnumerable<News> GetNews(int serverId, string baseUrl)
         {
-            using (var client = _httpClientFactory.CreateClient("PresnceApi"))
-            {
-                string content = client.GetStringAsync(baseUrl + "/presence/Api/CMA/News/" + serverId).Result;
-                return JsonConvert.DeserializeObject<List<News>>(content);
-            }
+            return GetData<News>(baseUrl + "/presence/Api/CMA/News/" + serverId);
         }
     }
 }
