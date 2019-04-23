@@ -17,7 +17,6 @@ namespace West.Presence.CMA.Core.Repositories
     {
         public DBChanel2GroupRepository()
         {
-
         }
 
         public IEnumerable<Channel2Group> GetChannel2Group(string baseUrl)
