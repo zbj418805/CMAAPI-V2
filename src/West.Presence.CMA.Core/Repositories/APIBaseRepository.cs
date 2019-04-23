@@ -1,0 +1,59 @@
+﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using Newtonsoft.Json;
+
+namespace West.Presence.CMA.Core.Repositories
+{
+    public class APIBaseRepository
+    {
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public APIBaseRepository(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+
+        public IEnumerable<T> GetData<T>(string url)
+        {
+            using (var client = _httpClientFactory.CreateClient("PresnceApi"))
+            {
+                string content = client.GetStringAsync(url).Result;
+                return JsonConvert.DeserializeObject<List<T>>(content);
+            }
+        }
+
+        public IEnumerable<T> PostData<T>(string url, object data)
+        {
+            using (var client = _httpClientFactory.CreateClient("PresnceApi"))
+            {
+                var jsonString = JsonConvert.SerializeObject(data);
+                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+                var response = client.PostAsync(url, content).Result;
+
+                response.EnsureSuccessStatusCode();
+                if (response.IsSuccessStatusCode)
+                {
+                    return JsonConvert.DeserializeObject<List<T>>(response.Content.ToString());
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public bool DeletetData<T>(string url, object data)
+        {
+            using (var client = _httpClientFactory.CreateClient("PresnceApi"))
+            {
+                var response = client.DeleteAsync(url).Result;
+                if (response.IsSuccessStatusCode)
+                    return true;
+                else
+                    return false;
+            }
+        }
+    }
+}

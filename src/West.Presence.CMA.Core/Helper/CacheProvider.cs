@@ -19,7 +19,6 @@ namespace West.Presence.CMA.Core.Helper
         bool TryGetValue<T>(string key, out T value);
     }
 
-
     public class CacheProvider : ICacheProvider
     {
         private readonly IDistributedCache _distributedCache;
@@ -28,7 +27,6 @@ namespace West.Presence.CMA.Core.Helper
         {
             _distributedCache = distributedCache;
         }
-
         public bool Add(string key, object value, long durationSeconds = 0)
         {
             try
@@ -54,7 +52,6 @@ namespace West.Presence.CMA.Core.Helper
                 return false;
             }
         }
-
         public object Get(string key)
         {
             try
@@ -67,12 +64,10 @@ namespace West.Presence.CMA.Core.Helper
                 return null;
             }
         }
-
         public T Get<T>(string key)
         {
             return (T)Get(key);
         }
-
         public IDictionary<string, object> Get (params string[] keys)
         {
             try {
@@ -90,7 +85,6 @@ namespace West.Presence.CMA.Core.Helper
                 return null;
             }
         }
-
         public bool Remove(string key)
         {
             try
@@ -103,19 +97,16 @@ namespace West.Presence.CMA.Core.Helper
                 return false;
             }
         }
-
         public bool TryGetValue(string key, out object value)
         {
             value = Get(key);
             return value != null;
         }
-
         public bool TryGetValue<T>(string key, out T value)
         {
             value = Get<T>(key);
             return value != null;
         }
-
         private byte[] ObjectToByteArray(Object obj)
         {
             if (obj == null)

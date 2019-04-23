@@ -12,7 +12,8 @@ using System.Diagnostics.CodeAnalysis;
 using West.Presence.CMA.Api.Infrastructure;
 using West.Presence.CMA.Api.Utilities;
 using West.Presence.CMA.Core.Helper;
-using West.Presence.CMA.Core.Models;
+using West.Presence.CMA.Core.Servies;
+using West.Presence.CMA.Core.Presentations;
 
 namespace West.Presence.CMA.Api
 {
@@ -172,8 +173,11 @@ namespace West.Presence.CMA.Api
         protected virtual void ConfigApplicationServices(IServiceCollection services)
         {
             services.AddTransient<ICacheProvider, CacheProvider>();
+            services.AddTransient<IEventsPresentation, EventsPresentation>();
+
+            services.AddTransient<IEventsService, EventsService>();
             // services.AddTransient<IDatabaseConnectionFactory, SqlConnectionFactory>();
-            // //services.AddTransient<IQueueService, QueueService>();
+            // services.AddTransient<IQueueService, QueueService>();
             // services.AddTransient<INotificationRepository, NotificationRepository>();
             // services.AddTransient<ISsoClientRepository, SsoClientRepository>();
             // services.AddTransient<IWatchRequestRepository, WatchRequestRepository>();
@@ -201,6 +205,15 @@ namespace West.Presence.CMA.Api
             //        options.InstanceName = "CMAAPI";
             //    });
             //}
+        }
+
+        private void ConfigureHttpclient(IServiceCollection services)
+        {
+            services.AddHttpClient("PresenceApi", c =>
+            {
+                //c.BaseAddress = new Uri("http://www.boredapi.com/api/");
+                c.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
         }
     }
 }
