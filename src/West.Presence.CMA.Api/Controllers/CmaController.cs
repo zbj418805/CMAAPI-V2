@@ -7,6 +7,9 @@ namespace West.Presence.CMA.Api.Controllers
     {
         protected string GetQueryString(string key)
         {
+            if (Request == null)
+                return null;
+
             var queryStrings = Request.Query;
             if (queryStrings == null)
                 return null;

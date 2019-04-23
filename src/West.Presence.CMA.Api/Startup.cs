@@ -14,6 +14,7 @@ using West.Presence.CMA.Api.Utilities;
 using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Servies;
 using West.Presence.CMA.Core.Presentations;
+using West.Presence.CMA.Core.Models;
 
 namespace West.Presence.CMA.Api
 {
