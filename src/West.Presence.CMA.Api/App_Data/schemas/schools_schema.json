@@ -1,0 +1,38 @@
+{
+    "data": {
+        "id": "school-messenger.schools",
+        "type": "school-messenger.schemas",
+        "attributes": {
+            "name": "school-messenger.schools",
+            "title": "Schools",
+            "type": "object",
+            "titleProperty": "name",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "format": "single-line",
+                    "title": "Name",
+                    "name":  "name"
+                },
+                "address": {
+                    "type": "string",
+                    "format": "html",
+                    "title": "Description",
+                    "name": "description"
+                },
+                "lat": {
+                    "type": "string",
+                    "format": "uri",
+                    "title": "Blog link",
+                    "name":  "blog"
+                },
+                "long": {
+                    "type": "string",
+                    "format": "single-line",
+                    "title": "Personal message",
+                    "name":  "personalMessage"
+                }
+            }
+        }
+    }
+}

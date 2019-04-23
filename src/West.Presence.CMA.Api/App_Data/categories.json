@@ -1,0 +1,124 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "type": "school-messenger.categories",
+            "attributes": {
+                "name": "News"
+            },
+            "relationships": {
+                "schema": {
+                    "data": { "type": "school-messenger.schemas", "id": "school-messenger.news" }
+                },
+                "parent": {
+                    "data": null
+                }
+            }
+        },
+        {
+            "id": 2,
+            "type": "school-messenger.categories",
+            "attributes": {
+                "name": "All"
+            },
+            "relationships": {
+                "schema": {
+                    "data": { "type": "school-messenger.schemas", "id": "school-messenger.news" }
+                },
+                "parent": {
+                    "data": { "type": "school-messenger.categories", "id": 1 }
+                }
+            }
+        },
+        {
+            "id": 3,
+            "type": "school-messenger.categories",
+            "attributes": {
+                "name": "Events"
+            },
+            "relationships": {
+                "schema": {
+                    "data": { "type": "school-messenger.schemas", "id": "school-messenger.events" }
+                },
+                "parent": {
+                    "data": null
+                }
+            }
+        },
+        {
+            "id": 4,
+            "type": "school-messenger.categories",
+            "attributes": {
+                "name": "All"
+            },
+            "relationships": {
+                "schema": {
+                    "data": { "type": "school-messenger.schemas", "id": "school-messenger.events" }
+                },
+                "parent": {
+                    "data": { "type": "school-messenger.categories", "id": 3 }
+                }
+            }
+        },
+        {
+            "id": 5,
+            "type": "school-messenger.categories",
+            "attributes": {
+                "name": "People"
+            },
+            "relationships": {
+                "schema": {
+                    "data": { "type": "school-messenger.schemas", "id": "school-messenger.people" }
+                },
+                "parent": {
+                    "data": null
+                }
+            }
+        },
+        {
+            "id": 6,
+            "type": "school-messenger.categories",
+            "attributes": {
+                "name": "All"
+            },
+            "relationships": {
+                "schema": {
+                    "data": { "type": "school-messenger.schemas", "id": "school-messenger.people" }
+                },
+                "parent": {
+                    "data": { "type": "school-messenger.categories", "id": 5 }
+                }
+            }
+        },
+        {
+            "id": 7,
+            "type": "school-messenger.categories",
+            "attributes": {
+                "name": "Schools"
+            },
+            "relationships": {
+                "schema": {
+                    "data": { "type": "school-messenger.schemas", "id": "school-messenger.schools" }
+                },
+                "parent": {
+                    "data": null
+                }
+            }
+        },
+        {
+            "id": 8,
+            "type": "school-messenger.categories",
+            "attributes": {
+                "name": "All"
+            },
+            "relationships": {
+                "schema": {
+                    "data": { "type": "school-messenger.schemas", "id": "school-messenger.schools" }
+                },
+                "parent": {
+                    "data": { "type": "school-messenger.categories", "id": 7 }
+                }
+            }
+        }
+    ]
+}

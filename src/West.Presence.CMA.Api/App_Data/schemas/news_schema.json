@@ -1,0 +1,62 @@
+{
+    "data": {
+        "id": "school-messenger.news",
+        "type": "school-messenger.schemas",
+        "attributes": {
+            "name": "school-messenger.news",
+            "title": "News",
+            "type": "object",
+            "titleProperty": "title",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "format": "single-line",
+                    "title": "Title",
+                    "name":  "title"
+                },
+                "name": {
+                    "type": "string",
+                    "format": "single-line",
+                    "title": "Name",
+                    "name": "name"
+                },
+                "featuredImage": {
+                    "type": "string",
+                    "format": "uri",
+                    "title": "Image link",
+                    "name":  "featuredImage"
+                },
+                "imageTitle": {
+                    "type": "string",
+                    "format": "single-line",
+                    "title": "Image title",
+                    "name": "imageTitle"
+                },
+                "summary": {
+                    "type": "string",
+                    "format": "multi-line",
+                    "title": "Summary",
+                    "name": "summary"
+                },
+                "body": {
+                    "type": "string",
+                    "format": "html",
+                    "title": "Body",
+                    "name": "body"
+                },
+                "linkOfCurrentPage": {
+                    "type": "string",
+                    "format": "uri",
+                    "title": "Link",
+                    "name": "linkOfCurrentPage"
+                },
+                "publishedDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "Pusblish Date",
+                    "name": "publishedDate"
+                }
+            }
+        }
+    }
+}

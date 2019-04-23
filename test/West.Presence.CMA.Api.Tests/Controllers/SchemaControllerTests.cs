@@ -23,7 +23,7 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             var result = _sut.AllSchemas();
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<NoContentResult>(result);
             Assert.Equal(0, _sut.ModelState.ErrorCount);
         }
 
@@ -33,10 +33,10 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Arrange
 
             // Act
-            var result = _sut.GetNewsSchema();
+            var result = _sut.NewsSchema();
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<NoContentResult>(result);
             Assert.Equal(0, _sut.ModelState.ErrorCount);
         }
 
@@ -46,10 +46,10 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Arrange
 
             // Act
-            var result = _sut.GetEventsSchema();
+            var result = _sut.EventsSchema();
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<NoContentResult>(result);
             Assert.Equal(0, _sut.ModelState.ErrorCount);
         }
 
@@ -59,10 +59,10 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Arrange
 
             // Act
-            var result = _sut.GetSchoolsSchema();
+            var result = _sut.SchoolsSchema();
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<NoContentResult>(result);
             Assert.Equal(0, _sut.ModelState.ErrorCount);
         }
 
@@ -72,10 +72,10 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Arrange
 
             // Act
-            var result = _sut.GetPeopleSchema();
+            var result = _sut.PeopleSchema();
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<NoContentResult>(result);
             Assert.Equal(0, _sut.ModelState.ErrorCount);
         }
     }

@@ -16,7 +16,6 @@ namespace West.Presence.CMA.Api.Controllers
 
         public HealthController()
         {
-
         }
 
         [HttpGet("api/health/ping")]
@@ -24,5 +23,6 @@ namespace West.Presence.CMA.Api.Controllers
         {
             return Ok();
         }
+
     }
 }

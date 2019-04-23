@@ -1,0 +1,32 @@
+[
+    {
+        "code": 101,
+        "source": { "pointer": "/data/attributes/first-name" },
+        "title": "Validation failed",
+        "detail": "Categories in request is missed or invalid."
+    },
+    {
+        "code": 102,
+        "source": { "pointer": "/data/attributes/first-name" },
+        "title": "Validation failed",
+        "detail": "requart api uri does not macth request category type."
+    },
+    {
+        "code": 103,
+        "source": { "pointer": "/data/attributes/first-name" },
+        "title": "Validation failed",
+        "detail": "school website url not valid."
+    },
+    {
+        "code": 104,
+        "source": { "pointer": "/data/attributes/first-name" },
+        "title": "Validation failed",
+        "detail": "district server not found.."
+    },
+    {
+        "code": 105,
+        "source": { "pointer": "/data/attributes/first-name" },
+        "title": "Validation failed",
+        "detail": "request category is not root but in request channels contains district server id."
+    }
+]
