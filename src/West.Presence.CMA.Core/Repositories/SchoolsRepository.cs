@@ -61,7 +61,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<School> GetSchools(int districtServerId, string baseUrl)
         {
-            return _httpClientProvider.GetData<School>(baseUrl + "/presence/Api/CMA/Schools/" + districtServerId);
+            return _httpClientProvider.GetData<School>($"{baseUrl}webapi/cma/schools/{districtServerId}");
         }
     }
 }

@@ -13,7 +13,7 @@ namespace West.Presence.CMA.Core.Helper
         bool DeletetData(string url);
     }
 
-    public class HttpClientProvider
+    public class HttpClientProvider : IHttpClientProvider
     {
         IHttpClientFactory _httpClientFactory;
 

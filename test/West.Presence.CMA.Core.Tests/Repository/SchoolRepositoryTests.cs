@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using Moq;
 using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
@@ -25,15 +26,15 @@ namespace West.Presence.CMA.Core.Tests.Repository
             {
                 lsSchools.Add(new School()
                 {
-                    serverName = $"School Name {i}",
-                    serverDescription = $"Description {1} ..."
+                    Name = $"School Name {i}",
+                    Description = $"Description {1} ..."
                 });
             }
             var schools = lsSchools.AsEnumerable();
 
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<School>("http://test.url/" + "/presence/Api/CMA/Schools/" + "1234")).Returns(schools);
+            mockHttpClientProvider.Setup(p => p.GetData<School>("http://test.url/" + "webapi/cma/schools/" + "1234")).Returns(schools);
 
             APISchoolsRepository schoolRepo = new APISchoolsRepository(mockHttpClientProvider.Object);
 
@@ -52,15 +53,15 @@ namespace West.Presence.CMA.Core.Tests.Repository
             {
                 lsSchools.Add(new School()
                 {
-                    serverName = $"School Name {i}",
-                    serverDescription = $"Description {1} ..."
+                    Name = $"School Name {i}",
+                    Description = $"Description {1} ..."
                 });
             }
             var schools = lsSchools.AsEnumerable();
 
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<School>("http://test.url/" + "/presence/Api/CMA/Schools/" + "21234")).Returns(schools);
+            mockHttpClientProvider.Setup(p => p.GetData<School>("http://test.url/" + "webapi/cma/schools/" + "21234")).Returns(schools);
 
             APISchoolsRepository schoolRepo = new APISchoolsRepository(mockHttpClientProvider.Object);
 

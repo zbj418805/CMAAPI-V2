@@ -22,8 +22,8 @@ namespace West.Presence.CMA.Core.Tests.Presentation
             {
                 schools.Add(new School()
                 {
-                    serverName = $"School Name {i}",
-                    serverDescription = $"Description {1} ..."
+                    Name = $"School Name {i}",
+                    Description = $"Description {1} ..."
                 });
             }
 
@@ -48,9 +48,9 @@ namespace West.Presence.CMA.Core.Tests.Presentation
 
             Assert.NotNull(sampleSchools);
             Assert.Equal(3, sampleSchools.Count());
-            Assert.Equal("School Name 3", sampleSchools.FirstOrDefault().serverName);
-            Assert.Equal("School Name 4", sampleSchools.Skip(1).Take(1).FirstOrDefault().serverName);
-            Assert.Equal("School Name 5", sampleSchools.LastOrDefault().serverName);
+            Assert.Equal("School Name 3", sampleSchools.FirstOrDefault().Name);
+            Assert.Equal("School Name 4", sampleSchools.Skip(1).Take(1).FirstOrDefault().Name);
+            Assert.Equal("School Name 5", sampleSchools.LastOrDefault().Name);
         }
 
 

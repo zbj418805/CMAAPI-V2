@@ -41,7 +41,7 @@ namespace West.Presence.CMA.Core.Servies
                 _cacheProvider.Add(cacheKey, schools, cacheDuration);
             }
 
-            return searchKey == "" ? schools : schools.Where(x => x.serverName.Contains(searchKey) || x.serverDescription.Contains(searchKey));
+            return searchKey == "" ? schools : schools.Where(x => x.Name.Contains(searchKey) || x.Description.Contains(searchKey));
         }
     }
 }

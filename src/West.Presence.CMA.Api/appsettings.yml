@@ -54,14 +54,13 @@ management:
 
 #Configration for CMAAPI
 PresenceCMAOptions:
-    Connection: data source=.;initial catelog=Presence_QA;User ID=sa;Password=P@ssw0rd;Persist Security=False;
+    ConnectionString: data source=.;initial catelog=Presence_QA;User ID=sa;Password=P@ssw0rd;Persist Security=False;
     Environment: DEVQA
     CacheNewsKey: cma_news_cache
     CachePeopleKey: cma_people_cache
-    CacheEventKey: cma_event_cache
-    CacheSchoolKey: cma_school_cache
+    CacheEventsKey: cma_event_cache
+    CacheSchoolsKey: cma_school_cache
     CacheNewsDurationInSeconds : 300
     CachePeopleDurationInSeconds: 300
     CacheEventsDurationInSeconds: 300
     CacheSchoolsDurationInSeconds: 300
-    RepositoryFrom : db

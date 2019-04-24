@@ -62,6 +62,9 @@ namespace West.Presence.CMA.Api
 
             // Add Distributed Cache Service.
             ConfigureDistributedCache(services);
+
+            // Add HttpClient Service
+            ConfigureHttpclient(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -141,11 +144,11 @@ namespace West.Presence.CMA.Api
         private static void ConfigMvc(IServiceCollection services)
         {
             services.AddMvc()
-                            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                            .AddJsonOptions(options =>
-                            {
-                                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                            });
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                    .AddJsonOptions(options =>
+                    {
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    });
         }
 
         //Config Compression
@@ -178,6 +181,7 @@ namespace West.Presence.CMA.Api
 
             services.AddSingleton<ICacheProvider, CacheProvider>();
             services.AddSingleton<IDatabaseProvider, DatabaseProvider>();
+            services.AddSingleton<IHttpClientProvider, HttpClientProvider>();
             //Add Presentation Layer
             services.AddSingleton<IEventsPresentation, EventsPresentation>();
             services.AddSingleton<INewsPresentation, NewsPresentation>();
@@ -188,7 +192,7 @@ namespace West.Presence.CMA.Api
             services.AddSingleton<INewsService, NewsService>();
             services.AddSingleton<IPeopleService, PeopleService>();
             services.AddSingleton<ISchoolsService, SchoolsService>();
-
+            //Add Repository Layer
             services.AddSingleton<ISchoolsRepository, APISchoolsRepository>();
             services.AddSingleton<IEventsRepository, APIEventsRepository>();
             services.AddSingleton<INewsRepository, APINewsRepository>();
@@ -218,14 +222,14 @@ namespace West.Presence.CMA.Api
 
         private void ConfigureDistributedCache(IServiceCollection services)
         {
-            if (_env.IsEnvironment("IntegrationTests")|| _env.IsEnvironment("Deveploment"))
+            if (_env.IsEnvironment("IntegrationTests")|| _env.IsEnvironment("Development"))
                 services.AddDistributedMemoryCache();
             else
                 services.AddDistributedRedisCache(option =>
                 {
                     option.Configuration = "localhost";
+                    option.InstanceName = "CMAAPI";
                 });
-
 
             //if (_env == null || _env.IsEnvironment("IntegrationTests"))
             //    services.AddDistributedMemoryCache();

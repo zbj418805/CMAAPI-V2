@@ -26,8 +26,8 @@ namespace West.Presence.CMA.Api.Controllers
             return Ok();
         }
 
-        [HttpPost("cmaapi/1/shoutem/integration/{appId}/groups")]
-        public IActionResult SetChannelToGroup(int appId, [FromQuery] QueryFilter value)
+        [HttpDelete("cmaapi/1/shoutem/integration/{appId}")]
+        public IActionResult DeleteChannelToGroup(int appId, [FromQuery] QueryFilter value)
         {
             return Ok();
         }
