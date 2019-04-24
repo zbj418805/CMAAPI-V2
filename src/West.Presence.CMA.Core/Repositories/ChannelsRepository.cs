@@ -12,7 +12,7 @@ namespace West.Presence.CMA.Core.Repositories
         IEnumerable<Channel> GetChannels(string baseUrl);
     }
 
-    public class DBChannelsRepository : DBBaseRepository, IChannelsRepository
+    public class DBChannelsRepository : IChannelsRepository
     {
         public DBChannelsRepository()
         {
@@ -26,7 +26,7 @@ namespace West.Presence.CMA.Core.Repositories
     }
 
 
-    public class APIChannelsRepository : IChannelRepository
+    public class APIChannelsRepository : IChannelsRepository
     {
         private readonly IHttpClientProvider _httpClientProvider;
 

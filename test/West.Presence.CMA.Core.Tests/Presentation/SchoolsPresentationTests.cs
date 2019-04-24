@@ -48,9 +48,9 @@ namespace West.Presence.CMA.Core.Tests.Presentation
 
             Assert.NotNull(sampleSchools);
             Assert.Equal(3, sampleSchools.Count());
-            Assert.Equal("School Name 3", sampleSchools.FirstOrDefault().name);
-            Assert.Equal("School Name 4", sampleSchools.Skip(1).Take(1).FirstOrDefault().name);
-            Assert.Equal("School Name 5", sampleSchools.LastOrDefault().name);
+            Assert.Equal("School Name 3", sampleSchools.FirstOrDefault().serverName);
+            Assert.Equal("School Name 4", sampleSchools.Skip(1).Take(1).FirstOrDefault().serverName);
+            Assert.Equal("School Name 5", sampleSchools.LastOrDefault().serverName);
         }
 
 

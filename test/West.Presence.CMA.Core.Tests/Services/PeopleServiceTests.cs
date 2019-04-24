@@ -172,8 +172,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             var people2 = lsPeople2.AsEnumerable();
 
             mockPeopleRepository = new Mock<IPeopleRepository>();
-            mockPeopleRepository.Setup(p => p.GetPeople(1, "", "First1")).Returns(lsPeople1);
-            mockPeopleRepository.Setup(p => p.GetPeople(2, "", "First1")).Returns(lsPeople2);
+            mockPeopleRepository.Setup(p => p.GetPeople(1, "", "")).Returns(lsPeople1);
+            mockPeopleRepository.Setup(p => p.GetPeople(2, "", "")).Returns(lsPeople2);
 
             mockCacheProvider = new Mock<ICacheProvider>();
             //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_1", out people1)).Returns(true);

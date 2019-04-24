@@ -12,7 +12,7 @@ namespace West.Presence.CMA.Core.Repositories
         IEnumerable<School> GetSchools(int districtServerId, string baseUrl);
     }
 
-    public class DBSchoolsRepository : DBBaseRepository, ISchoolsRepository
+    public class DBSchoolsRepository : ISchoolsRepository
     {
         IDatabaseProvider _databaseProvider;
 

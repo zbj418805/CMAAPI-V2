@@ -25,8 +25,8 @@ namespace West.Presence.CMA.Core.Tests.Repository
             {
                 lsSchools.Add(new School()
                 {
-                    name = $"School Name {i}",
-                    description = $"Description {1} ..."
+                    serverName = $"School Name {i}",
+                    serverDescription = $"Description {1} ..."
                 });
             }
             var schools = lsSchools.AsEnumerable();
@@ -52,8 +52,8 @@ namespace West.Presence.CMA.Core.Tests.Repository
             {
                 lsSchools.Add(new School()
                 {
-                    name = $"School Name {i}",
-                    description = $"Description {1} ..."
+                    serverName = $"School Name {i}",
+                    serverDescription = $"Description {1} ..."
                 });
             }
             var schools = lsSchools.AsEnumerable();

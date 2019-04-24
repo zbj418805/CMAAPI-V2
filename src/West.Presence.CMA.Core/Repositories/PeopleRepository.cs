@@ -11,7 +11,7 @@ namespace West.Presence.CMA.Core.Repositories
         IEnumerable<Person> GetPeople(int serverId, string baseUrl, string searchKey);
     }
 
-    public class DBPeopleRepository : DBBaseRepository, IPeopleRepository
+    public class DBPeopleRepository : IPeopleRepository
     {
         public DBPeopleRepository()
         {

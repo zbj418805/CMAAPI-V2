@@ -189,24 +189,31 @@ namespace West.Presence.CMA.Api
             services.AddSingleton<IPeopleService, PeopleService>();
             services.AddSingleton<ISchoolsService, SchoolsService>();
 
-            if (cmaOptions.RepositoryFrom == "api")
-            {
-                services.AddSingleton<ISchoolsRepository, APISchoolsRepository>();
-                services.AddSingleton<IEventsRepository, APIEventsRepository>();
-                services.AddSingleton<INewsRepository, APINewsRepository>();
-                services.AddSingleton<IPeopleRepository, APIPeopleRepository>();
-                services.AddSingleton<IChannel2GroupRepository, APIChannel2GroupRepository>();
-                services.AddSingleton<IChannelsRepository, APIChannelsRepository>();
-            }
-            else if(cmaOptions.RepositoryFrom == "db")
-            {
-                services.AddSingleton<ISchoolsRepository, DBSchoolsRepository>();
-                services.AddSingleton<IEventsRepository, DBEventsRepository>();
-                services.AddSingleton<INewsRepository, DBNewsRepository>();
-                services.AddSingleton<IPeopleRepository, DBPeopleRepository>();
-                services.AddSingleton<IChannel2GroupRepository, DBChannel2GroupRepository>();
-                services.AddSingleton<IChannelsRepository, DBChannelsRepository>();
-            }
+            services.AddSingleton<ISchoolsRepository, APISchoolsRepository>();
+            services.AddSingleton<IEventsRepository, APIEventsRepository>();
+            services.AddSingleton<INewsRepository, APINewsRepository>();
+            services.AddSingleton<IPeopleRepository, APIPeopleRepository>();
+            services.AddSingleton<IChannel2GroupRepository, APIChannel2GroupRepository>();
+            services.AddSingleton<IChannelsRepository, APIChannelsRepository>();
+
+            //if (cmaOptions.RepositoryFrom == "api")
+            //{
+            //    services.AddSingleton<ISchoolsRepository, APISchoolsRepository>();
+            //    services.AddSingleton<IEventsRepository, APIEventsRepository>();
+            //    services.AddSingleton<INewsRepository, APINewsRepository>();
+            //    services.AddSingleton<IPeopleRepository, APIPeopleRepository>();
+            //    services.AddSingleton<IChannel2GroupRepository, APIChannel2GroupRepository>();
+            //    services.AddSingleton<IChannelsRepository, APIChannelsRepository>();
+            //}
+            //else if(cmaOptions.RepositoryFrom == "db")
+            //{
+            //    services.AddSingleton<ISchoolsRepository, DBSchoolsRepository>();
+            //    services.AddSingleton<IEventsRepository, DBEventsRepository>();
+            //    services.AddSingleton<INewsRepository, DBNewsRepository>();
+            //    services.AddSingleton<IPeopleRepository, DBPeopleRepository>();
+            //    services.AddSingleton<IChannel2GroupRepository, DBChannel2GroupRepository>();
+            //    services.AddSingleton<IChannelsRepository, DBChannelsRepository>();
+            //}
         }
 
         private void ConfigureDistributedCache(IServiceCollection services)

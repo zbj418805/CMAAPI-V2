@@ -11,7 +11,7 @@ namespace West.Presence.CMA.Core.Repositories
         IEnumerable<Event> GetEvents(int serverId, string baseUrl, DateTime startDate, DateTime endDate);
     }
 
-    public class EventsRepository : IEventsRepository
+    public class DBEventsRepository : IEventsRepository
     {
         
         public DBEventsRepository(string baseUrl)
