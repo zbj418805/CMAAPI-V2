@@ -6,14 +6,14 @@ using West.Presence.CMA.Core.Models;
 
 namespace West.Presence.CMA.Core.Repositories
 {
-    public interface IChannelRepository
+    public interface IChannelsRepository
     {
         IEnumerable<Channel> GetChannels(string baseUrl);
     }
 
-    public class DBChannelRepository : DBBaseRepository, IChannelRepository
+    public class DBChannelsRepository : DBBaseRepository, IChannelsRepository
     {
-        public DBChannelRepository()
+        public DBChannelsRepository()
         {
 
         }
@@ -25,9 +25,9 @@ namespace West.Presence.CMA.Core.Repositories
     }
 
 
-    public class ApiChannelsRepository : APIBaseRepository, IChannelRepository
+    public class APIChannelsRepository : APIBaseRepository, IChannelsRepository
     {
-        public ApiChannelsRepository(IHttpClientFactory httpClientFactory)
+        public APIChannelsRepository(IHttpClientFactory httpClientFactory)
            : base(httpClientFactory)
         {
         }

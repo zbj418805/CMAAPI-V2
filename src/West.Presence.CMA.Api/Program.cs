@@ -70,7 +70,6 @@ namespace West.Presence.CMA.Api
                         loggerConfiguration.WriteTo.Console(new JsonFormatter(renderMessage: true));
                     else
                         loggerConfiguration.WriteTo.ColoredConsole();
-                    
                 });
         }
     }
