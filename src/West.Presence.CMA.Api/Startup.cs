@@ -177,7 +177,7 @@ namespace West.Presence.CMA.Api
         //Dependency Injection for applciation services
         protected virtual void ConfigApplicationServices(IServiceCollection services)
         {
-            var cmaOptions = Configuration.GetSection("CMAOptions").Get<CMAOptions>();
+            //var cmaOptions = Configuration.GetSection("CMAOptions").Get<CMAOptions>();
 
             services.AddSingleton<ICacheProvider, CacheProvider>();
             services.AddSingleton<IDatabaseProvider, DatabaseProvider>();

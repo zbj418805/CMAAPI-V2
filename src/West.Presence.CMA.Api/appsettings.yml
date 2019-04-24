@@ -53,7 +53,7 @@ management:
             ValidateCertificates : false
 
 #Configration for CMAAPI
-PresenceCMAOptions:
+CMAOptions:
     ConnectionString: data source=.;initial catelog=Presence_QA;User ID=sa;Password=P@ssw0rd;Persist Security=False;
     Environment: DEVQA
     CacheNewsKey: cma_news_cache
