@@ -32,7 +32,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
             var news = lsnews.AsEnumerable();
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<News>("http://test.url/" + "/presence/Api/CMA/News/" + "1234")).Returns(news);
+            mockHttpClientProvider.Setup(p => p.GetData<News>("http://test.url/" + "webapi/cma/news/" + "1234")).Returns(news);
 
             APINewsRepository newsRepo = new APINewsRepository(mockHttpClientProvider.Object);
 
