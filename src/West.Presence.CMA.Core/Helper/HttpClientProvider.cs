@@ -1,15 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using Newtonsoft.Json;
 
-namespace West.Presence.CMA.Core.Repositories
+namespace West.Presence.CMA.Core.Helper
 {
-    public class APIBaseRepository
+    public interface IHttpClientProvider
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        IEnumerable<T> GetData<T>(string url);
+        IEnumerable<T> PostData<T>(string url, object data);
+        bool DeletetData(string url);
+    }
 
-        public APIBaseRepository(IHttpClientFactory httpClientFactory)
+    public class HttpClientProvider
+    {
+        IHttpClientFactory _httpClientFactory;
+
+        public HttpClientProvider(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
@@ -44,7 +52,7 @@ namespace West.Presence.CMA.Core.Repositories
             }
         }
 
-        public bool DeletetData<T>(string url, object data)
+        public bool DeletetData(string url)
         {
             using (var client = _httpClientFactory.CreateClient("PresnceApi"))
             {

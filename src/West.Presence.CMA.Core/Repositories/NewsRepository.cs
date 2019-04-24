@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
 
 
@@ -11,7 +12,7 @@ namespace West.Presence.CMA.Core.Repositories
         IEnumerable<News> GetNews(int serverId, string baseUrl);
     }
 
-    public class DBNewsRepository : DBBaseRepository, INewsRepository
+    public class DBNewsRepository : INewsRepository
     {
         public DBNewsRepository()
         {
@@ -24,19 +25,18 @@ namespace West.Presence.CMA.Core.Repositories
         }
     }
 
-    public class APINewsRepository : APIBaseRepository, INewsRepository
+    public class APINewsRepository : INewsRepository
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpClientProvider _httpClientProvider;
 
-        public APINewsRepository(IHttpClientFactory httpClientFactory) :
-            base(httpClientFactory)
+        public APINewsRepository(IHttpClientProvider httpClientProvider)
         {
-
+            _httpClientProvider = httpClientProvider;
         }
 
         public IEnumerable<News> GetNews(int serverId, string baseUrl)
         {
-            return GetData<News>(baseUrl + "/presence/Api/CMA/News/" + serverId);
+            return _httpClientProvider.GetData<News>(baseUrl + "/presence/Api/CMA/News/" + serverId);
         }
     }
 }

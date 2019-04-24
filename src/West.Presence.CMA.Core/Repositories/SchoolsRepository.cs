@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
 
 
@@ -11,7 +12,7 @@ namespace West.Presence.CMA.Core.Repositories
         IEnumerable<School> GetSchools(int districtServerId, string baseUrl);
     }
 
-    public class SchoolsRepository : DBBaseRepository, ISchoolsRepository
+    public class SchoolsRepository : ISchoolsRepository
     {
         public SchoolsRepository()
         {
@@ -24,17 +25,18 @@ namespace West.Presence.CMA.Core.Repositories
         }
     }
 
-    public class APISchoolsRepository : APIBaseRepository, ISchoolsRepository
+    public class APISchoolsRepository : ISchoolsRepository
     {
-        public APISchoolsRepository(IHttpClientFactory httpClientFactory) :
-            base(httpClientFactory)
-        {
+        IHttpClientProvider _httpClientProvider;
 
+        public APISchoolsRepository(IHttpClientProvider httpClientProvider) 
+        {
+            _httpClientProvider = httpClientProvider;
         }
 
         public IEnumerable<School> GetSchools(int districtServerId, string baseUrl)
         {
-            return GetData<School>(baseUrl + "/presence/Api/CMA/Schools/" + districtServerId);
+            return _httpClientProvider.GetData<School>(baseUrl + "/presence/Api/CMA/Schools/" + districtServerId);
         }
     }
 }

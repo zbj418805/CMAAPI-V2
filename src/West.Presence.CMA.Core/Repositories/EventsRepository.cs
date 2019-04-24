@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
 
 namespace West.Presence.CMA.Core.Repositories
@@ -10,7 +11,7 @@ namespace West.Presence.CMA.Core.Repositories
         IEnumerable<Event> GetEvents(int serverId, string baseUrl, DateTime startDate, DateTime endDate);
     }
 
-    public class EventsRepository : DBBaseRepository, IEventsRepository
+    public class EventsRepository : IEventsRepository
     {
         
         public EventsRepository(string baseUrl)
@@ -24,20 +25,19 @@ namespace West.Presence.CMA.Core.Repositories
         }
     }
 
-    public class APIEventsRepository : APIBaseRepository, IEventsRepository
+    public class APIEventsRepository : IEventsRepository
     {
-       
-        //private readonly IHttpClientFactory _httpClientFactory;
 
-        public APIEventsRepository(IHttpClientFactory httpClientFactory)
-            : base(httpClientFactory)
+        private readonly IHttpClientProvider _httpClientProvider;
+
+        public APIEventsRepository(IHttpClientProvider httpClientProvider)
         {
-
+            _httpClientProvider = httpClientProvider;
         }
 
         public IEnumerable<Event> GetEvents(int serverId, string baseUrl, DateTime startDate, DateTime endDate)
         {
-            return GetData<Event>(baseUrl + $"/presence/Api/CMA/Events/{serverId}/{startDate.ToString("yyyyMMdd")}/{startDate.ToString("yyyyMMdd")}");
+            return _httpClientProvider.GetData<Event>(baseUrl + $"/presence/Api/CMA/Events/{serverId}/{startDate.ToString("yyyyMMdd")}/{startDate.ToString("yyyyMMdd")}");
         }
     }
 }

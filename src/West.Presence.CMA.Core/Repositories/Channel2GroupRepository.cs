@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
 
 namespace West.Presence.CMA.Core.Repositories
@@ -10,10 +11,10 @@ namespace West.Presence.CMA.Core.Repositories
     {
         IEnumerable<Channel2Group> GetChannel2Group(string baseUrl);
         IEnumerable<Channel2Group> SetChannel2Group(string baseUrl, object data);
-        bool DeleteChannel2Group(string baseUrl, object data);
+        bool DeleteChannel2Group(string baseUrl);
     }
 
-    public class DBChanel2GroupRepository : DBBaseRepository, IChannel2GroupRepository
+    public class DBChanel2GroupRepository : IChannel2GroupRepository
     {
         public DBChanel2GroupRepository()
         {
@@ -28,33 +29,34 @@ namespace West.Presence.CMA.Core.Repositories
         {
             throw new NotImplementedException();
         }
-        public bool DeleteChannel2Group(string baseUrl, object data)
+        public bool DeleteChannel2Group(string baseUrl)
         {
             throw new NotImplementedException();
         }
     }
 
-    public class APIChannel2GroupRepository : APIBaseRepository, IChannel2GroupRepository
+    public class APIChannel2GroupRepository : IChannel2GroupRepository
     {
-        public APIChannel2GroupRepository(IHttpClientFactory httpClientFactory)
-            :base(httpClientFactory)
-        {
+        private readonly IHttpClientProvider _httpClientProvider;
 
+        public APIChannel2GroupRepository(IHttpClientProvider httpClientProvider)
+        {
+            _httpClientProvider = httpClientProvider;
         }
 
         public IEnumerable<Channel2Group> GetChannel2Group(string baseUrl)
         {
-            return GetData<Channel2Group>(baseUrl + $"/presence/Api/CMA/Channel2Groups");
+            return _httpClientProvider.GetData<Channel2Group>(baseUrl + $"/presence/Api/CMA/Channel2Groups");
         }
 
         public IEnumerable<Channel2Group> SetChannel2Group(string baseUrl, object data)
         {
-            return PostData<Channel2Group>(baseUrl + $"/presence/Api/CMA/Channel2Groups", data);
+            return _httpClientProvider.PostData<Channel2Group>(baseUrl + $"/presence/Api/CMA/Channel2Groups", data);
         }
 
-        public bool DeleteChannel2Group(string baseUrl, object data)
+        public bool DeleteChannel2Group(string baseUrl)
         {
-            return DeletetData<Channel2Group>(baseUrl + $"/presence/Api/CMA/Channel2Groups", data);
+            return _httpClientProvider.DeletetData(baseUrl + $"/presence/Api/CMA/Channel2Groups");
         }
     }
 }

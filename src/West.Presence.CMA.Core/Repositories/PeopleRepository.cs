@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
 
 namespace West.Presence.CMA.Core.Repositories
@@ -10,7 +11,7 @@ namespace West.Presence.CMA.Core.Repositories
         IEnumerable<Person> GetPeople(int serverId, string baseUrl, string searchKey);
     }
 
-    public class PeopleRepository : DBBaseRepository, IPeopleRepository
+    public class PeopleRepository : IPeopleRepository
     {
         public PeopleRepository()
         {
@@ -23,23 +24,24 @@ namespace West.Presence.CMA.Core.Repositories
         }
     }
 
-    public class APIPeopleRepository : APIBaseRepository, IPeopleRepository
+    public class APIPeopleRepository : IPeopleRepository
     {
-        public APIPeopleRepository(IHttpClientFactory httpClientFactory) :
-            base(httpClientFactory)
-        {
+        IHttpClientProvider _httpClientProvider;
 
+        public APIPeopleRepository(IHttpClientProvider httpClientProvider)
+        {
+            _httpClientProvider = httpClientProvider;
         }
 
         public IEnumerable<Person> GetPeople(int serverId, string baseUrl, string searchKey)
         {
-            return GetData<Person>(baseUrl + $"/presence/Api/CMA/People/{serverId}/{searchKey}");
+            return _httpClientProvider.GetData<Person>(baseUrl + $"/presence/Api/CMA/People/{serverId}/{searchKey}");
 
         }
 
         public IEnumerable<PersonInfo> GetPeopleInfo(int serverId, string baseUrl, string searchKey)
         {
-            return GetData<PersonInfo>(baseUrl + $"/presence/Api/CMA/People/{serverId}/{searchKey}");
+            return _httpClientProvider.GetData<PersonInfo>(baseUrl + $"/presence/Api/CMA/People/{serverId}/{searchKey}");
         }
     }
 }

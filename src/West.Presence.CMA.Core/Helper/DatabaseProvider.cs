@@ -6,6 +6,12 @@ using Dapper;
 
 namespace West.Presence.CMA.Core.Helper
 {
+
+    public interface IDbConnectionFactory
+    {
+        IDbConnection CreateConnection();
+    }
+
     public class DatabaseProvider
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
