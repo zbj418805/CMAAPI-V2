@@ -32,7 +32,8 @@ namespace West.Presence.CMA.Core.Tests.Repository
             var events = lsEvents.AsEnumerable();
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<Event>("http://test.url/" + "/presence/Api/CMA/Events/" + "1234/" +$"{DateTime.Today.ToString("yyyyMMdd")}/{DateTime.Today.AddMonths(12).ToString("yyyyMMdd")}")).Returns(events);
+            mockHttpClientProvider.Setup(p => p.GetData<Event>("http://test.url//presence/Api/CMA/Events/" + DateTime.Today.ToString("yyyyMMdd")+"/"+ DateTime.Today.AddMonths(12).ToString("yyyyMMdd")))
+                .Returns(events);
 
             APIEventsRepository eventsRepo = new APIEventsRepository(mockHttpClientProvider.Object);
 
