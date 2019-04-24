@@ -6,10 +6,16 @@ namespace West.Presence.CMA.Core.Models
 {
     public class News
     {
-        public string title { get; set; }
-
-        public string body {get; set; }
-
-        public DateTime publishDate { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string ImageTitle { get; set; }
+        public string Summary { get; set; }
+        public string FeaturedImage { get; set; }
+        public string Body { get; set; }
+        public string LinkOfCurrentPage { get; set; }
+        public string PageTitle { get; set; }
+        public DateTime PublishedDate { get; set; }
+        public DateTime PageLastModified { get; set; }
+        public int ServerId { get; set; }
     }
 }

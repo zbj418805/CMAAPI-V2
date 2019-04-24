@@ -38,8 +38,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsNews1.Add(new News()
                 {
-                    title = $"Cached News 1-{i}",
-                    body = $"Happened at {1} ..."
+                    Title = $"Cached News 1-{i}",
+                    Body = $"Happened at {1} ..."
                 });
             }
             var news1 = lsNews1.AsEnumerable();
@@ -49,8 +49,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsNews2.Add(new News()
                 {
-                    title = $"Cached News 2-{i}",
-                    body = $"Happened at {1} ..."
+                    Title = $"Cached News 2-{i}",
+                    Body = $"Happened at {1} ..."
                 });
             }
             var news2 = lsNews2.AsEnumerable();
@@ -77,8 +77,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsNews1.Add(new News()
                 {
-                    title = $"Repo News 1-{i}",
-                    body = $"Happened at {1} ..."
+                    Title = $"Repo News 1-{i}",
+                    Body = $"Happened at {1} ..."
                 });
             }
             var news1 = lsNews1.AsEnumerable();
@@ -88,8 +88,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsNews2.Add(new News()
                 {
-                    title = $"Repo News 2-{i}",
-                    body = $"Happened at {1} ..."
+                    Title = $"Repo News 2-{i}",
+                    Body = $"Happened at {1} ..."
                 });
             }
             var news2 = lsNews2.AsEnumerable();
@@ -117,8 +117,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsNews1.Add(new News()
                 {
-                    title = $"Cached News {i}",
-                    body = $"Happened at {1} ..."
+                    Title = $"Cached News {i}",
+                    Body = $"Happened at {1} ..."
                 });
             }
             var news1 = lsNews1.AsEnumerable();
@@ -128,8 +128,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsNews2.Add(new News()
                 {
-                    title = $"Repo News {i}",
-                    body = $"Happened at {1} ..."
+                    Title = $"Repo News {i}",
+                    Body = $"Happened at {1} ..."
                 });
             }
             var news2 = lsNews2.AsEnumerable();
@@ -155,8 +155,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsNews1.Add(new News()
                 {
-                    title = $"Cached News {i}",
-                    body = $"Happened at {1} ..."
+                    Title = $"Cached News {i}",
+                    Body = $"Happened at {1} ..."
                 });
             }
             var news1 = lsNews1.AsEnumerable();
@@ -166,8 +166,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsNews2.Add(new News()
                 {
-                    title = $"Repo News {i}",
-                    body = $"Happened at {1} ..."
+                    Title = $"Repo News {i}",
+                    Body = $"Happened at {1} ..."
                 });
             }
             var news2 = lsNews2.AsEnumerable();

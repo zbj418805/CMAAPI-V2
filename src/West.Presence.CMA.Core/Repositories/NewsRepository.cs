@@ -36,7 +36,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<News> GetNews(int serverId, string baseUrl)
         {
-            return _httpClientProvider.GetData<News>(baseUrl + "/presence/Api/CMA/News/" + serverId);
+            return _httpClientProvider.GetData<News>(baseUrl + "webapi/cma/news/" + serverId);
         }
     }
 }

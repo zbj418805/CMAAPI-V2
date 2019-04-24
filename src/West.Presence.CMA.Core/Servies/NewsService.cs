@@ -43,10 +43,10 @@ namespace West.Presence.CMA.Core.Servies
                     _cacheProvider.Add(cacheKey, news, cacheDuration);
                 }
                 //Add to news collection
-                allNews.AddRange(searchKey == "" ? news : news.Where(n => n.title.Contains(searchKey)));
+                allNews.AddRange(searchKey == "" ? news : news.Where(n => n.Title.Contains(searchKey)));
             }
 
-            return allNews.OrderByDescending(x => x.publishDate);
+            return allNews.OrderByDescending(x => x.PublishedDate);
         }
     }
 }

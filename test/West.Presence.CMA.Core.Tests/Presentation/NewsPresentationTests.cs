@@ -22,8 +22,8 @@ namespace West.Presence.CMA.Core.Tests.Presentation
             {
                 news.Add(new News()
                 {
-                    title = $"Title {i}",
-                    body = $"Body {i} ..."
+                    Title = $"Title {i}",
+                    Body = $"Body {i} ..."
                 });
             }
 
@@ -48,9 +48,9 @@ namespace West.Presence.CMA.Core.Tests.Presentation
 
             Assert.NotNull(sampleNews);
             Assert.Equal(3, sampleNews.Count());
-            Assert.Equal("Title 3", sampleNews.FirstOrDefault().title);
-            Assert.Equal("Title 4", sampleNews.Skip(1).Take(1).FirstOrDefault().title);
-            Assert.Equal("Title 5", sampleNews.LastOrDefault().title);
+            Assert.Equal("Title 3", sampleNews.FirstOrDefault().Title);
+            Assert.Equal("Title 4", sampleNews.Skip(1).Take(1).FirstOrDefault().Title);
+            Assert.Equal("Title 5", sampleNews.LastOrDefault().Title);
         }
 
 

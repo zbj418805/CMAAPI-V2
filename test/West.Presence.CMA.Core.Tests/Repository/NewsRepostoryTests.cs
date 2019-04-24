@@ -25,8 +25,8 @@ namespace West.Presence.CMA.Core.Tests.Repository
             {
                 lsnews.Add(new News()
                 {
-                    title = $"MyFirstName_{i}",
-                    body = $"LastName--{i}"
+                    Title = $"MyFirstName_{i}",
+                    Body = $"LastName--{i}"
                 });
             }
             var news = lsnews.AsEnumerable();
@@ -51,8 +51,8 @@ namespace West.Presence.CMA.Core.Tests.Repository
             {
                 lsnews.Add(new News()
                 {
-                    title = $"MyFirstName_{i}",
-                    body = $"LastName--{i}"
+                    Title = $"MyFirstName_{i}",
+                    Body = $"LastName--{i}"
                 });
             }
             var news = lsnews.AsEnumerable();
