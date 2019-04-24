@@ -14,9 +14,9 @@ namespace West.Presence.CMA.Core.Repositories
         bool DeleteChannel2Group(string baseUrl);
     }
 
-    public class DBChanel2GroupRepository : IChannel2GroupRepository
+    public class DBChannel2GroupRepository : DBBaseRepository, IChannel2GroupRepository
     {
-        public DBChanel2GroupRepository()
+        public DBChannel2GroupRepository()
         {
         }
 

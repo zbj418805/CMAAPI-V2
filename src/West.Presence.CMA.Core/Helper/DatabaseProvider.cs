@@ -12,7 +12,14 @@ namespace West.Presence.CMA.Core.Helper
         IDbConnection CreateConnection();
     }
 
-    public class DatabaseProvider
+    
+    public interface IDatabaseProvider
+    {
+        T GetCellValue<T>(string sql, object para);
+        IEnumerable<T> GetData<T>(string sql, object para, CommandType type);
+    }
+
+    public class DatabaseProvider : IDatabaseProvider
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
 

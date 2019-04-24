@@ -7,14 +7,14 @@ using West.Presence.CMA.Core.Models;
 
 namespace West.Presence.CMA.Core.Repositories
 {
-    public interface IChannelRepository
+    public interface IChannelsRepository
     {
         IEnumerable<Channel> GetChannels(string baseUrl);
     }
 
-    public class DBChannelRepository : IChannelRepository
+    public class DBChannelsRepository : DBBaseRepository, IChannelsRepository
     {
-        public DBChannelRepository()
+        public DBChannelsRepository()
         {
 
         }

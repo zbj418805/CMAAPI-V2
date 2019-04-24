@@ -22,8 +22,8 @@ namespace West.Presence.CMA.Core.Tests.Presentation
             {
                 schools.Add(new School()
                 {
-                    name = $"School Name {i}",
-                    description = $"Description {1} ..."
+                    serverName = $"School Name {i}",
+                    serverDescription = $"Description {1} ..."
                 });
             }
 

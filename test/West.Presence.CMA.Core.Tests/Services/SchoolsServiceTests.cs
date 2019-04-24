@@ -39,8 +39,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsSchools.Add(new School()
                 {
-                    name = $"School Name {i}",
-                    description = $"Description {1} ..."
+                    serverName = $"School Name {i}",
+                    serverDescription = $"Description {1} ..."
                 });
             }
 
@@ -73,8 +73,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 schools.Add(new School()
                 {
-                    name = $"School Name {i}",
-                    description = $"Description {1} ..."
+                    serverName = $"School Name {i}",
+                    serverDescription = $"Description {1} ..."
                 });
             }
 
@@ -97,8 +97,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsSchools.Add(new School()
                 {
-                    name = $"School Name {i}",
-                    description = $"Description {1} ..."
+                    serverName = $"School Name {i}",
+                    serverDescription = $"Description {1} ..."
                 });
             }
 
@@ -131,8 +131,8 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 schools.Add(new School()
                 {
-                    name = $"School Name {i}",
-                    description = $"Description {1} ..."
+                    serverName = $"School Name {i}",
+                    serverDescription = $"Description {1} ..."
                 });
             }
 

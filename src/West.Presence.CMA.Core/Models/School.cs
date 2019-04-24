@@ -6,9 +6,14 @@ namespace West.Presence.CMA.Core.Models
 {
     public class School
     {
-        public string name { get; set; }
-        public string serverId { get; set; }
-        public string description { get; set; }
-        public string lat { get; set; }
+        public int districtServerId { get; set; }
+        public int serverId { get; set; }
+        public int defaultTimeZoneId { get; set; }
+        public string serverName { get; set; }
+        public string serverDescription { get; set; }
+        public string geoLat { get; set; }
+        public string geoLong { get; set; }
+        public string url { get; set; }
+        public string defaultLocal { get; set; }
     }
 }

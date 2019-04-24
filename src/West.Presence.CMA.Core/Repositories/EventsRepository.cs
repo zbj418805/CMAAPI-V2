@@ -14,7 +14,7 @@ namespace West.Presence.CMA.Core.Repositories
     public class EventsRepository : IEventsRepository
     {
         
-        public EventsRepository(string baseUrl)
+        public DBEventsRepository(string baseUrl)
         {
 
         }
