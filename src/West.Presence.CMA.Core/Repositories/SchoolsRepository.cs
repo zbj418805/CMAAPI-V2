@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
@@ -23,30 +24,18 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<School> GetSchools(int districtServerId, string baseUrl)
         {
-            var schools = _databaseProvider.GetData<School>("[dbo].[cma_server.get]", new { server_id = districtServerId }, System.Data.CommandType.StoredProcedure);
+            var schools = _databaseProvider.GetData<School>("[dbo].[cma_server_get_v2]", new { district_server_id = districtServerId }, System.Data.CommandType.StoredProcedure);
+
+            foreach(School s in schools)
+            {
+                var attrs = _databaseProvider.GetData<Attribute>("[dbo].[cma_server_attributes.get]", new { server_id = s.ServerId }, System.Data.CommandType.StoredProcedure);
+                //s.Address = new Address()
+                //{
+                //    Address1 = attrs.Where(x=>x.)
+                //}
+            }
 
             return schools;
-            //// school icon
-            //if (school.IconUrl != null && school.IconUrl.Length > 0)
-            //    if (school.IconUrl.StartsWith("/"))
-            //        school.IconUrl = school.Url + school.IconUrl.Substring(1);
-            //    else
-            //        school.IconUrl = school.Url + school.IconUrl;
-
-
-            //if (serverId <= 0)
-            //    return null;
-            //using (var con = _dbConnectionFactory.CreateConnection())
-            //{
-            //    IEnumerable<SchoolInfo> empList = con.Query<SchoolInfo>("[dbo].[cma_server.get]", new { server_id = serverId }, commandType: CommandType.StoredProcedure).ToList();
-            //    SchoolInfo schoolInfo = empList.ElementAtOrDefault(0);
-            //    schoolInfo.contentyEntries = _cmaEntryRepo.GetAll(serverId);
-
-            //    schoolInfo.ServerAttributes = _clickAttributeRepo.GetServerAttributes(serverId);
-            //    return empList.ElementAtOrDefault(0);
-            //}
-
-
         }
     }
 
