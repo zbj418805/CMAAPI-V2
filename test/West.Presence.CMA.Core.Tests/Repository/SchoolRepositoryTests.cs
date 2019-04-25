@@ -38,7 +38,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
 
             APISchoolsRepository schoolRepo = new APISchoolsRepository(mockHttpClientProvider.Object);
 
-            var resultSchools = schoolRepo.GetSchools(1234, "http://test.url/");
+            var resultSchools = schoolRepo.GetSchools("http://test.url/");
 
             Assert.NotNull(resultSchools);
 
@@ -65,7 +65,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
 
             APISchoolsRepository schoolRepo = new APISchoolsRepository(mockHttpClientProvider.Object);
 
-            var resultSchools = schoolRepo.GetSchools(1234, "http://test.url/");
+            var resultSchools = schoolRepo.GetSchools("http://test.url/");
 
             Assert.NotNull(resultSchools);
 

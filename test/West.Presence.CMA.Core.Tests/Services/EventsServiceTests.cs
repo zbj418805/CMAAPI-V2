@@ -40,9 +40,9 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsEvents1.Add(new Event()
                 {
-                    name = $"Cached Events 1-{i}",
-                    startTime = DateTime.UtcNow,
-                    endTime = DateTime.UtcNow
+                    Name = $"Cached Events 1-{i}",
+                    StartTime = DateTime.UtcNow,
+                    EndTime = DateTime.UtcNow
                 });
             }
             var events1 = lsEvents1.AsEnumerable();
@@ -52,9 +52,9 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsEvents2.Add(new Event()
                 {
-                    name = $"Cached Events 2-{i}",
-                    startTime = DateTime.UtcNow,
-                    endTime = DateTime.UtcNow
+                    Name = $"Cached Events 2-{i}",
+                    StartTime = DateTime.UtcNow,
+                    EndTime = DateTime.UtcNow
                 });
             }
             var events2 = lsEvents2.AsEnumerable();
@@ -80,9 +80,9 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsEvents1.Add(new Event()
                 {
-                    name = $"Repo Events 1-{i}",
-                    startTime = DateTime.UtcNow,
-                    endTime = DateTime.UtcNow
+                    Name = $"Repo Events 1-{i}",
+                    StartTime = DateTime.UtcNow,
+                    EndTime = DateTime.UtcNow
                 });
             }
             var events1 = lsEvents1.AsEnumerable();
@@ -92,9 +92,9 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsEvents2.Add(new Event()
                 {
-                    name = $"Repo Events 2-{i}",
-                    startTime = DateTime.UtcNow,
-                    endTime = DateTime.UtcNow
+                    Name = $"Repo Events 2-{i}",
+                    StartTime = DateTime.UtcNow,
+                    EndTime = DateTime.UtcNow
                 });
             }
             var events2 = lsEvents2.AsEnumerable();
@@ -122,9 +122,9 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsEvents1.Add(new Event()
                 {
-                    name = $"Cache Events 1-{i}",
-                    startTime = DateTime.UtcNow,
-                    endTime = DateTime.UtcNow
+                    Name = $"Cache Events 1-{i}",
+                    StartTime = DateTime.UtcNow,
+                    EndTime = DateTime.UtcNow
                 });
             }
             var events1 = lsEvents1.AsEnumerable();
@@ -134,9 +134,9 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsEvents2.Add(new Event()
                 {
-                    name = $"Repo Events 1-{i}",
-                    startTime = DateTime.UtcNow,
-                    endTime = DateTime.UtcNow
+                    Name = $"Repo Events 1-{i}",
+                    StartTime = DateTime.UtcNow,
+                    EndTime = DateTime.UtcNow
                 });
             }
             var events2 = lsEvents2.AsEnumerable();
@@ -164,9 +164,9 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsEvents1.Add(new Event()
                 {
-                    name = $"Cache Events 1-{i}",
-                    startTime = DateTime.UtcNow,
-                    endTime = DateTime.UtcNow
+                    Name = $"Cached Events 1-{i}",
+                    StartTime = DateTime.UtcNow,
+                    EndTime = DateTime.UtcNow
                 });
             }
             var events1 = lsEvents1.AsEnumerable();
@@ -176,9 +176,9 @@ namespace West.Presence.CMA.Core.Tests.Services
             {
                 lsEvents2.Add(new Event()
                 {
-                    name = $"Repo Events 1-{i}",
-                    startTime = DateTime.UtcNow,
-                    endTime = DateTime.UtcNow
+                    Name = $"Repo Events 1-{i}",
+                    StartTime = DateTime.UtcNow,
+                    EndTime = DateTime.UtcNow
                 });
             }
             var events2 = lsEvents2.AsEnumerable();

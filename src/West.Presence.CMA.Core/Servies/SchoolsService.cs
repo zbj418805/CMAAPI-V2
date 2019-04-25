@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using West.Presence.CMA.Core.Helper;
@@ -10,7 +11,7 @@ namespace West.Presence.CMA.Core.Servies
 {
     public interface ISchoolsService
     {
-        IEnumerable<School> GetSchools(int districtServerId, string baseUrl, string searchKey);
+        IEnumerable<School> GetSchools(string baseUrl, string searchKey);
     }
 
     public class SchoolsService : ISchoolsService
@@ -26,17 +27,19 @@ namespace West.Presence.CMA.Core.Servies
             _schoolsRepository = schoolsRepository;
         }
 
-        public IEnumerable<School> GetSchools(int districtServerId, string baseUrl, string searchKey)
+        public IEnumerable<School> GetSchools(string baseUrl, string searchKey)
         {
+            Uri u = new Uri(baseUrl);
+
             int cacheDuration = _options.Value.CacheSchoolsDurationInSeconds;
-            string cacheKey = $"{_options.Value.CacheSchoolsKey}_{_options.Value.Environment}_{districtServerId}";
+            string cacheKey = $"{_options.Value.CacheSchoolsKey}_{u.Host}";
 
             IEnumerable<School> schools;
 
             if (!_cacheProvider.TryGetValue<IEnumerable<School>>(cacheKey, out schools))
             {
                 //Get Schools from repo
-                schools = _schoolsRepository.GetSchools(districtServerId, baseUrl);
+                schools = _schoolsRepository.GetSchools(baseUrl);
                 //Set to Cache
                 _cacheProvider.Add(cacheKey, schools, cacheDuration);
             }

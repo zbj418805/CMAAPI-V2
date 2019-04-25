@@ -15,7 +15,7 @@ namespace West.Presence.CMA.Core.Helper
     
     public interface IDatabaseProvider
     {
-        T GetCellValue<T>(string sql, object para);
+        T GetCellValue<T>(string sql, object para, CommandType type);
         IEnumerable<T> GetData<T>(string sql, object para, CommandType type);
     }
 
@@ -28,11 +28,11 @@ namespace West.Presence.CMA.Core.Helper
             _dbConnectionFactory = dbConnectionFactory;
         }
 
-        public T GetCellValue<T>(string sql, object para)
+        public T GetCellValue<T>(string sql, object para,CommandType type)
         {
             using(var con = _dbConnectionFactory.CreateConnection())
             {
-                return con.ExecuteScalar<T>(sql, para);
+                return con.ExecuteScalar<T>(sql, para, null, null, type);
             }
         }
 

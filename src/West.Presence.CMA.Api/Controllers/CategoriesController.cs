@@ -20,7 +20,7 @@ namespace West.Presence.CMA.Api.Controllers
         { }
 
         [HttpGet("cmaapi/1/categories")]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery]QueryFilter filter)
         {
             var baseDir = AppDomain.CurrentDomain.RelativeSearchPath ?? Directory.GetCurrentDirectory();
             var file = System.IO.Path.Combine(baseDir, "App_Data", "categories.json");

@@ -26,7 +26,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
             {
                 lsEvents.Add(new Event()
                 {
-                    name = $"MyFirstName_{i}"
+                    Name = $"MyFirstName_{i}"
                 });
             }
             var events = lsEvents.AsEnumerable();
@@ -52,7 +52,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
             {
                 lsEvents.Add(new Event()
                 {
-                    name = $"MyFirstName_{i}"
+                    Name = $"MyFirstName_{i}"
                 });
             }
             var events = lsEvents.AsEnumerable();

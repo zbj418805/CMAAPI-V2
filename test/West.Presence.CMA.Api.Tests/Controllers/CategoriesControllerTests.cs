@@ -15,7 +15,7 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Arrange
             _sut = new CategoriesController();
             // Act
-            var result = _sut.GetAll();
+            var result = _sut.GetAll(null);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);

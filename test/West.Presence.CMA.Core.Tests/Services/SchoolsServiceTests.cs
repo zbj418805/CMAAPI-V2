@@ -53,7 +53,7 @@ namespace West.Presence.CMA.Core.Tests.Services
             //mockSchoolsRepository.Setup(p => p.GetSchools(1)).Returns(new List<School>());
 
             schoolsService = new SchoolsService(mockCacheProvider.Object, mockOptions.Object, mockSchoolsRepository.Object);
-            var resultSchools = schoolsService.GetSchools(1, "", "");
+            var resultSchools = schoolsService.GetSchools("", "");
 
             Assert.NotNull(resultSchools);
             Assert.Equal(10, resultSchools.Count());
@@ -79,10 +79,10 @@ namespace West.Presence.CMA.Core.Tests.Services
             }
 
             mockSchoolsRepository = new Mock<ISchoolsRepository>();
-            mockSchoolsRepository.Setup(p => p.GetSchools(1, "")).Returns(schools);
+            mockSchoolsRepository.Setup(p => p.GetSchools("")).Returns(schools);
 
             schoolsService = new SchoolsService(mockCacheProvider.Object, mockOptions.Object, mockSchoolsRepository.Object);
-            var resultSchools = schoolsService.GetSchools(1, "", "");
+            var resultSchools = schoolsService.GetSchools("", "");
 
             Assert.NotNull(resultSchools);
             Assert.Equal(10, resultSchools.Count());
@@ -108,10 +108,10 @@ namespace West.Presence.CMA.Core.Tests.Services
             mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<School>>("CMASchoolKey_Dev_1", out schools)).Returns(true);
 
             mockSchoolsRepository = new Mock<ISchoolsRepository>();
-            mockSchoolsRepository.Setup(p => p.GetSchools(1, "")).Returns(new List<School>());
+            mockSchoolsRepository.Setup(p => p.GetSchools("")).Returns(new List<School>());
 
             schoolsService = new SchoolsService(mockCacheProvider.Object, mockOptions.Object, mockSchoolsRepository.Object);
-            var resultSchools = schoolsService.GetSchools(1, "", "1");
+            var resultSchools = schoolsService.GetSchools("", "1");
 
             Assert.NotNull(resultSchools);
             Assert.Single(resultSchools);
@@ -137,10 +137,10 @@ namespace West.Presence.CMA.Core.Tests.Services
             }
 
             mockSchoolsRepository = new Mock<ISchoolsRepository>();
-            mockSchoolsRepository.Setup(p => p.GetSchools(1, "")).Returns(schools);
+            mockSchoolsRepository.Setup(p => p.GetSchools("")).Returns(schools);
 
             schoolsService = new SchoolsService(mockCacheProvider.Object, mockOptions.Object, mockSchoolsRepository.Object);
-            var resultSchools = schoolsService.GetSchools(1, "", "1");
+            var resultSchools = schoolsService.GetSchools("", "1");
 
             Assert.NotNull(resultSchools);
             Assert.Single(resultSchools);

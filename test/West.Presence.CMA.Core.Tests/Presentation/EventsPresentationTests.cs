@@ -22,9 +22,9 @@ namespace West.Presence.CMA.Core.Tests.Presentation
             for(int i = 0; i < 10; i++)
             {
                 events.Add(new Event() {
-                     name = $"Event Name {i}",
-                     startTime = DateTime.Today,
-                     endTime = DateTime.Today.AddDays(1)
+                    Name = $"Events 1-{i}",
+                    StartTime = DateTime.UtcNow,
+                    EndTime = DateTime.UtcNow
                 });
             }
 
@@ -49,11 +49,10 @@ namespace West.Presence.CMA.Core.Tests.Presentation
 
             Assert.NotNull(sampleEvents);
             Assert.Equal(3, sampleEvents.Count());
-            Assert.Equal("Event Name 3", sampleEvents.FirstOrDefault().name);
-            Assert.Equal("Event Name 4", sampleEvents.Skip(1).Take(1).FirstOrDefault().name);
-            Assert.Equal("Event Name 5", sampleEvents.LastOrDefault().name);
+            Assert.Equal("Events 1-3", sampleEvents.FirstOrDefault().Name);
+            Assert.Equal("Events 1-4", sampleEvents.Skip(1).Take(1).FirstOrDefault().Name);
+            Assert.Equal("Events 1-5", sampleEvents.LastOrDefault().Name);
         }
-
 
         [Fact]
         public void Test_Events_Page_with_no_items()

@@ -36,7 +36,6 @@ namespace West.Presence.CMA.Core.Repositories
         public IEnumerable<Person> GetPeople(int serverId, string baseUrl, string searchKey)
         {
             return _httpClientProvider.GetData<Person>(baseUrl + $"/presence/Api/CMA/People/{serverId}/{searchKey}");
-
         }
 
         public IEnumerable<PersonInfo> GetPeopleInfo(int serverId, string baseUrl, string searchKey)

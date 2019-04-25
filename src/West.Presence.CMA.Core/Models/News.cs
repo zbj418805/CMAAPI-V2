@@ -18,4 +18,10 @@ namespace West.Presence.CMA.Core.Models
         public DateTime PageLastModified { get; set; }
         public int ServerId { get; set; }
     }
+
+    public class RawNews
+    {
+        public int pageId { get; set; }
+        public string xmlData { get; set; }
+    }
 }

@@ -45,10 +45,10 @@ namespace West.Presence.CMA.Core.Servies
                     _cacheProvider.Add(cacheKey, events, cacheDuration);
                 }
                 //Add to news collection
-                allEvents.AddRange(searchKey == "" ? events : events.Where(e => e.name.Contains(searchKey)));
+                allEvents.AddRange(searchKey == "" ? events : events.Where(e => e.Name.Contains(searchKey)));
             }
 
-            return allEvents.OrderBy(x => x.startTime);
+            return allEvents.OrderBy(x => x.StartTime);
         }
     }
 }
