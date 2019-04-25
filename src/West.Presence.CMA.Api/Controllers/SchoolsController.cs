@@ -15,6 +15,7 @@ namespace West.Presence.CMA.Api.Controllers
     {
         private readonly ILogger _logger = Log.ForContext<SchoolsController>();
         //private readonly ISchoolsPresentation _schoolPresentation;
+        //private readonly INewsPresentation  _newsPresentation;
 
         public SchoolsController()
         {
@@ -26,10 +27,16 @@ namespace West.Presence.CMA.Api.Controllers
         //    _schoolPresentation = schoolPresentation;
         //}
 
+        //public SchoolsController(INewsPresentation newsPresentation)
+        //{
+        //    _newsPresentation = newsPresentation;
+        //}
+
         [HttpGet("cmaapi/1/resources/school-messenger.schools")]
         public IActionResult GetSchools([FromQuery]QueryPagination page, [FromQuery]QueryFilter filter, [FromQuery]string query = null)
         {
             //var sch = _schoolPresentation.GetSchools(1291956, "", "http://presence.kingzad.local/", 0, 100);
+            //return Ok(_newsPresentation.GetNews("1291956", "http://presence.kingzad.local/","", 0, 100));
             return Ok();
         }
     }

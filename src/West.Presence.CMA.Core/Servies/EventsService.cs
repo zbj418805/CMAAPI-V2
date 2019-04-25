@@ -10,7 +10,7 @@ namespace West.Presence.CMA.Core.Servies
 {
     public interface IEventsService
     {
-        IEnumerable<Event> GetEvents(string serverIds, string searchKey, string baseUrl, DateTime startTime, DateTime endTime);
+        IEnumerable<Event> GetEvents(string serverIds, string baseUrl, string searchKey, DateTime startTime, DateTime endTime);
     }
 
     public class EventsService : IEventsService
@@ -26,7 +26,7 @@ namespace West.Presence.CMA.Core.Servies
             _eventsRepository = eventRepository;
         }
 
-        public IEnumerable<Event> GetEvents(string serverIds, string searchKey, string baseUrl, DateTime startDate, DateTime endDate)
+        public IEnumerable<Event> GetEvents(string serverIds, string baseUrl, string searchKey, DateTime startDate, DateTime endDate)
         {
             List<Event> allEvents = new List<Event>();
             //Get Cache duration

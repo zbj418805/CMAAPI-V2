@@ -192,7 +192,7 @@ namespace West.Presence.CMA.Core.Tests.Services
 
 
             eventsService = new EventsService(mockCacheProvider.Object, mockOptions.Object, mockEventsRepository.Object);
-            var resultEvents = eventsService.GetEvents("1,2", "1-1", "", DateTime.Today, DateTime.Today.AddMonths(12));
+            var resultEvents = eventsService.GetEvents("1,2","",  "1-1", DateTime.Today, DateTime.Today.AddMonths(12));
 
             Assert.NotNull(resultEvents);
             Assert.Equal(2, resultEvents.Count());
