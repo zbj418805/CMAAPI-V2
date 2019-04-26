@@ -7,7 +7,7 @@ namespace West.Presence.CMA.Core.Presentations
 {
     public interface ISchoolsPresentation
     {
-        IEnumerable<School> GetSchools(string baseUrl, string searchKey, int pageIndex, int pageSize);
+        IEnumerable<School> GetSchools(string baseUrl, string searchKey, int pageIndex, int pageSize, out int total);
     }
     public class SchoolsPresentation : PresentationBase, ISchoolsPresentation
     {
@@ -18,9 +18,11 @@ namespace West.Presence.CMA.Core.Presentations
             _schoolService = schoolService;
         }
 
-        public IEnumerable<School> GetSchools(string baseUrl, string searchKey, int pageIndex, int pageSize)
+        public IEnumerable<School> GetSchools(string baseUrl, string searchKey, int pageIndex, int pageSize, out int total)
         {
-            return GetPageItems<School>(_schoolService.GetSchools(baseUrl, searchKey), pageIndex, pageSize);
+            var schools = _schoolService.GetSchools(baseUrl, searchKey);
+            total = schools.Count();
+            return GetPageItems<School>(schools, pageIndex, pageSize);
         }
     }
 }

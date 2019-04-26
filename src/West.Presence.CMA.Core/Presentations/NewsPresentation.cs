@@ -7,7 +7,7 @@ namespace West.Presence.CMA.Core.Presentations
 {
     public interface INewsPresentation
     {
-        IEnumerable<News> GetNews(List<int> serverIds, string baseUrl, string searchKey,  int pageIndex, int pageSize);
+        IEnumerable<News> GetNews(List<int> serverIds, string baseUrl, string searchKey,  int pageIndex, int pageSize, out int total);
     }
     public class NewsPresentation : PresentationBase, INewsPresentation
     {
@@ -18,9 +18,12 @@ namespace West.Presence.CMA.Core.Presentations
             _newsServise = newsServise;
         }
 
-        public IEnumerable<News> GetNews(List<int> serverIds, string baseUrl, string searchKey, int pageIndex, int pageSize)
+        public IEnumerable<News> GetNews(List<int> serverIds, string baseUrl, string searchKey, int pageIndex, int pageSize, out int total)
         {
-            return GetPageItems<News>(_newsServise.GetNews(serverIds, baseUrl, searchKey), pageIndex, pageSize);
+            var news = _newsServise.GetNews(serverIds, baseUrl, searchKey);
+            total = news.Count();
+
+            return GetPageItems<News>(news, pageIndex, pageSize);
         }
     }
 }

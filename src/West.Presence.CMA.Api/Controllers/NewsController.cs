@@ -31,15 +31,28 @@ namespace West.Presence.CMA.Api.Controllers
                 _logger.Error("baseUrl not been provided");
                 return NoContent();
             }
+            int total;
+            var schools = _schoolPresentation.GetSchools(baseUrl, "", page.Offset, page.Limit, out total);
 
-            var schools = _schoolPresentation.GetSchools(baseUrl, "", page.Offset, page.Limit);
-
-            if (IsResourcesRequestValid(filter, schools, new List<int>() { 7, 8 }))
+            if (IsResourcesRequestValid(filter, schools, new List<int>() { 1, 2 }))
             {
-                var news = _newsPresentation.GetNews(filter.ChannelServerIds, baseUrl, search, page.Offset, page.Limit);
+                var news = _newsPresentation.GetNews(filter.ChannelServerIds, baseUrl, search, page.Offset, page.Limit, out total);
+
+                var links = string.IsNullOrEmpty(search) ? this.GetLinks(baseUrl, filter, page, "", true, total) : null;
+
+                if (news.Count() == 0)
+                {
+                    _logger.Information("nocotent, success");
+                    return Ok(new { Data = schools, Links = links });
+                }
+
+
+                
+
+                return Ok(new { Data = news, Links = links });
             }
 
-            return Ok();
+            return NoContent();
         }
     }
 }

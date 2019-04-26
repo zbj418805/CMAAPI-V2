@@ -30,11 +30,12 @@ namespace West.Presence.CMA.Api.Controllers
                 _logger.Error("baseUrl not been provided");
                 return NoContent();
             }
-            var schools = _schoolPresentation.GetSchools(baseUrl, query, page.Offset, page.Limit);
+            int total;
+            var schools = _schoolPresentation.GetSchools(baseUrl, query, page.Offset, page.Limit, out total);
 
             if(IsResourcesRequestValid(filter, schools, new List<int>() { 7,8 }))
             {
-                var links = string.IsNullOrEmpty(search) ? this.GetLinks(baseUrl, filter, page, "", true, schools.Count()) : null;
+                var links = string.IsNullOrEmpty(search) ? this.GetLinks(baseUrl, filter, page, "", true, total) : null;
 
                 if (schools.Count() == 0)
                 {
@@ -69,6 +70,8 @@ namespace West.Presence.CMA.Api.Controllers
                                        channels = new { data = new object[] { new { type = "school-messenger.channels", id = sch.DistrictServerId.ToString() } } },
                                    }
                                };
+
+                return Ok(new { Data = dataList, Links = links });
             }
 
             return NoContent();

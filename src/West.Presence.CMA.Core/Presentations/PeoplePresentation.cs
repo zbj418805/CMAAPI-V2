@@ -7,7 +7,7 @@ namespace West.Presence.CMA.Core.Presentations
 {
     public interface IPeoplePresentation
     {
-        IEnumerable<Person> GetPeople(List<int> serverIds, string searchKey,string baseUrl, int pageIndex, int pageSize);
+        IEnumerable<Person> GetPeople(List<int> serverIds, string searchKey,string baseUrl, int pageIndex, int pageSize, out int total);
     }
 
     public class PeoplePresentation: PresentationBase, IPeoplePresentation
@@ -19,9 +19,12 @@ namespace West.Presence.CMA.Core.Presentations
             _peopleService = peopleService;
         }
 
-        public IEnumerable<Person> GetPeople(List<int> serverIds, string searchKey, string baseUrl, int pageIndex, int pageSize)
+        public IEnumerable<Person> GetPeople(List<int> serverIds, string searchKey, string baseUrl, int pageIndex, int pageSize, out int total)
         {
-            return GetPageItems<Person>(_peopleService.GetPeople(serverIds, searchKey, baseUrl), pageIndex, pageSize);
+            var people = _peopleService.GetPeople(serverIds, searchKey, baseUrl);
+            total = people.Count();
+
+            return GetPageItems<Person>(people, pageIndex, pageSize);
         }
     }
 }
