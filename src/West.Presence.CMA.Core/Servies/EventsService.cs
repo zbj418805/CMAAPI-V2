@@ -31,11 +31,12 @@ namespace West.Presence.CMA.Core.Servies
             List<Event> allEvents = new List<Event>();
             //Get Cache duration
             int cacheDuration = _options.Value.CacheEventsDurationInSeconds;
+            Uri u = new Uri(baseUrl);
 
             foreach (int serverId in serverIds)
             {
                 //Set CacheKey
-                string cacheKey = $"{_options.Value.CacheEventsKey}_{_options.Value.Environment}_{serverId}_{startDate.ToString("yyyyMMdd")}";
+                string cacheKey = $"{_options.Value.CacheEventsKey}_{u.Host}_{serverId}_{startDate.ToString("yyyyMMdd")}";
                 IEnumerable<Event> events;
                 if (!_cacheProvider.TryGetValue<IEnumerable<Event>>(cacheKey, out events))
                 {

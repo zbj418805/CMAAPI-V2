@@ -37,9 +37,9 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<Event> GetEvents(int serverId, string baseUrl, DateTime startDate, DateTime endDate)
         {
-            var events = _httpClientProvider.PostData<Event>(baseUrl + $"Common/controls/WorkspaceCalendar/ws/WorkspaceCalendarWS.asmx/GetEventsByCalendarId", new
+            var events = _httpClientProvider.PostData<Event>(baseUrl + $"Common/controls/WorkspaceCalendar/ws/WorkspaceCalendarWS.asmx/GetEventsByServerId", new
             {
-                calendarId = serverId,
+                serverId = serverId,
                 startTime = startDate,
                 endTime = endDate
             });

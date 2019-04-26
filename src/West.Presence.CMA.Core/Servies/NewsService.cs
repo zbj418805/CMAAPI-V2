@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using West.Presence.CMA.Core.Helper;
@@ -30,10 +31,12 @@ namespace West.Presence.CMA.Core.Servies
             List<News> allNews = new List<News>();
             int cacheDuration = _options.Value.CacheNewsDurationInSeconds;
 
+            Uri u = new Uri(baseUrl);
+
             foreach (int serverId in serverIds)
             {
                 //Set Cache Key
-                string cacheKey = $"{_options.Value.CacheNewsKey}_{_options.Value.Environment}_{serverId}";
+                string cacheKey = $"{_options.Value.CacheNewsKey}_{u.Host}_{serverId}";
                 IEnumerable<News> news;
                 if (!_cacheProvider.TryGetValue<IEnumerable<News>>(cacheKey, out news))
                 {
