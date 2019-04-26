@@ -28,30 +28,14 @@ namespace West.Presence.CMA.Api.Controllers
             return false;
         }
 
-        protected bool IsResourcesRequestValid(QueryFilter filter, IEnumerable<School> schools)
+        protected bool IsResourcesRequestValid(QueryFilter filter, IEnumerable<School> schools, List<int> categories)
         {
-            if (filter.Categories == 0)
+            if (!categories.Contains(filter.Categories))
             {
                 _validateErrors.Add((int)ValidateErrors.RequestValidationCategoryNotValid);
-                //  ValidateErrorMsg = "categories filter in request is must have.";
+                //  ValidateErrorMsg = "categories filter in request is must have and in correct categore.";
                 return false;
             }
-            
-            //var category = _categoryService.GetById(filter.Categories);
-            //if (category == null || category.id == 0)
-            //{
-            //    _validateErrors.Add((int)ValidateErrors.RequestValidationCategoryNotValid);
-            //    // ValidateErrorMsg = "categories id is not valid.";
-            //    return false;
-            //}
-
-            //var matchPattern = string.Format("resources/{0}", category.relationships.schema.data.id);//"school‐messenger.news",
-            //if (Request.RequestUri.AbsolutePath.IndexOf(matchPattern, 0, StringComparison.CurrentCultureIgnoreCase) < 0)
-            //{
-            //    _validateErrors.Add((int)ValidateErrors.RequestValidationApiDoesnotMatchRequestCategory);
-            //    //ValidateErrorMsg = "requart api uri does not macth request category type.";
-            //    return false;
-            //}
 
             //validaing category and channels.
             List<int> requestChannels = new List<int>();
@@ -67,17 +51,16 @@ namespace West.Presence.CMA.Api.Controllers
                     }
                 }
             }
-
-            //var schoolList = _schoolService.GetSchools(GetBaserUrl(), "");
+            
             if (schools.FirstOrDefault().Total == 0)
             {
                 _validateErrors.Add((int)ValidateErrors.RequestValidationSchoolBaseUrlInvalid);
-                // ValidateErrorMsg = "school website url not valid.";
+                // ValidateErrorMsg = "school list is not generated.";
                 return false;
             }
 
 
-            var districtServerId = schools.Select(x => x.DistrictServerId).First();
+            var districtServerId = schools.FirstOrDefault().DistrictServerId;
             if (districtServerId <= 0)
             {
                 _validateErrors.Add((int)ValidateErrors.RequestValidationDistrictServerIdNotFound);
@@ -87,46 +70,19 @@ namespace West.Presence.CMA.Api.Controllers
 
             var allServerList = (requestChannels.Count > 0) ? requestChannels : schools.Select(x => x.ServerId).Take(5).ToList();
 
-            //filter.ChannelServerIds = (category.IsRootCategory()) ? allServerList : allServerList.Where(x => x != districtServerId).ToList();
             filter.ChannelServerIds = allServerList;
             return true;
         }
 
-        protected string GetBaserUrl()
+        protected Links GetLinks(string baseUrl, QueryFilter filter, QueryPagination page, string query, bool includeChannels, int totalItemNumber, DateTime? startTime = null, DateTime? endTime = null)
         {
-            string url = GetQueryString("baseurl");
-            //if (url != null && url.EndsWith("/"))
-            //    url = url.Substring(0, url.Length - 1);
-            return url;
-        }
-
-        protected string GetQueryString(string key)
-        {
-            if (Request == null)
-                return null;
-
-            var queryStrings = Request.Query;
-            if (queryStrings == null)
-                return null;
-
-            var match = queryStrings.FirstOrDefault(kv => string.Compare(kv.Key, key, true) == 0);
-            if (string.IsNullOrEmpty(match.Value))
-                return null;
-            return match.Value;
-        }
-
-        protected Links GetLinks(QueryFilter filter, QueryPagination page, string query, bool includeChannels, int totalItemNumber, DateTime? startTime = null, DateTime? endTime = null)
-        {
-            var baseUrl = GetBaserUrl();
-
-            var RequestPath = baseUrl + Request.QueryString;
+            var RequestPath = baseUrl + Request.Path;
 
             int nextOffset = page.Offset + page.Limit;
             int prevOffset = page.Offset - page.Limit;
             Links links = new Links();
 
-            links.prev = string.Format("{0}?filter[categories]={1}&filter[channels]={2}&page[offset]={3}&page[limit]={4}",
-               RequestPath, filter.Categories, filter.Channels, prevOffset, page.Limit);
+            links.prev = $"{RequestPath}?filter[categories]={filter.Categories}&filter[channels]={filter.Channels}&page[offset]={prevOffset}&page[limit]={page.Limit}";
             if (startTime != null)
             {
                 links.prev += "&filter[starttime]=" + startTime.Value.ToString("yyyy-MM-dd");
@@ -148,9 +104,8 @@ namespace West.Presence.CMA.Api.Controllers
                 links.prev += "&query=" + query;
             }
 
-
-            links.next = string.Format("{0}?filter[categories]={1}&filter[channels]={2}&page[offset]={3}&page[limit]={4}",
-                   RequestPath, filter.Categories, filter.Channels, nextOffset, page.Limit);
+            
+            links.next = $"{RequestPath}?filter[categories]={filter.Categories}&filter[channels]={filter.Channels}&page[offset]={nextOffset}&page[limit]={page.Limit}";
             if (startTime != null)
             {
                 links.next += "&filter[starttime]=" + startTime.Value.ToString("yyyy-MM-dd");

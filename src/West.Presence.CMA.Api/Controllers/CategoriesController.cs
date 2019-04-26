@@ -23,14 +23,14 @@ namespace West.Presence.CMA.Api.Controllers
         public IActionResult GetAll([FromQuery]QueryFilter filter)
         {
             var baseDir = AppDomain.CurrentDomain.RelativeSearchPath ?? Directory.GetCurrentDirectory();
-            var file = System.IO.Path.Combine(baseDir, "App_Data", "categories.json");
+            var file = Path.Combine(baseDir, "App_Data", "categories.json");
 
             if (!System.IO.File.Exists(file))
                 return NoContent();
 
 
             var categories = JsonConvert.DeserializeObject<CategoriesResponse>(System.IO.File.ReadAllText(file));
-            string parentStr = GetQueryString("filter.Parent") ?? "";
+            string parentStr = filter.Parent == null ? "" : filter.Parent.ToString();
 
             int parentId = -1;
             if (int.TryParse(parentStr, out parentId))

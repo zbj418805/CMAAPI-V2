@@ -22,22 +22,19 @@ namespace West.Presence.CMA.Api.Controllers
         }
 
         [HttpGet("cmaapi/1/resources/school-messenger.schools")]
-        public IActionResult GetSchools([FromQuery]QueryPagination page, [FromQuery]QueryFilter filter, [FromQuery]string query = null)
+        public IActionResult GetSchools([FromQuery]QueryPagination page, [FromQuery]QueryFilter filter, [FromQuery]string query = "", [FromQuery] string baseUrl = "")
         {
-            var baseUrl = GetBaserUrl();
-            var schools = _schoolPresentation.GetSchools(baseUrl, "", page.Offset, page.Limit);
-            string search = "";
-
-            if(IsResourcesRequestValid(filter, schools))
+            string search = string.IsNullOrEmpty(query) ? filter.Search == null ? "" : filter.Search.ToLower().Trim() : query.ToLower().Trim();
+            if (baseUrl.Length == 0)
             {
-                if (IsChannelsRequestValid(filter))
-                {
-                    search = string.IsNullOrEmpty(query) ? filter.Search.ToLower().Trim() : query.ToLower().Trim();
-                }
+                _logger.Error("baseUrl not been provided");
+                return NoContent();
+            }
+            var schools = _schoolPresentation.GetSchools(baseUrl, query, page.Offset, page.Limit);
 
-                schools = schools.Where(c => c.Name.ToLower().Contains(search) || c.Description.ToLower().Contains(search));
-
-                var links = string.IsNullOrEmpty(search) ? this.GetLinks(filter, page, "", true, schools.Count()) : null;
+            if(IsResourcesRequestValid(filter, schools, new List<int>() { 7,8 }))
+            {
+                var links = string.IsNullOrEmpty(search) ? this.GetLinks(baseUrl, filter, page, "", true, schools.Count()) : null;
 
                 if (schools.Count() == 0)
                 {
@@ -74,7 +71,7 @@ namespace West.Presence.CMA.Api.Controllers
                                };
             }
 
-            return Ok(new { data = new { }, links = new { } });
+            return NoContent();
         }
     }
 }
