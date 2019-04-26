@@ -62,8 +62,6 @@ namespace West.Presence.CMA.Core.Tests.Services
         [Fact]
         public void Test_Schools_From_Repository_With_No_Search()
         {
-            IEnumerable<School> sch;
-
             mockCacheProvider = new Mock<ICacheProvider>();
             //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<School>>("CMASchoolKey_Dev_1", out sch)).Returns(false);
 

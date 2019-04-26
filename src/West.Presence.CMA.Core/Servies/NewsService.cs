@@ -9,7 +9,7 @@ namespace West.Presence.CMA.Core.Servies
 {
     public interface INewsService
     {
-        IEnumerable<News> GetNews(string serverIds, string baseUrl, string searchKey);
+        IEnumerable<News> GetNews(List<int> serverIds, string baseUrl, string searchKey);
     }
 
     public class NewsService : INewsService
@@ -25,12 +25,12 @@ namespace West.Presence.CMA.Core.Servies
             _newsRepository = newsRepository;
         }
 
-        public IEnumerable<News> GetNews(string serverIds, string baseUrl, string searchKey)
+        public IEnumerable<News> GetNews(List<int> serverIds, string baseUrl, string searchKey)
         {
             List<News> allNews = new List<News>();
             int cacheDuration = _options.Value.CacheNewsDurationInSeconds;
 
-            foreach (string serverId in serverIds.Split(','))
+            foreach (int serverId in serverIds)
             {
                 //Set Cache Key
                 string cacheKey = $"{_options.Value.CacheNewsKey}_{_options.Value.Environment}_{serverId}";
@@ -38,7 +38,7 @@ namespace West.Presence.CMA.Core.Servies
                 if (!_cacheProvider.TryGetValue<IEnumerable<News>>(cacheKey, out news))
                 {
                     //Get News From Repo
-                    news = _newsRepository.GetNews(int.Parse(serverId), baseUrl);
+                    news = _newsRepository.GetNews(serverId, baseUrl);
                     //Add to cache
                     _cacheProvider.Add(cacheKey, news, cacheDuration);
                 }

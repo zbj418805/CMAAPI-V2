@@ -9,7 +9,7 @@ namespace West.Presence.CMA.Core.Servies
 {
     public interface IPeopleService
     {
-        IEnumerable<Person> GetPeople(string serverIds, string baseUrl, string searchKey);
+        IEnumerable<Person> GetPeople(List<int> serverIds, string baseUrl, string searchKey);
     }
 
     public class PeopleService : IPeopleService
@@ -25,19 +25,19 @@ namespace West.Presence.CMA.Core.Servies
             _peopleRepository = peopleRepository;
         }
 
-        public IEnumerable<Person> GetPeople(string serverIds, string baseUrl, string searchKey)
+        public IEnumerable<Person> GetPeople(List<int> serverIds, string baseUrl, string searchKey)
         {
             List<Person> allPeople = new List<Person>();
             int cacheDuration = _options.Value.CachePeopleDurationInSeconds;
 
-            foreach (string serverId in serverIds.Split(','))
+            foreach (int serverId in serverIds)
             {
                 string cacheKey = $"{_options.Value.CachePeopleKey}_{_options.Value.Environment}_{serverId}";
                 IEnumerable<Person> people;
                 if (!_cacheProvider.TryGetValue<IEnumerable<Person>>(cacheKey, out people))
                 {
                     //Get people from repo
-                    people = _peopleRepository.GetPeople(int.Parse(serverId), "", "");
+                    people = _peopleRepository.GetPeople(serverId, "", "");
                     //set to cache
                     _cacheProvider.Add(cacheKey, people, cacheDuration);
                 }
@@ -48,7 +48,7 @@ namespace West.Presence.CMA.Core.Servies
 
             //if (searchKey == "")
             //{
-            //    foreach (string serverId in serverIds.Split(','))
+            //    foreach (int serverId in serverIds)
             //    {
             //        //Set Cachekey
             //        string cacheKey = $"{_options.Value.CachePeopleKey}_{_options.Value.Environment}_{serverId}";
@@ -56,7 +56,7 @@ namespace West.Presence.CMA.Core.Servies
             //        if (!_cacheProvider.TryGetValue<IEnumerable<Person>>(cacheKey, out people))
             //        {
             //            //Get people from repo
-            //            people = _peopleRepository.GetPeople(int.Parse(serverId), baseUrl, "");
+            //            people = _peopleRepository.GetPeople(serverId, baseUrl, "");
             //            //set to cache
             //            _cacheProvider.Add(cacheKey, people, cacheDuration);
             //        }

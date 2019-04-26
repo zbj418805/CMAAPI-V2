@@ -28,7 +28,6 @@ namespace West.Presence.CMA.Api.Controllers
             if (!System.IO.File.Exists(file))
                 return NoContent();
 
-
             var categories = JsonConvert.DeserializeObject<CategoriesResponse>(System.IO.File.ReadAllText(file));
             string parentStr = filter.Parent == null ? "" : filter.Parent.ToString();
 
@@ -47,7 +46,6 @@ namespace West.Presence.CMA.Api.Controllers
             }
             
             return Ok(categories);
-            
         }
     }
 }

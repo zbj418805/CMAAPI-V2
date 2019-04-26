@@ -29,14 +29,14 @@ namespace West.Presence.CMA.Core.Tests.Presentation
             }
 
             mockEventsService = new Mock<IEventsService>();
-            mockEventsService.Setup(p => p.GetEvents("1,2", "", "",DateTime.Today, DateTime.Today)).Returns(events);
+            mockEventsService.Setup(p => p.GetEvents(new List<int>(){ 1, 2 }, "", "",DateTime.Today, DateTime.Today)).Returns(events);
             eventPresentation = new EventsPresentation(mockEventsService.Object);
         }
 
         [Fact]
         public void Test_Events_First_Page()
         {
-            IEnumerable<Event> sampleEvents = eventPresentation.GetEvents("1,2", "", "", DateTime.Today, DateTime.Today, 0, 2);
+            IEnumerable<Event> sampleEvents = eventPresentation.GetEvents(new List<int>() { 1, 2 }, "", "", DateTime.Today, DateTime.Today, 0, 2);
 
             Assert.NotNull(sampleEvents);
             Assert.Equal(2,sampleEvents.Count());
@@ -45,7 +45,7 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_Events_Second_Page()
         {
-            IEnumerable<Event> sampleEvents = eventPresentation.GetEvents("1,2", "", "", DateTime.Today, DateTime.Today, 1, 3);
+            IEnumerable<Event> sampleEvents = eventPresentation.GetEvents(new List<int>() { 1, 2 }, "", "", DateTime.Today, DateTime.Today, 1, 3);
 
             Assert.NotNull(sampleEvents);
             Assert.Equal(3, sampleEvents.Count());
@@ -57,7 +57,7 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_Events_Page_with_no_items()
         {
-            IEnumerable<Event> sampleEvents = eventPresentation.GetEvents("1,2", "", "", DateTime.Today, DateTime.Today, 5, 3);
+            IEnumerable<Event> sampleEvents = eventPresentation.GetEvents(new List<int>() { 1, 2 }, "", "", DateTime.Today, DateTime.Today, 5, 3);
 
             Assert.NotNull(sampleEvents);
             Assert.Empty(sampleEvents);

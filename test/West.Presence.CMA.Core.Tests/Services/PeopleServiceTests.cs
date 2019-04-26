@@ -65,7 +65,7 @@ namespace West.Presence.CMA.Core.Tests.Services
             mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_2", out people2)).Returns(true);
 
             peopleService = new PeopleService(mockCacheProvider.Object, mockOptions.Object, mockPeopleRepository.Object);
-            var resultPeople = peopleService.GetPeople("1,2", "", "");
+            var resultPeople = peopleService.GetPeople(new List<int>() { 1, 2 }, "", "");
 
             Assert.NotNull(resultPeople);
             Assert.Equal(20, resultPeople.Count());
@@ -108,7 +108,7 @@ namespace West.Presence.CMA.Core.Tests.Services
             //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_2", out people2)).Returns(true);
 
             peopleService = new PeopleService(mockCacheProvider.Object, mockOptions.Object, mockPeopleRepository.Object);
-            var resultPeople = peopleService.GetPeople("1,2", "", "");
+            var resultPeople = peopleService.GetPeople(new List<int>() { 1, 2 }, "", "");
 
             Assert.NotNull(resultPeople);
             Assert.Equal(20, resultPeople.Count());
@@ -150,7 +150,7 @@ namespace West.Presence.CMA.Core.Tests.Services
             //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_2", out people2)).Returns(true);
 
             peopleService = new PeopleService(mockCacheProvider.Object, mockOptions.Object, mockPeopleRepository.Object);
-            var resultPeople = peopleService.GetPeople("1,2", "", "");
+            var resultPeople = peopleService.GetPeople(new List<int>() { 1, 2 }, "", "");
 
             Assert.NotNull(resultPeople);
             Assert.Equal(20, resultPeople.Count());
@@ -180,7 +180,7 @@ namespace West.Presence.CMA.Core.Tests.Services
             //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_2", out people2)).Returns(true);
 
             peopleService = new PeopleService(mockCacheProvider.Object, mockOptions.Object, mockPeopleRepository.Object);
-            var resultPeople = peopleService.GetPeople("1,2", "", "First1");
+            var resultPeople = peopleService.GetPeople(new List<int>() { 1, 2 }, "", "First1");
 
             Assert.NotNull(resultPeople);
             Assert.Equal(2,resultPeople.Count());

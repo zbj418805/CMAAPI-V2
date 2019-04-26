@@ -10,7 +10,7 @@ namespace West.Presence.CMA.Api.Tests.Controllers
         //private SchoolsController _sut;
 
         [Fact]
-        public void Test_HealthEndpoint_Returns_OK()
+        public void Test_SchoolControll_Returns_OK()
         {
             /*
             // Arrange

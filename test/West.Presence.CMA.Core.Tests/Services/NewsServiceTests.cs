@@ -63,7 +63,7 @@ namespace West.Presence.CMA.Core.Tests.Services
             mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<News>>("CMANewsKey_Dev_2", out news2)).Returns(true);
 
             newsService = new NewsService(mockCacheProvider.Object, mockOptions.Object, mockNewsRepository.Object);
-            var resultNews = newsService.GetNews("1,2", "", "");
+            var resultNews = newsService.GetNews(new List<int>() { 1, 2 }, "", "");
 
             Assert.NotNull(resultNews);
             Assert.Equal(20, resultNews.Count());
@@ -103,7 +103,7 @@ namespace West.Presence.CMA.Core.Tests.Services
             mockNewsRepository.Setup(p => p.GetNews(2, "")).Returns(lsNews1);
 
             newsService = new NewsService(mockCacheProvider.Object, mockOptions.Object, mockNewsRepository.Object);
-            var resultNews = newsService.GetNews("1,2", "", "");
+            var resultNews = newsService.GetNews(new List<int>() { 1, 2 }, "", "");
 
             Assert.NotNull(resultNews);
             Assert.Equal(20, resultNews.Count());
@@ -141,7 +141,7 @@ namespace West.Presence.CMA.Core.Tests.Services
             mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<News>>("CMANewsKey_Dev_2", out news2)).Returns(true);
 
             newsService = new NewsService(mockCacheProvider.Object, mockOptions.Object, mockNewsRepository.Object);
-            var resultNews = newsService.GetNews("1,2", "", "");
+            var resultNews = newsService.GetNews(new List<int>() { 1, 2 }, "", "");
 
             Assert.NotNull(resultNews);
             Assert.Equal(20, resultNews.Count());
@@ -179,7 +179,7 @@ namespace West.Presence.CMA.Core.Tests.Services
             mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<News>>("CMANewsKey_Dev_2", out news2)).Returns(true);
 
             newsService = new NewsService(mockCacheProvider.Object, mockOptions.Object, mockNewsRepository.Object);
-            var resultNews = newsService.GetNews("1,2","", "1");
+            var resultNews = newsService.GetNews(new List<int>() { 1, 2 }, "", "1");
 
             Assert.NotNull(resultNews);
             Assert.Equal(2, resultNews.Count());
