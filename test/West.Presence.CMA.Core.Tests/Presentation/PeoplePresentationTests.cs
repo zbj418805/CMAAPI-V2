@@ -36,7 +36,8 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_People_First_Page()
         {
-            IEnumerable<Person> samplePeople = peoplePresentation.GetPeople(new List<int>() { 1, 2 }, "", "", 0, 2);
+            int total;
+            IEnumerable<Person> samplePeople = peoplePresentation.GetPeople(new List<int>() { 1, 2 }, "", "", 0, 2, out total);
 
             Assert.NotNull(samplePeople);
             Assert.Equal(2, samplePeople.Count());
@@ -45,7 +46,8 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_People_Second_Page()
         {
-            IEnumerable<Person> samplePeople = peoplePresentation.GetPeople(new List<int>() { 1, 2 }, "", "", 1, 3);
+            int total;
+            IEnumerable<Person> samplePeople = peoplePresentation.GetPeople(new List<int>() { 1, 2 }, "", "", 1, 3, out total);
 
             Assert.NotNull(samplePeople);
             Assert.Equal(3, samplePeople.Count());
@@ -58,7 +60,8 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_People_Page_with_no_items()
         {
-            IEnumerable<Person> samplePeople = peoplePresentation.GetPeople(new List<int>() { 1, 2 }, "", "", 5,3);
+            int total;
+            IEnumerable<Person> samplePeople = peoplePresentation.GetPeople(new List<int>() { 1, 2 }, "", "", 5 ,3, out total);
             
             Assert.NotNull(samplePeople);
             Assert.Empty(samplePeople);

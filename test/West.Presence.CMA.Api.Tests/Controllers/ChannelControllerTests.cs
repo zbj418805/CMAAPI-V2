@@ -13,9 +13,9 @@ namespace West.Presence.CMA.Api.Tests.Controllers
         public void Test_ChannelEndpoint_Returns_OK()
         {
             // Arrange
-            _sut = new ChannelsController();
+            _sut = new ChannelsController(null);
             // Act
-            var result = _sut.GetAll();
+            var result = _sut.GetAll("");
 
             // Assert
             Assert.IsType<OkResult>(result);

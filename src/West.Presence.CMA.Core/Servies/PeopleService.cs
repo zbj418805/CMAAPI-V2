@@ -37,12 +37,12 @@ namespace West.Presence.CMA.Core.Servies
                 if (!_cacheProvider.TryGetValue<IEnumerable<Person>>(cacheKey, out people))
                 {
                     //Get people from repo
-                    people = _peopleRepository.GetPeople(serverId, "", "");
+                    people = _peopleRepository.GetPeople(serverId, baseUrl, "");
                     //set to cache
                     _cacheProvider.Add(cacheKey, people, cacheDuration);
                 }
                 //Add to collection
-                allPeople.AddRange(searchKey == "" ? people : people.Where(p => p.firstName.Contains(searchKey) || p.lastName.Contains(searchKey)));
+                allPeople.AddRange(searchKey == "" ? people : people.Where(p => p.firstName.Contains(searchKey) || p.lastName.Contains(searchKey)||p.jobTitle.Contains(searchKey)));
             }
 
 

@@ -13,7 +13,7 @@ namespace West.Presence.CMA.Api.Tests.Controllers
         public void Test_ChannelEndpoint_Returns_OK()
         {
             // Arrange
-            _sut = new EventsController();
+            _sut = new EventsController(null, null);
             // Act
             var result = _sut.GetEvents(null, null, null);
 

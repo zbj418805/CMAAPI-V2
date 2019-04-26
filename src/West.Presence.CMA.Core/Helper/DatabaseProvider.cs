@@ -17,6 +17,7 @@ namespace West.Presence.CMA.Core.Helper
     {
         T GetCellValue<T>(string sql, object para, CommandType type);
         IEnumerable<T> GetData<T>(string sql, object para, CommandType type);
+        void Excute(string sql, object para, CommandType type);
     }
 
     public class DatabaseProvider : IDatabaseProvider
@@ -42,6 +43,14 @@ namespace West.Presence.CMA.Core.Helper
             {
                 return con.Query<T>(sql, para, commandType: type) ?? new List<T>();
             }
-        }  
+        }
+        
+        public void Excute(string sql, object para, CommandType type)
+        {
+            using (var con = _dbConnectionFactory.CreateConnection())
+            {
+                con.Execute(sql, para, commandType: type);
+            }
+        }
     }
 }

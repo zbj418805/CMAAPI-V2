@@ -13,7 +13,7 @@ namespace West.Presence.CMA.Api.Tests.Controllers
         public void Test_PeopleEndpoint_Returns_OK()
         {
             // Arrange
-            _sut = new PeopleController();
+            _sut = new PeopleController(null, null, null);
             // Act
             var result = _sut.GetPeople(null, null, null);
 

@@ -35,7 +35,8 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_Events_First_Page()
         {
-            IEnumerable<School> sampleSchools = schoolsPresentation.GetSchools("", "", 0, 2);
+            int total;
+            IEnumerable<School> sampleSchools = schoolsPresentation.GetSchools("", "", 0, 2, out total);
 
             Assert.NotNull(sampleSchools);
             Assert.Equal(2, sampleSchools.Count());
@@ -44,7 +45,8 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_Events_Second_Page()
         {
-            IEnumerable<School> sampleSchools = schoolsPresentation.GetSchools("", "", 1, 3);
+            int total;
+            IEnumerable<School> sampleSchools = schoolsPresentation.GetSchools("", "", 1, 3, out total);
 
             Assert.NotNull(sampleSchools);
             Assert.Equal(3, sampleSchools.Count());
@@ -57,7 +59,8 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_Events_Page_with_no_items()
         {
-            IEnumerable<School> sampleSchools = schoolsPresentation.GetSchools("", "", 5, 3);
+            int total;
+            IEnumerable<School> sampleSchools = schoolsPresentation.GetSchools("", "", 5, 3, out total);
             
             Assert.NotNull(sampleSchools);
             Assert.Empty(sampleSchools);

@@ -35,7 +35,8 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_News_First_Page()
         {
-            IEnumerable<News> sampleEvents = newsPresentation.GetNews(new List<int>() { 1, 2 }, "", "", 0, 2);
+            int total;
+            IEnumerable<News> sampleEvents = newsPresentation.GetNews(new List<int>() { 1, 2 }, "", "", 0, 2, out total);
 
             Assert.NotNull(sampleEvents);
             Assert.Equal(2, sampleEvents.Count());
@@ -44,7 +45,8 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_News_Second_Page()
         {
-            IEnumerable<News> sampleNews = newsPresentation.GetNews(new List<int>() { 1, 2 }, "", "", 1,3);
+            int total;
+            IEnumerable<News> sampleNews = newsPresentation.GetNews(new List<int>() { 1, 2 }, "", "", 1,3, out total);
 
             Assert.NotNull(sampleNews);
             Assert.Equal(3, sampleNews.Count());
@@ -57,7 +59,8 @@ namespace West.Presence.CMA.Core.Tests.Presentation
         [Fact]
         public void Test_News_Page_with_no_items()
         {
-            IEnumerable<News> sampleNews = newsPresentation.GetNews(new List<int>() { 1, 2 }, "", "", 5, 3);
+            int total;
+            IEnumerable<News> sampleNews = newsPresentation.GetNews(new List<int>() { 1, 2 }, "", "", 5, 3, out total);
 
             Assert.NotNull(sampleNews);
             Assert.Empty(sampleNews);

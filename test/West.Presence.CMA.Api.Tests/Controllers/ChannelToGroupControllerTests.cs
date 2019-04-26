@@ -14,9 +14,9 @@ namespace West.Presence.CMA.Api.Tests.Controllers
         public void Test_ChannelToGroupEndpoint_Returns_OK()
         {
             var appid = 123;
-            
+
             // Arrange
-            _sut = new ChannelToGroupController();
+            _sut = new ChannelToGroupController(null, null);
             // Act
             var result = _sut.GetChannelsToGroups(appid);
 

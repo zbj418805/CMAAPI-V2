@@ -9,6 +9,8 @@ namespace West.Presence.CMA.Core.Repositories
     public interface IPeopleRepository
     {
         IEnumerable<Person> GetPeople(int serverId, string baseUrl, string searchKey);
+
+        IEnumerable<PersonInfo> GetPeopleInfo(string baseUrl, List<Person> people);
     }
 
     public class DBPeopleRepository : IPeopleRepository
@@ -19,6 +21,11 @@ namespace West.Presence.CMA.Core.Repositories
         }
 
         public IEnumerable<Person> GetPeople(int serverId, string baseUrl, string searchKey)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<PersonInfo> GetPeopleInfo(string baseUrl, List<Person> people)
         {
             throw new NotImplementedException();
         }
@@ -38,9 +45,9 @@ namespace West.Presence.CMA.Core.Repositories
             return _httpClientProvider.GetData<Person>(baseUrl + $"/presence/Api/CMA/People/{serverId}/{searchKey}");
         }
 
-        public IEnumerable<PersonInfo> GetPeopleInfo(int serverId, string baseUrl, string searchKey)
+        public IEnumerable<PersonInfo> GetPeopleInfo(string baseUrl, List<Person> people)
         {
-            return _httpClientProvider.GetData<PersonInfo>(baseUrl + $"/presence/Api/CMA/People/{serverId}/{searchKey}");
+            return _httpClientProvider.PostData<PersonInfo>(baseUrl + $"/presence/Api/CMA/People", people);
         }
     }
 }

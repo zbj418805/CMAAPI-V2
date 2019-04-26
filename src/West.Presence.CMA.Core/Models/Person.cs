@@ -10,5 +10,6 @@ namespace West.Presence.CMA.Core.Models
         public string firstName{ get; set; }
         public string lastName { get; set; }
         public string jobTitle { get; set; }
+        public int serverId { get; set; }
     }
 }
