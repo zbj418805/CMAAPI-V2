@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
 using West.Presence.CMA.Api.Controllers;
+using West.Presence.CMA.Api.Model;
 using Xunit;
 
 namespace West.Presence.CMA.Api.Tests.Controllers
@@ -15,7 +16,7 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Arrange
             _sut = new CategoriesController();
             // Act
-            var result = _sut.GetAll(null);
+            var result = _sut.GetAll(new QueryFilter());
 
             // Assert
             Assert.IsType<OkObjectResult>(result);

@@ -34,7 +34,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
 
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<School>("http://test.url/" + "webapi/cma/schools/" + "1234")).Returns(schools);
+            mockHttpClientProvider.Setup(p => p.GetData<School>("http://test.url/" + "webapi/cma/schools")).Returns(schools);
 
             APISchoolsRepository schoolRepo = new APISchoolsRepository(mockHttpClientProvider.Object);
 
