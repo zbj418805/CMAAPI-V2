@@ -12,7 +12,7 @@ namespace West.Presence.CMA.Api.Controllers
     [ApiController]
     public class ChannelsController : ControllerBase
     {
-        ISchoolsService _schoolsService;
+        private readonly ISchoolsService _schoolsService;
 
         public ChannelsController(ISchoolsService schoolsService)
         {

@@ -11,7 +11,6 @@ namespace West.Presence.CMA.Api.Controllers
     public class BaseMethods : ControllerBase
     {
         protected List<int> _validateErrors = new List<int>();
-        protected ISchoolsService _schoolService;
 
         protected bool IsChannelsRequestValid(QueryFilter filter)
         {

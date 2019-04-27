@@ -2,6 +2,7 @@
 using Moq;
 using System.Collections.Generic;
 using West.Presence.CMA.Api.Controllers;
+using West.Presence.CMA.Api.Model;
 using West.Presence.CMA.Core.Repositories;
 using Xunit;
 
@@ -84,6 +85,33 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Act
 
             var result = _sut.SetChannelToGroup(appid, value, "http://localhost/");
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(0, _sut.ModelState.ErrorCount);
+        }
+
+        //[Fact]
+        public void Test_DeleteChannelsToGroups_Return_OK()
+        {
+            // Arrange
+            var c2gs = GetSamepleC2Gs(5);
+            var appid = 123;
+            var endpointUrl = "http://endpoint";
+            var sessionId = "seccsiondi";
+            Dictionary<int, int> dicC2Gs = new Dictionary<int, int>();
+            dicC2Gs.Add(1, 3);
+            dicC2Gs.Add(4, 8);
+
+            var serverList = new List<int> { 1, 2 };
+
+            mockIChannel2GroupRepository.Setup(p => p.SetChannel2Group("http://localhost/", 0, c2gs, appid, endpointUrl, sessionId));
+
+            _sut = new ChannelToGroupController(mockIChannel2GroupRepository.Object);
+
+            // Act
+
+            var result = _sut.DeleteChannelToGroup(appid, new QueryFilter() { Categories = 1, ChannelServerIds = serverList }, "http://localhost/");
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
