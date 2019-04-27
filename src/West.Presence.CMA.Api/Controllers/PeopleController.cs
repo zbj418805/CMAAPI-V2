@@ -42,7 +42,7 @@ namespace West.Presence.CMA.Api.Controllers
                 int total;
                 IEnumerable<Person> simplePeople = _peoplePresentation.GetPeople(filter.ChannelServerIds, baseUrl, search, page.Offset, page.Limit, out total);
 
-                var links = string.IsNullOrEmpty(search) ? this.GetLinks(baseUrl, filter, page, "", true, total) : null;
+                var links = string.IsNullOrEmpty(search) ? this.GetLinks(baseUrl, filter, page, query, true, total) : null;
 
                 if (simplePeople.Count() == 0)
                 {
@@ -50,8 +50,7 @@ namespace West.Presence.CMA.Api.Controllers
                     return NoContent();
                 }
 
-                //List<string> lsTranslatableFields = new List<string> { "attributes.title", "attributes.summary", "attributes.body", "attributes.pageTitle" };
-
+                
                 var fullPeople = _peopleRepository.GetPeopleInfo(baseUrl, simplePeople.ToList());
 
                 var dataList = from p in fullPeople

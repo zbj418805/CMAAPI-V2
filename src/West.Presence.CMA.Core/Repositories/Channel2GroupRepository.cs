@@ -90,7 +90,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<Channel2Group> GetChannel2Group(string baseUrl, int districtServerId)
         {
-            return _httpClientProvider.GetData<Channel2Group>(baseUrl + "asf/" + districtServerId);
+            return _httpClientProvider.GetData<Channel2Group>(baseUrl + "webapi/cma/channel2group/" + districtServerId);
         }
 
         public int GetGroupId(string baseUrl, int serverId)

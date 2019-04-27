@@ -18,7 +18,7 @@ namespace West.Presence.CMA.Api.Integ.Tests.Controllers
         {
             var client = _factory.CreateClient();
 
-            var response = await client.GetAsync("cmaapi/1/shoutem/integration/5/groups");
+            var response = await client.GetAsync("cmaapi/1/shoutem/integration/5/groups?baseurl=http://localhost/");
 
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);

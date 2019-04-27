@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -16,6 +17,7 @@ namespace West.Presence.CMA.Core.Helper
     public class HttpClientProvider : IHttpClientProvider
     {
         IHttpClientFactory _httpClientFactory;
+        private readonly ILogger _logger = Log.ForContext<HttpClientProvider>();
 
         public HttpClientProvider(IHttpClientFactory httpClientFactory)
         {
@@ -26,8 +28,16 @@ namespace West.Presence.CMA.Core.Helper
         {
             using (var client = _httpClientFactory.CreateClient("PresnceApi"))
             {
-                string content = client.GetStringAsync(url).Result;
-                return JsonConvert.DeserializeObject<List<T>>(content);
+                try
+                {
+                    string content = client.GetStringAsync(url).Result;
+                    return JsonConvert.DeserializeObject<List<T>>(content);
+                }
+                catch(Exception e)
+                {
+                    _logger.Error(e.Message);
+                    return null;
+                }
             }
         }
 

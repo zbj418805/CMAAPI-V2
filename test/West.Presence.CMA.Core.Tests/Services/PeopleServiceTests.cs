@@ -61,11 +61,11 @@ namespace West.Presence.CMA.Core.Tests.Services
             //mockNewsRepository.Setup(p => p.GetNews(1)).Returns(lsNews1);
 
             mockCacheProvider = new Mock<ICacheProvider>();
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_1", out people1)).Returns(true);
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_2", out people2)).Returns(true);
+            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_localhost_1", out people1)).Returns(true);
+            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_localhost_2", out people2)).Returns(true);
 
             peopleService = new PeopleService(mockCacheProvider.Object, mockOptions.Object, mockPeopleRepository.Object);
-            var resultPeople = peopleService.GetPeople(new List<int>() { 1, 2 }, "", "");
+            var resultPeople = peopleService.GetPeople(new List<int>() { 1, 2 }, "http://localhost/", "");
 
             Assert.NotNull(resultPeople);
             Assert.Equal(20, resultPeople.Count());
@@ -100,15 +100,15 @@ namespace West.Presence.CMA.Core.Tests.Services
             //var people2 = lsPeople2.AsEnumerable();
 
             mockPeopleRepository = new Mock<IPeopleRepository>();
-            mockPeopleRepository.Setup(p => p.GetPeople(1, "", "")).Returns(lsPeople1);
-            mockPeopleRepository.Setup(p => p.GetPeople(2, "", "")).Returns(lsPeople2);
+            mockPeopleRepository.Setup(p => p.GetPeople(1, "http://localhost/", "")).Returns(lsPeople1);
+            mockPeopleRepository.Setup(p => p.GetPeople(2, "http://localhost/", "")).Returns(lsPeople2);
 
             mockCacheProvider = new Mock<ICacheProvider>();
             //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_1", out people1)).Returns(true);
             //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_2", out people2)).Returns(true);
 
             peopleService = new PeopleService(mockCacheProvider.Object, mockOptions.Object, mockPeopleRepository.Object);
-            var resultPeople = peopleService.GetPeople(new List<int>() { 1, 2 }, "", "");
+            var resultPeople = peopleService.GetPeople(new List<int>() { 1, 2 }, "http://localhost/", "");
 
             Assert.NotNull(resultPeople);
             Assert.Equal(20, resultPeople.Count());
@@ -143,14 +143,14 @@ namespace West.Presence.CMA.Core.Tests.Services
 
             mockPeopleRepository = new Mock<IPeopleRepository>();
             //mockPeopleRepository.Setup(p => p.GetPeople(1, "")).Returns(lsPeople1);
-            mockPeopleRepository.Setup(p => p.GetPeople(2, "", "")).Returns(lsPeople2);
+            mockPeopleRepository.Setup(p => p.GetPeople(2, "http://localhost/", "")).Returns(lsPeople2);
 
             mockCacheProvider = new Mock<ICacheProvider>();
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_1", out people1)).Returns(true);
+            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_localhost_1", out people1)).Returns(true);
             //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_2", out people2)).Returns(true);
 
             peopleService = new PeopleService(mockCacheProvider.Object, mockOptions.Object, mockPeopleRepository.Object);
-            var resultPeople = peopleService.GetPeople(new List<int>() { 1, 2 }, "", "");
+            var resultPeople = peopleService.GetPeople(new List<int>() { 1, 2 }, "http://localhost/", "");
 
             Assert.NotNull(resultPeople);
             Assert.Equal(20, resultPeople.Count());
@@ -172,15 +172,15 @@ namespace West.Presence.CMA.Core.Tests.Services
             var people2 = lsPeople2.AsEnumerable();
 
             mockPeopleRepository = new Mock<IPeopleRepository>();
-            mockPeopleRepository.Setup(p => p.GetPeople(1, "", "")).Returns(lsPeople1);
-            mockPeopleRepository.Setup(p => p.GetPeople(2, "", "")).Returns(lsPeople2);
+            mockPeopleRepository.Setup(p => p.GetPeople(1, "http://localhost/", "")).Returns(lsPeople1);
+            mockPeopleRepository.Setup(p => p.GetPeople(2, "http://localhost/", "")).Returns(lsPeople2);
 
             mockCacheProvider = new Mock<ICacheProvider>();
             //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_1", out people1)).Returns(true);
             //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Person>>("CMAPeopleKey_Dev_2", out people2)).Returns(true);
 
             peopleService = new PeopleService(mockCacheProvider.Object, mockOptions.Object, mockPeopleRepository.Object);
-            var resultPeople = peopleService.GetPeople(new List<int>() { 1, 2 }, "", "First1");
+            var resultPeople = peopleService.GetPeople(new List<int>() { 1, 2 }, "http://localhost/", "First1");
 
             Assert.NotNull(resultPeople);
             Assert.Equal(2,resultPeople.Count());

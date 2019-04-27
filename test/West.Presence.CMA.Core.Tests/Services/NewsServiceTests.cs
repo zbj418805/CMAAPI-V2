@@ -59,11 +59,11 @@ namespace West.Presence.CMA.Core.Tests.Services
             //mockNewsRepository.Setup(p => p.GetNews(1)).Returns(lsNews1);
 
             mockCacheProvider = new Mock<ICacheProvider>();
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<News>>("CMANewsKey_Dev_1", out news1)).Returns(true);
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<News>>("CMANewsKey_Dev_2", out news2)).Returns(true);
+            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<News>>("CMANewsKey_localhost_1", out news1)).Returns(true);
+            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<News>>("CMANewsKey_localhost_2", out news2)).Returns(true);
 
             newsService = new NewsService(mockCacheProvider.Object, mockOptions.Object, mockNewsRepository.Object);
-            var resultNews = newsService.GetNews(new List<int>() { 1, 2 }, "", "");
+            var resultNews = newsService.GetNews(new List<int>() { 1, 2 }, "http://localhost/", "");
 
             Assert.NotNull(resultNews);
             Assert.Equal(20, resultNews.Count());
@@ -99,11 +99,11 @@ namespace West.Presence.CMA.Core.Tests.Services
             //mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<News>>("CMANewsKey_Dev_2", out news2)).Returns(true);
 
             mockNewsRepository = new Mock<INewsRepository>();
-            mockNewsRepository.Setup(p => p.GetNews(1, "")).Returns(lsNews1);
-            mockNewsRepository.Setup(p => p.GetNews(2, "")).Returns(lsNews1);
+            mockNewsRepository.Setup(p => p.GetNews(1, "http://localhost/")).Returns(lsNews1);
+            mockNewsRepository.Setup(p => p.GetNews(2, "http://localhost/")).Returns(lsNews1);
 
             newsService = new NewsService(mockCacheProvider.Object, mockOptions.Object, mockNewsRepository.Object);
-            var resultNews = newsService.GetNews(new List<int>() { 1, 2 }, "", "");
+            var resultNews = newsService.GetNews(new List<int>() { 1, 2 }, "http://localhost/", "");
 
             Assert.NotNull(resultNews);
             Assert.Equal(20, resultNews.Count());
@@ -135,13 +135,13 @@ namespace West.Presence.CMA.Core.Tests.Services
             var news2 = lsNews2.AsEnumerable();
 
             mockNewsRepository = new Mock<INewsRepository>();
-            mockNewsRepository.Setup(p => p.GetNews(1, "")).Returns(lsNews1);
+            mockNewsRepository.Setup(p => p.GetNews(1, "http://localhost/")).Returns(lsNews1);
 
             mockCacheProvider = new Mock<ICacheProvider>();
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<News>>("CMANewsKey_Dev_2", out news2)).Returns(true);
+            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<News>>("CMANewsKey_localhost_2", out news2)).Returns(true);
 
             newsService = new NewsService(mockCacheProvider.Object, mockOptions.Object, mockNewsRepository.Object);
-            var resultNews = newsService.GetNews(new List<int>() { 1, 2 }, "", "");
+            var resultNews = newsService.GetNews(new List<int>() { 1, 2 }, "http://localhost/", "");
 
             Assert.NotNull(resultNews);
             Assert.Equal(20, resultNews.Count());
@@ -173,13 +173,13 @@ namespace West.Presence.CMA.Core.Tests.Services
             var news2 = lsNews2.AsEnumerable();
 
             mockNewsRepository = new Mock<INewsRepository>();
-            mockNewsRepository.Setup(p => p.GetNews(1, "")).Returns(lsNews1);
+            mockNewsRepository.Setup(p => p.GetNews(1, "http://localhost/")).Returns(lsNews1);
 
             mockCacheProvider = new Mock<ICacheProvider>();
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<News>>("CMANewsKey_Dev_2", out news2)).Returns(true);
+            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<News>>("CMANewsKey_localhost_2", out news2)).Returns(true);
 
             newsService = new NewsService(mockCacheProvider.Object, mockOptions.Object, mockNewsRepository.Object);
-            var resultNews = newsService.GetNews(new List<int>() { 1, 2 }, "", "1");
+            var resultNews = newsService.GetNews(new List<int>() { 1, 2 }, "http://localhost/", "1");
 
             Assert.NotNull(resultNews);
             Assert.Equal(2, resultNews.Count());

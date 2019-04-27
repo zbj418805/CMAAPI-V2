@@ -31,7 +31,7 @@ namespace West.Presence.CMA.Api.Controllers
                 return NoContent();
             }
             int total;
-            var schools = _schoolPresentation.GetSchools(baseUrl, query, page.Offset, page.Limit, out total);
+            var schools = _schoolPresentation.GetSchools(baseUrl, search, page.Offset, page.Limit, out total);
 
             if(IsResourcesRequestValid(filter, schools, new List<int>() { 7,8 }))
             {

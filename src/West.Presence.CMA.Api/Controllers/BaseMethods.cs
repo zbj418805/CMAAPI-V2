@@ -52,7 +52,7 @@ namespace West.Presence.CMA.Api.Controllers
                 }
             }
             
-            if (schools.FirstOrDefault().Total == 0)
+            if (schools.Count() == 0)
             {
                 _validateErrors.Add((int)ValidateErrors.RequestValidationSchoolBaseUrlInvalid);
                 // ValidateErrorMsg = "school list is not generated.";
@@ -76,7 +76,11 @@ namespace West.Presence.CMA.Api.Controllers
 
         protected Links GetLinks(string baseUrl, QueryFilter filter, QueryPagination page, string query, bool includeChannels, int totalItemNumber, DateTime? startTime = null, DateTime? endTime = null)
         {
-            var RequestPath = baseUrl + Request.Path;
+            var RequestPath = baseUrl;
+            if (Request != null)
+            {
+                RequestPath += Request.Path;
+            }
 
             int nextOffset = page.Offset + page.Limit;
             int prevOffset = page.Offset - page.Limit;
