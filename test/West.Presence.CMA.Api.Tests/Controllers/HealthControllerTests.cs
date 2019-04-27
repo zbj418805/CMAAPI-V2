@@ -14,6 +14,7 @@ namespace West.Presence.CMA.Api.Tests.Controllers
         {
             // Arrange
             _sut = new HealthController();
+
             // Act
             var result = _sut.Ping();
 

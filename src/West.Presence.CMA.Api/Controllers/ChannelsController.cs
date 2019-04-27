@@ -20,7 +20,7 @@ namespace West.Presence.CMA.Api.Controllers
         }
 
         [HttpGet("cmaapi/1/channels")]
-        public IActionResult GetAll([FromQuery] string baseUrl = "")
+        public IActionResult GetChannels([FromQuery] string baseUrl = "")
         {
             if (baseUrl.Length == 0)
             {
@@ -28,6 +28,11 @@ namespace West.Presence.CMA.Api.Controllers
             }
 
             var schools = _schoolsService.GetSchools(baseUrl, "");
+
+            if (schools.Count() == 0)
+            {
+                return NoContent();
+            }
 
             int index = 0;
             var dataSchool = from s in schools

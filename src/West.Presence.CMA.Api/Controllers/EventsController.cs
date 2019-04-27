@@ -60,6 +60,11 @@ namespace West.Presence.CMA.Api.Controllers
 
                 var links = string.IsNullOrEmpty(search) ? this.GetLinks(baseUrl, filter, page, "", true, total) : null;
 
+                if (events.Count() == 0)
+                {
+                    return NoContent();
+                }
+
                 List<string> lsTranslatableFields = new List<string> { "attributes.name", "attributes.description" };
 
                 var eventsData = from c in events

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace West.Presence.CMA.Api.Tests.Controllers
 {
-    public class SchoolControllerTests
+    public class SchoolControllerTests : BaseControllerTest
     {
         private SchoolsController _sut;
 
@@ -28,20 +28,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
         [Fact]
         public void Test_SchoolController_Returns_OK()
         {
-            List<School> schools = new List<School>();
-
-            for (int i = 0; i < 10; i++)
-            {
-                schools.Add(new School()
-                {
-                    Name = $"School Name {i}",
-                    Description = $"Description {1} ...",
-                    DistrictServerId = 10
-                });
-            }
-
             int total = 10;
-            mockSchoolsPresentation.Setup(p => p.GetSchools("http://localhost/", "", 0, 20, out total)).Returns(schools);
+            mockSchoolsPresentation.Setup(p => p.GetSchools("http://localhost/", "", 0, 20, out total)).Returns(GetSampleSchools(10, 10));
             // Arrange
             _sut = new SchoolsController(mockSchoolsPresentation.Object);
             // Act
@@ -56,20 +44,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
         [Fact]
         public void Test_SchoolController_wrong_categories_Returns_Notent()
         {
-            List<School> schools = new List<School>();
-
-            for (int i = 0; i < 10; i++)
-            {
-                schools.Add(new School()
-                {
-                    Name = $"School Name {i}",
-                    Description = $"Description {1} ...",
-                    DistrictServerId = 10
-                });
-            }
-
             int total = 10;
-            mockSchoolsPresentation.Setup(p => p.GetSchools("http://localhost/", "", 0, 20, out total)).Returns(schools);
+            mockSchoolsPresentation.Setup(p => p.GetSchools("http://localhost/", "", 0, 20, out total)).Returns(GetSampleSchools(10, 10));
             // Arrange
             _sut = new SchoolsController(mockSchoolsPresentation.Object);
             // Act
@@ -84,20 +60,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
         [Fact]
         public void Test_SchoolController_no_url_Returns_Notent()
         {
-            List<School> schools = new List<School>();
-
-            for (int i = 0; i < 10; i++)
-            {
-                schools.Add(new School()
-                {
-                    Name = $"School Name {i}",
-                    Description = $"Description {1} ...",
-                    DistrictServerId = 10
-                });
-            }
-
             int total = 10;
-            mockSchoolsPresentation.Setup(p => p.GetSchools("", "", 0, 20, out total)).Returns(schools);
+            mockSchoolsPresentation.Setup(p => p.GetSchools("", "", 0, 20, out total)).Returns(GetSampleSchools(10, 10));
             // Arrange
             _sut = new SchoolsController(mockSchoolsPresentation.Object);
             // Act
@@ -112,20 +76,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
         [Fact]
         public void Test_SchoolController_no_schools_Returns_Notent()
         {
-            List<School> schools = new List<School>();
-
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    schools.Add(new School()
-            //    {
-            //        Name = $"School Name {i}",
-            //        Description = $"Description {1} ...",
-            //        DistrictServerId = 10
-            //    });
-            //}
-
             int total = 10;
-            mockSchoolsPresentation.Setup(p => p.GetSchools("", "", 0, 20, out total)).Returns(schools);
+            mockSchoolsPresentation.Setup(p => p.GetSchools("", "", 0, 20, out total)).Returns(GetSampleSchools(0, 10));
             // Arrange
             _sut = new SchoolsController(mockSchoolsPresentation.Object);
             // Act
@@ -140,20 +92,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
         [Fact]
         public void Test_SchoolController_district_is_0_Returns_Notent()
         {
-            List<School> schools = new List<School>();
-
-            for (int i = 0; i < 10; i++)
-            {
-                schools.Add(new School()
-                {
-                    Name = $"School Name {i}",
-                    Description = $"Description {1} ...",
-                    DistrictServerId = 0
-                });
-            }
-
             int total = 10;
-            mockSchoolsPresentation.Setup(p => p.GetSchools("", "", 0, 20, out total)).Returns(schools);
+            mockSchoolsPresentation.Setup(p => p.GetSchools("", "", 0, 20, out total)).Returns(GetSampleSchools(10, 0));
             // Arrange
             _sut = new SchoolsController(mockSchoolsPresentation.Object);
             // Act

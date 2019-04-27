@@ -49,7 +49,6 @@ namespace West.Presence.CMA.Api.Controllers
                     _logger.Information("nocotent, success");
                     return NoContent();
                 }
-
                 
                 var fullPeople = _peopleRepository.GetPeopleInfo(baseUrl, simplePeople.ToList());
 

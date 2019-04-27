@@ -15,11 +15,9 @@ namespace West.Presence.CMA.Api.Controllers
     [ApiController]
     public class ChannelToGroupController : ControllerBase
     {
-        ISchoolsService _schoolsService;
         IChannel2GroupRepository _channel2GroupRepository;
 
-        public ChannelToGroupController(ISchoolsService schoolsService, IChannel2GroupRepository channel2GroupRepository) {
-            _schoolsService = schoolsService;
+        public ChannelToGroupController(IChannel2GroupRepository channel2GroupRepository) {
             _channel2GroupRepository = channel2GroupRepository;
         }
 
@@ -27,7 +25,10 @@ namespace West.Presence.CMA.Api.Controllers
         public IActionResult GetChannelsToGroups(int appId, [FromQuery] string baseUrl = "")
         {
             IEnumerable<Channel2Group> c2g = _channel2GroupRepository.GetChannel2Group(baseUrl, 0);
-            return Ok(new { data = new { channelsToGroups = c2g } });
+            if (c2g == null || c2g.Count() == 0)
+                return NoContent();
+            else
+                return Ok(new { data = new { channelsToGroups = c2g } });
         }
 
         [HttpPost("cmaapi/1/shoutem/integration/{appId}/groups")]
