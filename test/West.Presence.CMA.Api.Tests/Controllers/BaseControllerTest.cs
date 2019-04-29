@@ -15,8 +15,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
                 school.Add(new School() {
                     Name = $"School Name {i}",
                     Description = $"Description {1} ...",
-                    DistrictServerId = 10,
-                    ServerId = distructServerid
+                    DistrictServerId = distructServerid,
+                    ServerId = i
                 });
             }
 

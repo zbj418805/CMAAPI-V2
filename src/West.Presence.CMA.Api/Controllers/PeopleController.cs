@@ -22,6 +22,7 @@ namespace West.Presence.CMA.Api.Controllers {
         public PeopleController (ISchoolsService schoolService, IPeoplePresentation peoplePresentation, IPeopleRepository peopleRepository) {
             _schoolsService = schoolService;
             _peoplePresentation = peoplePresentation;
+            _peopleRepository = peopleRepository;
         }
 
         [HttpGet ("cmaapi/1/resources/school-messenger.people")]
@@ -35,16 +36,16 @@ namespace West.Presence.CMA.Api.Controllers {
 
             if (IsResourcesRequestValid (filter, schools, new List<int> () { 5, 6 })) {
                 int total;
-                IEnumerable<Person> simplePeople = _peoplePresentation.GetPeople (filter.ChannelServerIds, baseUrl, search, page.Offset, page.Limit, out total);
+                IEnumerable<Person> simplePeople = _peoplePresentation.GetPeople(filter.ChannelServerIds, baseUrl, search, page.Offset, page.Limit, out total);
 
-                var links = string.IsNullOrEmpty (search) ? this.GetLinks (baseUrl, filter, page, query, true, total) : null;
+                var links = string.IsNullOrEmpty(search) ? this.GetLinks(baseUrl, filter, page, query, true, total) : null;
 
                 if (simplePeople.Count () == 0) {
                     _logger.Information ("nocotent, success");
                     return NoContent ();
                 }
 
-                var fullPeople = _peopleRepository.GetPeopleInfo (baseUrl, simplePeople.ToList ());
+                var fullPeople = _peopleRepository.GetPeopleInfo(baseUrl, simplePeople);
 
                 var dataList = from p in fullPeople
                 select new {
@@ -70,6 +71,8 @@ namespace West.Presence.CMA.Api.Controllers {
                     channels = new { data = new object[] { new { type = "school-messenger.channels", id = p.ServerId.ToString () } } },
                     }
                 };
+
+                return Ok(new { Data = dataList, Links = links });
             }
 
             return NoContent ();

@@ -36,15 +36,40 @@ namespace West.Presence.CMA.Api.Tests.Controllers
 
             var schoolList = new List<int>() { 0, 1, 2, 3, 4 };
             int total = 0;
-            mockPeoplePresentation.Setup(p => p.GetPeople(schoolList, "", "http://localhost/", 0, 20, out total)).Returns(sampleSimplePerson);
+            mockPeoplePresentation.Setup(p => p.GetPeople(schoolList, "http://localhost/", "", 0, 20, out total)).Returns(sampleSimplePerson);
 
-            mockPeopleRepository.Setup(p => p.GetPeopleInfo("http://localhost", sampleSimplePerson)).Returns(GetSamplePersonInfo(10));
+            mockPeopleRepository.Setup(p => p.GetPeopleInfo("http://localhost/", sampleSimplePerson)).Returns(GetSamplePersonInfo(10));
             
             
             _sut = new PeopleController(mockSchoolsService.Object, mockPeoplePresentation.Object, mockPeopleRepository.Object);
             // Act
             var result = _sut.GetPeople(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 5, ChannelServerIds = schoolList }, "", "");
+                new QueryFilter() { Categories = 5, ChannelServerIds = schoolList }, "", "http://localhost/");
+
+            // Assert
+            //Assert.IsType<NoContentResult>(result);
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(0, _sut.ModelState.ErrorCount);
+        }
+
+        [Fact]
+        public void Test_PeopleEndpoint_NoSimplePersons_Returns_NoContent()
+        {
+            // Arrange
+            mockSchoolsService.Setup(p => p.GetSchools("http://localhost/", "")).Returns(GetSampleSchools(10, 10));
+
+            var sampleSimplePerson = GetSampleSimplePerson(0);
+
+            var schoolList = new List<int>() { 0, 1, 2, 3, 4 };
+            int total = 0;
+            mockPeoplePresentation.Setup(p => p.GetPeople(schoolList, "http://localhost/", "", 0, 20, out total)).Returns(sampleSimplePerson);
+
+            mockPeopleRepository.Setup(p => p.GetPeopleInfo("http://localhost/", sampleSimplePerson)).Returns(GetSamplePersonInfo(10));
+
+            _sut = new PeopleController(mockSchoolsService.Object, mockPeoplePresentation.Object, mockPeopleRepository.Object);
+            // Act
+            var result = _sut.GetPeople(new QueryPagination() { Limit = 20, Offset = 0 },
+                new QueryFilter() { Categories = 5, ChannelServerIds = schoolList }, "", "http://localhost/");
 
             // Assert
             Assert.IsType<NoContentResult>(result);

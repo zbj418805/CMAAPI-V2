@@ -61,17 +61,17 @@ namespace West.Presence.CMA.Api.Controllers {
                     pageTitle = p.PageTitle
                     },
                     meta = new {
-                    i18n = new {
-                    translatableFields = lsTranslatableFields
-                    }
+                        i18n = new {
+                            translatableFields = lsTranslatableFields
+                        }
                     },
                     relationships = new {
-                    categories = new { data = new object[] { new { type = "school-messenger.categories", id = "2" } } },
-                    channels = new { data = new object[] { new { type = "school-messenger.channels", id = p.ServerId.ToString () } } },
+                        categories = new { data = new object[] { new { type = "school-messenger.categories", id = "2" } } },
+                        channels = new { data = new object[] { new { type = "school-messenger.channels", id = p.ServerId.ToString () } } },
                     }
                 };
 
-                return Ok (new { Data = news, Links = links });
+                return Ok (new { Data = dataList, Links = links });
             }
 
             return NoContent ();
