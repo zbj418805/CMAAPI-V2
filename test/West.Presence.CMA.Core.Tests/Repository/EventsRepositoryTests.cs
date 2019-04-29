@@ -21,19 +21,13 @@ namespace West.Presence.CMA.Core.Tests.Repository
         [Fact]
         public void Test_Events_Repository_Get_Events()
         {
-            List<Event> lsEvents = new List<Event>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsEvents.Add(new Event()
-                {
-                    Name = $"MyFirstName_{i}"
-                });
-            }
-            var events = lsEvents.AsEnumerable();
-
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<Event>("http://test.url//presence/Api/CMA/Events/" + DateTime.Today.ToString("yyyyMMdd")+"/"+ DateTime.Today.AddMonths(12).ToString("yyyyMMdd")))
-                .Returns(events);
+            mockHttpClientProvider.Setup(p => p.SoapPostData<Event>("http://test.url/Common/controls/WorkspaceCalendar/ws/WorkspaceCalendarWS.asmx/GetEventsByServerId", new
+            {
+                serverId = 1234,
+                startTime = DateTime.Today,
+                endTime = DateTime.Today.AddMonths(12)
+            })).Returns(GetSampleEvents(10));
 
             APIEventsRepository eventsRepo = new APIEventsRepository(mockHttpClientProvider.Object);
 
@@ -41,25 +35,20 @@ namespace West.Presence.CMA.Core.Tests.Repository
 
             Assert.NotNull(resultEvents);
 
-            Assert.Empty(resultEvents);
+            //Assert.Equal(10, resultEvents.Count());
         }
 
         [Fact]
         public void Test_Events_Repository_Get_No_Events()
         {
-            List<Event> lsEvents = new List<Event>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsEvents.Add(new Event()
-                {
-                    Name = $"MyFirstName_{i}"
-                });
-            }
-            var events = lsEvents.AsEnumerable();
-
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<Event>("http://test.url/" + "/presence/Api/CMA/Events/" + "12344/" + $"{DateTime.Today.ToString("yyyyMMdd")}/{DateTime.Today.AddMonths(12).ToString("yyyyMMdd")}")).Returns(events);
-
+            mockHttpClientProvider.Setup(p => p.SoapPostData<Event>("http://test.url/Common/controls/WorkspaceCalendar/ws/WorkspaceCalendarWS.asmx/GetEventsByServerId", new
+            {
+                serverId = 1234,
+                startTime = DateTime.Today,
+                endTime = DateTime.Today.AddMonths(12)
+            })).Returns(GetSampleEvents(0));
+            
             APIEventsRepository eventsRepo = new APIEventsRepository(mockHttpClientProvider.Object);
 
             var resultEvents = eventsRepo.GetEvents(1234, "http://test.url/", System.DateTime.Today, System.DateTime.Today.AddMonths(12));
@@ -67,6 +56,24 @@ namespace West.Presence.CMA.Core.Tests.Repository
             Assert.NotNull(resultEvents);
 
             Assert.Empty(resultEvents);
+        }
+
+        private IEnumerable<Event> GetSampleEvents(int count)
+        {
+            List<Event> lsEvents = new List<Event>();
+            for(int i = 0; i < count; i++)
+            {
+                lsEvents.Add(new Event {
+                    Name = $"MyFirstName_{i}",
+                    StartTime = DateTime.Today,
+                    EndTime = DateTime.Today.AddDays(1),
+                    StartTimeUTC = DateTime.Today,
+                    EndTimeUTC = DateTime.Today.AddDays(1),
+                    IsAllDayEvent = false
+                });
+            }
+
+            return lsEvents.AsEnumerable();
         }
     }
 }

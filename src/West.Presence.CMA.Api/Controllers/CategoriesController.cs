@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
@@ -17,7 +14,8 @@ namespace West.Presence.CMA.Api.Controllers
         private readonly ILogger _logger = Log.ForContext<CategoriesController>();
 
         public CategoriesController()
-        { }
+        {
+        }
 
         [HttpGet("cmaapi/1/categories")]
         public IActionResult GetAll([FromQuery]QueryFilter filter)

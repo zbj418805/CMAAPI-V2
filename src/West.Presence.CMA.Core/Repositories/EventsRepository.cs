@@ -37,7 +37,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<Event> GetEvents(int serverId, string baseUrl, DateTime startDate, DateTime endDate)
         {
-            var events = _httpClientProvider.PostData<Event>(baseUrl + $"Common/controls/WorkspaceCalendar/ws/WorkspaceCalendarWS.asmx/GetEventsByServerId", new
+            var responseData = _httpClientProvider.SoapPostData<Event>(baseUrl + "Common/controls/WorkspaceCalendar/ws/WorkspaceCalendarWS.asmx/GetEventsByServerId", new
             {
                 serverId = serverId,
                 startTime = startDate,
@@ -45,7 +45,7 @@ namespace West.Presence.CMA.Core.Repositories
             });
 
             List<Event> rerangeEvents = new List<Event>();
-            foreach(Event ce in events)
+            foreach(Event ce in responseData)
             {
                 if (ce.EndTime.Date > ce.StartTime.Date)
                 {
@@ -68,6 +68,7 @@ namespace West.Presence.CMA.Core.Repositories
                 }
                 else
                 {
+                    ce.ServerId = serverId;
                     rerangeEvents.Add(ce);
                 }
             }

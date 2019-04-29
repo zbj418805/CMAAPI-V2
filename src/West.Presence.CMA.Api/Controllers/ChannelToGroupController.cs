@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using West.Presence.CMA.Api.Model;
 using West.Presence.CMA.Core.Models;
 using West.Presence.CMA.Core.Repositories;
-using West.Presence.CMA.Core.Servies;
 
 namespace West.Presence.CMA.Api.Controllers
 {
@@ -16,6 +13,7 @@ namespace West.Presence.CMA.Api.Controllers
     public class ChannelToGroupController : ControllerBase
     {
         IChannel2GroupRepository _channel2GroupRepository;
+        private readonly ILogger _logger = Log.ForContext<ChannelToGroupController>();
 
         public ChannelToGroupController(IChannel2GroupRepository channel2GroupRepository) {
             _channel2GroupRepository = channel2GroupRepository;
@@ -26,7 +24,10 @@ namespace West.Presence.CMA.Api.Controllers
         {
             IEnumerable<Channel2Group> c2g = _channel2GroupRepository.GetChannel2Group(baseUrl, 0);
             if (c2g == null || c2g.Count() == 0)
+            {
+                _logger.Error("No ChannelToGroups mapping found");
                 return NoContent();
+            }
             else
                 return Ok(new { data = new { channelsToGroups = c2g } });
         }
