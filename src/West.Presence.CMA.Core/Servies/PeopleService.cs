@@ -39,7 +39,7 @@ namespace West.Presence.CMA.Core.Servies
                 if (!_cacheProvider.TryGetValue<IEnumerable<Person>>(cacheKey, out people))
                 {
                     //Get people from repo
-                    people = _peopleRepository.GetPeople(serverId, baseUrl, "");
+                    people = _peopleRepository.GetPeople(serverId, baseUrl);
                     //set to cache
                     _cacheProvider.Add(cacheKey, people, cacheDuration);
                 }

@@ -37,7 +37,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<Channel> GetChannels(string baseUrl)
         {
-            return _httpClientProvider.GetData<Channel>(baseUrl + $"/presence/Api/CMA/Channels");
+            return _httpClientProvider.GetData<Channel>($"{baseUrl}presence/Api/CMA/Channels");
         }
     }
 }

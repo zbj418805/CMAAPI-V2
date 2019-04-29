@@ -8,7 +8,7 @@ namespace West.Presence.CMA.Core.Repositories
 {
     public interface IPeopleRepository
     {
-        IEnumerable<Person> GetPeople(int serverId, string baseUrl, string searchKey);
+        IEnumerable<Person> GetPeople(int serverId, string baseUrl);
 
         IEnumerable<PersonInfo> GetPeopleInfo(string baseUrl, IEnumerable<Person> people);
     }
@@ -20,7 +20,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         }
 
-        public IEnumerable<Person> GetPeople(int serverId, string baseUrl, string searchKey)
+        public IEnumerable<Person> GetPeople(int serverId, string baseUrl)
         {
             throw new NotImplementedException();
         }
@@ -40,14 +40,20 @@ namespace West.Presence.CMA.Core.Repositories
             _httpClientProvider = httpClientProvider;
         }
 
-        public IEnumerable<Person> GetPeople(int serverId, string baseUrl, string searchKey)
+        public IEnumerable<Person> GetPeople(int serverId, string baseUrl)
         {
-            return _httpClientProvider.GetData<Person>(baseUrl + $"/presence/Api/CMA/People/{serverId}/{searchKey}");
+            var people = _httpClientProvider.GetData<Person>($"{baseUrl}presence/Api/CMA/People/{serverId}");
+            foreach(Person p in people)
+            {
+                p.serverId = serverId;
+            }
+
+            return people;
         }
 
         public IEnumerable<PersonInfo> GetPeopleInfo(string baseUrl, IEnumerable<Person> people)
         {
-            return _httpClientProvider.PostData<PersonInfo>(baseUrl + $"/presence/Api/CMA/People", people);
+            return _httpClientProvider.PostData<PersonInfo>($"{baseUrl}presence/Api/CMA/People", people);
         }
     }
 }

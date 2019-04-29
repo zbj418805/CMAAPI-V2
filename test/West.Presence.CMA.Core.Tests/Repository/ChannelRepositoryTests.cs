@@ -30,7 +30,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
             var channels = lsChannels.AsEnumerable();
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<Channel>("http://test.url//presence/Api/CMA/Channels")).Returns(channels);
+            mockHttpClientProvider.Setup(p => p.GetData<Channel>("http://test.url/presence/Api/CMA/Channels")).Returns(channels);
 
             APIChannelsRepository channelRepo = new APIChannelsRepository(mockHttpClientProvider.Object);
 
@@ -55,7 +55,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
             var channels = lsChannels.AsEnumerable();
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<Channel>("http://test.url//presence/Api/CMA/Channel")).Returns(channels);
+            mockHttpClientProvider.Setup(p => p.GetData<Channel>("http://test.url/presence/Api/CMA/Channel")).Returns(channels);
 
             APIChannelsRepository channelRepo = new APIChannelsRepository(mockHttpClientProvider.Object);
 

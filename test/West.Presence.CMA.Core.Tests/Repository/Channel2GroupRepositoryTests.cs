@@ -57,7 +57,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
             var c2g = lsC2G.AsEnumerable();
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<Channel2Group>("http://test.url//presence/Api/CMA/Channel2Groupss")).Returns(lsC2G);
+            mockHttpClientProvider.Setup(p => p.GetData<Channel2Group>("http://test.url/presence/Api/CMA/Channel2Groupss")).Returns(lsC2G);
 
             APIChannel2GroupRepository channelRepo = new APIChannel2GroupRepository(mockHttpClientProvider.Object);
 

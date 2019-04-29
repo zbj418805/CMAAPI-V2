@@ -72,27 +72,22 @@ namespace West.Presence.CMA.Core.Repositories
     public class APIChannel2GroupRepository : IChannel2GroupRepository
     {
         private readonly IHttpClientProvider _httpClientProvider;
-
         public APIChannel2GroupRepository(IHttpClientProvider httpClientProvider)
         {
             _httpClientProvider = httpClientProvider;
         }
-
         public AppExtended GetAppExtended(string baseUrl, int districtServerId)
         {
-            return _httpClientProvider.GetData<AppExtended>(baseUrl + "asf/").FirstOrDefault();
+            return _httpClientProvider.GetData<AppExtended>($"{baseUrl}webapi/cma/getAppExtended/{districtServerId}").FirstOrDefault();
         }
-
         public IEnumerable<Channel2Group> GetChannel2Group(string baseUrl, int districtServerId)
         {
-            return _httpClientProvider.GetData<Channel2Group>(baseUrl + "webapi/cma/channel2group/" + districtServerId);
+            return _httpClientProvider.GetData<Channel2Group>($"{baseUrl}webapi/cma/channel2group/{districtServerId}");
         }
-
         public int GetGroupId(string baseUrl, int serverId)
         {
-            return _httpClientProvider.GetData<int>(baseUrl + "webapi/cma/channel2group/" + serverId).FirstOrDefault();
+            return _httpClientProvider.GetData<int>($"{baseUrl}webapi/cma/channel2group/{serverId}" ).FirstOrDefault();
         }
-
         public void SetChannel2Group(string baseUrl, int districtServerId, List<Channel2Group> c2gs, int appId, string endpointUrl, string sessionId)
         {
             var payload = new {
@@ -102,7 +97,7 @@ namespace West.Presence.CMA.Core.Repositories
                 sessionId = sessionId
             };
 
-            _httpClientProvider.PostData<string>(baseUrl + "webapi/cma/channel2group/", payload);
+            _httpClientProvider.PostData<string>($"{baseUrl}webapi/cma/channel2group/", payload);
 
             throw new NotImplementedException();
         }

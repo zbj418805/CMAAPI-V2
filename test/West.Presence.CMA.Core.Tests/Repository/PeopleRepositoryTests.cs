@@ -34,11 +34,11 @@ namespace West.Presence.CMA.Core.Tests.Repository
             var people = lsPeople.AsEnumerable();
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<Person>("http://test.url/" + "/presence/Api/CMA/People/" + "1234/")).Returns(people);
+            mockHttpClientProvider.Setup(p => p.GetData<Person>("http://test.url/presence/Api/CMA/People/1234")).Returns(people);
 
             APIPeopleRepository peopleRepo = new APIPeopleRepository(mockHttpClientProvider.Object);
 
-            var resultPeople = peopleRepo.GetPeople(1234, "http://test.url/","");
+            var resultPeople = peopleRepo.GetPeople(1234, "http://test.url/");
 
             Assert.NotNull(peopleRepo);
 
@@ -62,11 +62,11 @@ namespace West.Presence.CMA.Core.Tests.Repository
             var people = lsPeople.AsEnumerable();
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<Person>("http://test.url/" + "/presence/Api/CMA/People/" + "12344/")).Returns(people);
+            mockHttpClientProvider.Setup(p => p.GetData<Person>("http://test.url/presence/Api/CMA/People/12344")).Returns(people);
 
             APIPeopleRepository peopleRepo = new APIPeopleRepository(mockHttpClientProvider.Object);
 
-            var resultPeople = peopleRepo.GetPeople(1234, "http://test.url/", "");
+            var resultPeople = peopleRepo.GetPeople(1234, "http://test.url/");
 
             Assert.NotNull(peopleRepo);
 
