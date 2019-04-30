@@ -41,6 +41,11 @@ namespace West.Presence.CMA.Api.Controllers
                                      index = index++,
                                      iconUrl = "",
                                      mandatory = s.ServerId == s.DistrictServerId
+                                 },
+                                 relationships = new
+                                 {
+                                     categories = new { data = new object[] { new { type = "school-messenger.categories", id = "7" } } },
+                                     channels = new { data = new object[] { new { type = "school-messenger.channels", id = s.ServerId.ToString() } } },
                                  }
                              };
 
