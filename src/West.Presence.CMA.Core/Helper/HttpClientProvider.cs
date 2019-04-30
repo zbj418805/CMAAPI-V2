@@ -12,6 +12,7 @@ namespace West.Presence.CMA.Core.Helper
     public interface IHttpClientProvider
     {
         IEnumerable<T> GetData<T>(string url);
+        T GetSingleData<T>(string url);
         IEnumerable<T> PostData<T>(string url, object data);
         IEnumerable<T> SoapPostData<T>(string url, object data);
         bool DeletetData(string url);
@@ -48,6 +49,31 @@ namespace West.Presence.CMA.Core.Helper
                 {
                     _logger.Error("GetData", url, e.Message);
                     return null;
+                }
+            }
+        }
+
+        public T GetSingleData<T>(string url)
+        {
+            using (var client = _httpClientFactory.CreateClient("PresnceApi"))
+            {
+                Uri u = new Uri(url);
+
+                if (u.Scheme == "https")
+                {
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+                }
+
+                try
+                {
+                    string content = client.GetStringAsync(url).Result;
+                    return JsonConvert.DeserializeObject<T>(content);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error("GetData", url, e.Message);
+                    return default(T);
                 }
             }
         }

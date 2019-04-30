@@ -12,7 +12,7 @@ namespace West.Presence.CMA.Core.Repositories
     public interface IChannel2GroupRepository
     {
         IEnumerable<Channel2Group> GetChannel2Group(string baseUrl, int districtServerId);
-        void SetChannel2Group(string baseUrl, int districtServerId, List<Channel2Group> c2gs, int appId, string endpointUrl, string sessionId);
+        void SetChannel2Group(string baseUrl, int districtServerId, IEnumerable<Channel2Group> c2gs, int appId, string endpointUrl, string sessionId);
         int GetGroupId(string baseUrl, int serverId);
         AppExtended GetAppExtended(string baseUrl, int districtServerId);
     }
@@ -28,7 +28,7 @@ namespace West.Presence.CMA.Core.Repositories
         {
             return _databaseProvider.GetData<Channel2Group>("[dbo].[cma_c2g.get_all]", new { district_server_Id = districtServerId }, CommandType.StoredProcedure);
         }
-        public void SetChannel2Group(string baseUrl, int districtServerId, List<Channel2Group> c2gs, int appId, string endpointUrl, string sessionId)
+        public void SetChannel2Group(string baseUrl, int districtServerId, IEnumerable<Channel2Group> c2gs, int appId, string endpointUrl, string sessionId)
         {
             foreach(Channel2Group c2g in c2gs)
             {
@@ -78,28 +78,29 @@ namespace West.Presence.CMA.Core.Repositories
         }
         public AppExtended GetAppExtended(string baseUrl, int districtServerId)
         {
-            return _httpClientProvider.GetData<AppExtended>($"{baseUrl}webapi/cma/getAppExtended/{districtServerId}").FirstOrDefault();
+            return _httpClientProvider.GetSingleData<AppExtended>($"{baseUrl}webapi/cma/appsettings/{districtServerId}");
         }
         public IEnumerable<Channel2Group> GetChannel2Group(string baseUrl, int districtServerId)
         {
-            return _httpClientProvider.GetData<Channel2Group>($"{baseUrl}webapi/cma/channel2group/{districtServerId}");
+            return _httpClientProvider.GetSingleData<AppExtended>($"{baseUrl}webapi/cma/appsettings").Channel2Groups;
         }
         public int GetGroupId(string baseUrl, int serverId)
         {
-            return _httpClientProvider.GetData<int>($"{baseUrl}webapi/cma/channel2group/{serverId}" ).FirstOrDefault();
+            return _httpClientProvider.GetData<int>($"{baseUrl}webapi/cma/shoutmegroup/{serverId}" ).FirstOrDefault();
         }
-        public void SetChannel2Group(string baseUrl, int districtServerId, List<Channel2Group> c2gs, int appId, string endpointUrl, string sessionId)
+        public void SetChannel2Group(string baseUrl, int districtServerId, IEnumerable<Channel2Group> c2gs, int appId, string endpointUrl, string sessionId)
         {
-            var payload = new {
-                Channel2Group = c2gs,
+            AppExtended payload = new AppExtended()
+            {
                 appId = appId,
-                endpointUrl = endpointUrl,
-                sessionId = sessionId
+                endpoint = endpointUrl,
+                sessionId = sessionId,
+                dictrictServerId = districtServerId,
+                lastModified = System.DateTime.UtcNow,
+                Channel2Groups = c2gs,
             };
 
-            _httpClientProvider.PostData<string>($"{baseUrl}webapi/cma/channel2group/", payload);
-
-            throw new NotImplementedException();
+            _httpClientProvider.PostData<string>($"{baseUrl}webapi/cma/appsettings", payload);
         }
     }
 }

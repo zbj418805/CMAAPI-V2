@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace West.Presence.CMA.Core.Models
 {
@@ -11,5 +10,6 @@ namespace West.Presence.CMA.Core.Models
         public string endpoint { get; set; }
         public string sessionId { get; set; }
         public DateTime lastModified { get; set; }
+        public IEnumerable<Channel2Group> Channel2Groups { get; set; }
     }
 }

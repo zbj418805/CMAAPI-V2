@@ -16,6 +16,8 @@ using West.Presence.CMA.Core.Servies;
 using West.Presence.CMA.Core.Presentations;
 using West.Presence.CMA.Core.Models;
 using West.Presence.CMA.Core.Repositories;
+using Microsoft.AspNetCore.ResponseCompression;
+using System.IO.Compression;
 
 namespace West.Presence.CMA.Api
 {
@@ -97,7 +99,7 @@ namespace West.Presence.CMA.Api
 
             app.UseStaticFiles();
             //Enable ResponseCompression
-            //app.UseResponseCompression();
+            app.UseResponseCompression();
 
             //Enable Https
             //app.UseHttpsRedirection();
@@ -154,11 +156,11 @@ namespace West.Presence.CMA.Api
         //Config Compression
         private static void ConfigureResponseCompression(IServiceCollection services)
         {
-            //services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
-            // services.AddResponseCompression(options =>
-            // {
-            //     options.Providers.Add<GzipCompressionProvider>();
-            // });
+            services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
+            services.AddResponseCompression(options =>
+            {
+                options.Providers.Add<GzipCompressionProvider>();
+            });
         }
 
         //Add ConfigrationAndOptions
@@ -198,7 +200,6 @@ namespace West.Presence.CMA.Api
             services.AddSingleton<INewsRepository, APINewsRepository>();
             services.AddSingleton<IPeopleRepository, APIPeopleRepository>();
             services.AddSingleton<IChannel2GroupRepository, APIChannel2GroupRepository>();
-            services.AddSingleton<IChannelsRepository, APIChannelsRepository>();
 
             //if (cmaOptions.RepositoryFrom == "api")
             //{

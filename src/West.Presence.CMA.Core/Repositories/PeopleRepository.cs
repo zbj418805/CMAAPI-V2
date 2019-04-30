@@ -42,7 +42,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<Person> GetPeople(int serverId, string baseUrl)
         {
-            var people = _httpClientProvider.GetData<Person>($"{baseUrl}presence/Api/CMA/People/{serverId}");
+            var people = _httpClientProvider.GetData<Person>($"{baseUrl}presence/api/cma/people/{serverId}");
             foreach(Person p in people)
             {
                 p.serverId = serverId;
@@ -53,7 +53,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<PersonInfo> GetPeopleInfo(string baseUrl, IEnumerable<Person> people)
         {
-            return _httpClientProvider.PostData<PersonInfo>($"{baseUrl}presence/Api/CMA/People", people);
+            return _httpClientProvider.PostData<PersonInfo>($"{baseUrl}presence/api/cma/people", people);
         }
     }
 }
