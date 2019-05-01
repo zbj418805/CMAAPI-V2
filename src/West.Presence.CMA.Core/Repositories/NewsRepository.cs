@@ -19,7 +19,6 @@ namespace West.Presence.CMA.Core.Repositories
     public class DBNewsRepository : INewsRepository
     {
         IDatabaseProvider _databaseProvider;
-
         public DBNewsRepository(IDatabaseProvider databaseProvider)
         {
             _databaseProvider = databaseProvider;
@@ -44,9 +43,7 @@ namespace West.Presence.CMA.Core.Repositories
                 n.ServerId = serverId;
 
                 if (n.PublishedDate.Year < 1900)
-                {
                     n.PublishedDate = n.PageLastModified;
-                }
 
                 n.Body = n.Body.Replace("href=\"/", "href=" + "\"" + serverUrl).Replace("src=\"/", "src=" + "\"" + serverUrl);
 
@@ -56,11 +53,9 @@ namespace West.Presence.CMA.Core.Repositories
                 if (!string.IsNullOrEmpty(n.FeaturedImage) && !n.FeaturedImage.StartsWith("http"))
                     n.FeaturedImage = serverUrl + n.FeaturedImage;
 
-
                 news.Add(n);
             }
-
-            throw new NotImplementedException();
+            return news;
         }
 
         private News LoadXmlData(string xml)

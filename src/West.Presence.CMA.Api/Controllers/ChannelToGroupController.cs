@@ -10,7 +10,7 @@ using West.Presence.CMA.Core.Repositories;
 namespace West.Presence.CMA.Api.Controllers
 {
     [ApiController]
-    public class ChannelToGroupController : ControllerBase
+    public class ChannelToGroupController : BaseMethods
     {
         IChannel2GroupRepository _channel2GroupRepository;
         private readonly ILogger _logger = Log.ForContext<ChannelToGroupController>();
@@ -22,6 +22,8 @@ namespace West.Presence.CMA.Api.Controllers
         [HttpGet("cmaapi/1/shoutem/integration/{appId}/groups")]
         public IActionResult GetChannelsToGroups(int appId, [FromQuery] string baseUrl = "")
         {
+            baseUrl = GetBaseUrl(baseUrl);
+
             IEnumerable<Channel2Group> c2g = _channel2GroupRepository.GetChannel2Group(baseUrl, 0);
             if (c2g == null || c2g.Count() == 0)
             {

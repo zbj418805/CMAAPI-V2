@@ -6,9 +6,12 @@ namespace West.Presence.CMA.Core.Presentations
     {
         protected IEnumerable<T> GetPageItems<T>(IEnumerable<T> items, int pageIndex, int pageSize)
         {
-           return items.Skip(pageIndex * pageSize)
+            if (items != null)
+                return items.Skip(pageIndex * pageSize)
                 .Take(pageSize)
                 .ToList();
+            else
+                return items;
         }
     }
 }

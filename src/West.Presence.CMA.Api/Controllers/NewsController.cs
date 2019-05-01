@@ -21,6 +21,9 @@ namespace West.Presence.CMA.Api.Controllers {
 
         [HttpGet ("cmaapi/1/resources/school-messenger.news")]
         public IActionResult GetNews ([FromQuery] QueryPagination page, [FromQuery] QueryFilter filter, [FromQuery] string query = "", [FromQuery] string baseUrl = "") {
+
+            baseUrl = GetBaseUrl(baseUrl);
+
             string search = string.IsNullOrEmpty (query) ? filter.Search == null ? "" : filter.Search.ToLower ().Trim () : query.ToLower ().Trim ();
             if (baseUrl.Length == 0) {
                 _logger.Error ("baseUrl not been provided");

@@ -21,7 +21,7 @@ namespace West.Presence.CMA.Core.Presentations
         public IEnumerable<School> GetSchools(string baseUrl, string searchKey, int pageIndex, int pageSize, out int total)
         {
             var schools = _schoolService.GetSchools(baseUrl, searchKey);
-            total = schools.Count();
+            total = schools == null ? 0 : schools.Count();
             return GetPageItems<School>(schools, pageIndex, pageSize);
         }
     }

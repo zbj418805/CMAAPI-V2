@@ -43,6 +43,9 @@ namespace West.Presence.CMA.Core.Helper
                 try
                 {
                     string content = client.GetStringAsync(url).Result;
+                    if (content == null || content.Length == 0)
+                        return null;
+
                     return JsonConvert.DeserializeObject<List<T>>(content);
                 }
                 catch(Exception e)
@@ -68,6 +71,9 @@ namespace West.Presence.CMA.Core.Helper
                 try
                 {
                     string content = client.GetStringAsync(url).Result;
+                    if (content == null || content.Length == 0)
+                        return default(T);
+
                     return JsonConvert.DeserializeObject<T>(content);
                 }
                 catch (Exception e)

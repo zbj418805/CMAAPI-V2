@@ -5,7 +5,7 @@ using West.Presence.CMA.Core.Servies;
 namespace West.Presence.CMA.Api.Controllers
 {
     [ApiController]
-    public class ChannelsController : ControllerBase
+    public class ChannelsController : BaseMethods
     {
         private readonly ISchoolsService _schoolsService;
 
@@ -21,6 +21,8 @@ namespace West.Presence.CMA.Api.Controllers
             {
                 return NoContent();
             }
+
+            baseUrl = GetBaseUrl(baseUrl);
 
             var schools = _schoolsService.GetSchools(baseUrl, "");
 

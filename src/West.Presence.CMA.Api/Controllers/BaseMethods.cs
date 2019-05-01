@@ -132,5 +132,24 @@ namespace West.Presence.CMA.Api.Controllers
             }
             return links;
         }
+
+        protected string GetBaseUrl(string baseUrl)
+        {
+            if (baseUrl.Length > 0)
+            {
+                if (baseUrl.EndsWith('/'))
+                    return baseUrl;
+                else
+                    return baseUrl + '/';
+            }
+            else
+            {
+                if (Request != null)
+                    return Request.Scheme + "://" + Request.Host.Host + "/";
+                else
+                    return "";
+            }
+                
+        }
     }
 }

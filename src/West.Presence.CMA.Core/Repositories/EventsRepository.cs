@@ -13,10 +13,8 @@ namespace West.Presence.CMA.Core.Repositories
 
     public class DBEventsRepository : IEventsRepository
     {
-        
         public DBEventsRepository(string baseUrl)
         {
-
         }
 
         public IEnumerable<Event> GetEvents(int serverId, string baseUrl, DateTime startDate, DateTime endDate)
@@ -27,9 +25,7 @@ namespace West.Presence.CMA.Core.Repositories
 
     public class APIEventsRepository : IEventsRepository
     {
-
         private readonly IHttpClientProvider _httpClientProvider;
-
         public APIEventsRepository(IHttpClientProvider httpClientProvider)
         {
             _httpClientProvider = httpClientProvider;

@@ -71,12 +71,17 @@ namespace West.Presence.CMA.Core.Helper
         public IDictionary<string, object> Get (params string[] keys)
         {
             try {
-                var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = 5 };
                 var keyValues = new Dictionary<string, object>();
-                //TODO: It may lost value in parallel filling, to be investigated
+                /*  It lost some value in parallel filling
+                var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = 5 };
                 Parallel.ForEach(keys, parallelOptions, (key) => {
                     keyValues[key] = Get(key);
                 });
+                */
+                foreach (string key in keys)
+                {
+                    keyValues[key] = Get(key);
+                }
                 return keyValues;
             }
             catch(Exception e)

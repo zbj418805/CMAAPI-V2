@@ -9,16 +9,12 @@ namespace West.Presence.CMA.Core.Repositories
     public interface IPeopleRepository
     {
         IEnumerable<Person> GetPeople(int serverId, string baseUrl);
-
         IEnumerable<PersonInfo> GetPeopleInfo(string baseUrl, IEnumerable<Person> people);
     }
 
     public class DBPeopleRepository : IPeopleRepository
     {
-        public DBPeopleRepository()
-        {
-
-        }
+        public DBPeopleRepository() { }
 
         public IEnumerable<Person> GetPeople(int serverId, string baseUrl)
         {
