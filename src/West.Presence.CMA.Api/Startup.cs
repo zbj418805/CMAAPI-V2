@@ -130,17 +130,17 @@ namespace West.Presence.CMA.Api
 
         private void LogConfig()
         {
-            // var loggingOptions = Configuration.GetSection("LoggingOptions").Get<LoggingOptions>();
-            // _logger.Debug($"LoggingOptions:RollingFile:Enabled = {loggingOptions.RollingFile.Enabled}");
-            // if (loggingOptions.RollingFile.Enabled)
-            //     _logger.Debug($"LoggingOptions:RollingFile:Filepath = {loggingOptions.RollingFile.FilePath}");
+            //var loggingOptions = Configuration.GetSection("LoggingOptions").Get<LoggingOptions>();
+            //_logger.Debug($"LoggingOptions:RollingFile:Enabled = {loggingOptions.RollingFile.Enabled}");
+            //if (loggingOptions.RollingFile.Enabled)
+            //    _logger.Debug($"LoggingOptions:RollingFile:Filepath = {loggingOptions.RollingFile.FilePath}");
 
-            // var configServerClientSettingsOptions = Configuration.GetSection("spring:cloud:config").Get<ConfigServerClientSettingsOptions>();
-            // _logger.Debug($"spring:cloud:config:name = {configServerClientSettingsOptions.Name}");
-            // _logger.Debug($"spring:cloud:config:env = {configServerClientSettingsOptions.Env}");
-            // _logger.Debug($"spring:cloud:config:enabled = {configServerClientSettingsOptions.Enabled}");
-            // _logger.Debug($"spring:cloud:config:failFast = {configServerClientSettingsOptions.FailFast}");
-            // _logger.Debug($"spring:cloud:config:uri = {configServerClientSettingsOptions.Uri}");
+            //var configServerClientSettingsOptions = Configuration.GetSection("spring:cloud:config").Get<ConfigServerClientSettingsOptions>();
+            //_logger.Debug($"spring:cloud:config:name = {configServerClientSettingsOptions.Name}");
+            //_logger.Debug($"spring:cloud:config:env = {configServerClientSettingsOptions.Env}");
+            //_logger.Debug($"spring:cloud:config:enabled = {configServerClientSettingsOptions.Enabled}");
+            //_logger.Debug($"spring:cloud:config:failFast = {configServerClientSettingsOptions.FailFast}");
+            //_logger.Debug($"spring:cloud:config:uri = {configServerClientSettingsOptions.Uri}");
         }
 
         private static void ConfigMvc(IServiceCollection services)

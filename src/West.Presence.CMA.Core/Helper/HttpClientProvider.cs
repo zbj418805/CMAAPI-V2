@@ -36,7 +36,7 @@ namespace West.Presence.CMA.Core.Helper
 
                 if (u.Scheme == "https")
                 {
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                     ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
                 }
 
@@ -64,7 +64,7 @@ namespace West.Presence.CMA.Core.Helper
 
                 if (u.Scheme == "https")
                 {
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                     ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
                 }
 
@@ -91,7 +91,7 @@ namespace West.Presence.CMA.Core.Helper
                 Uri u = new Uri(url);
                 if (u.Scheme == "https")
                 {
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                     ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
                 }
 
@@ -108,7 +108,11 @@ namespace West.Presence.CMA.Core.Helper
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode)
                     {
-                        return JsonConvert.DeserializeObject<List<T>>(response.Content.ReadAsStringAsync().Result);
+                        string body = response.Content.ReadAsStringAsync().Result;
+                        if (string.IsNullOrEmpty(body))
+                            return null;
+
+                        return JsonConvert.DeserializeObject<List<T>>(body);
                     }
                     else
                     {
@@ -130,7 +134,7 @@ namespace West.Presence.CMA.Core.Helper
                 Uri u = new Uri(url);
                 if (u.Scheme == "https")
                 {
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                     ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
                 }
 
@@ -146,7 +150,11 @@ namespace West.Presence.CMA.Core.Helper
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode)
                     {
-                        var results =  JsonConvert.DeserializeObject<SoapReturnData<T>>(response.Content.ReadAsStringAsync().Result);
+                        string body = response.Content.ReadAsStringAsync().Result;
+                        if (string.IsNullOrEmpty(body))
+                            return null;
+
+                        var results =  JsonConvert.DeserializeObject<SoapReturnData<T>>(body);
                         return results.d;
                     }
                     else
