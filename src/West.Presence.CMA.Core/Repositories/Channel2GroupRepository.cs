@@ -14,7 +14,7 @@ namespace West.Presence.CMA.Core.Repositories
         IEnumerable<Channel2Group> GetChannel2Group(string baseUrl, int districtServerId);
         void SetChannel2Group(string baseUrl, int districtServerId, IEnumerable<Channel2Group> c2gs, int appId, string endpointUrl, string sessionId);
         int GetGroupId(string baseUrl, int serverId);
-        AppExtended GetAppExtended(string baseUrl, int districtServerId);
+        AppSettings GetAppExtended(string baseUrl, int districtServerId);
     }
 
     public class DBChannel2GroupRepository : IChannel2GroupRepository
@@ -35,7 +35,7 @@ namespace West.Presence.CMA.Core.Repositories
                 _databaseProvider.Excute("[dbo].[cma_c2g.set]", new { server_id = c2g.channelId, group_id = c2g.groupId }, CommandType.StoredProcedure);
             }
             
-            SetAppExtended(new AppExtended
+            SetAppExtended(new AppSettings()
             {
                 dictrictServerId = districtServerId,
                 appId = appId,
@@ -49,13 +49,13 @@ namespace West.Presence.CMA.Core.Repositories
                 new { sId = serverId },
                 CommandType.Text);
         }
-        public AppExtended GetAppExtended(string baseUrl, int districtServerId)
+        public AppSettings GetAppExtended(string baseUrl, int districtServerId)
         {
-            return _databaseProvider.GetData<AppExtended>("SELECT app_id as appId, endpoint, session_id as sessionId, last_modified as lastModified, district_server_id as dictrictServerId FROM cma_extended WHERE district_server_id=@dsi ",
+            return _databaseProvider.GetData<AppSettings>("SELECT app_id as appId, endpoint, session_id as sessionId, last_modified as lastModified, district_server_id as dictrictServerId FROM cma_extended WHERE district_server_id=@dsi ",
                 new { dsi = districtServerId },
                 System.Data.CommandType.Text).FirstOrDefault();
         }
-        private void SetAppExtended(AppExtended appExt)
+        private void SetAppExtended(AppSettings appExt)
         {
             _databaseProvider.Excute("[dbo].[cma_extended.set]",
                 new
@@ -76,13 +76,17 @@ namespace West.Presence.CMA.Core.Repositories
         {
             _httpClientProvider = httpClientProvider;
         }
-        public AppExtended GetAppExtended(string baseUrl, int districtServerId)
+        public AppSettings GetAppExtended(string baseUrl, int districtServerId)
         {
-            return _httpClientProvider.GetSingleData<AppExtended>($"{baseUrl}webapi/cma/appsettings/{districtServerId}");
+            return _httpClientProvider.GetSingleData<AppSettings>($"{baseUrl}webapi/cma/appsettings/{districtServerId}");
         }
         public IEnumerable<Channel2Group> GetChannel2Group(string baseUrl, int districtServerId)
         {
-            return _httpClientProvider.GetSingleData<AppExtended>($"{baseUrl}webapi/cma/appsettings").Channel2Groups;
+            var appSettings = _httpClientProvider.GetSingleData<AppSettings>($"{baseUrl}webapi/cma/appsettings");
+            if (appSettings != null)
+                return appSettings.Channel2Groups;
+            else
+                return null;
         }
         public int GetGroupId(string baseUrl, int serverId)
         {
@@ -90,7 +94,7 @@ namespace West.Presence.CMA.Core.Repositories
         }
         public void SetChannel2Group(string baseUrl, int districtServerId, IEnumerable<Channel2Group> c2gs, int appId, string endpointUrl, string sessionId)
         {
-            AppExtended payload = new AppExtended()
+            AppSettings payload = new AppSettings()
             {
                 appId = appId,
                 endpoint = endpointUrl,

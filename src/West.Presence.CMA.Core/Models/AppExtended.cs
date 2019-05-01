@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace West.Presence.CMA.Core.Models
 {
-    public class AppExtended
+    public class AppSettings
     {
         public int dictrictServerId { get; set; }
         public int appId { get; set; }

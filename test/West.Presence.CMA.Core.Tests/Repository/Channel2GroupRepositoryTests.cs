@@ -31,8 +31,16 @@ namespace West.Presence.CMA.Core.Tests.Repository
             }
             var c2g = lsC2G.AsEnumerable();
 
+            AppSettings setting = new AppSettings()
+            {
+                Channel2Groups = lsC2G,
+                appId = 12,
+                endpoint = "asd",
+                sessionId = "asdfasdf"
+            };
+
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<Channel2Group>("http://test.url/webapi/cma/channel2group/0")).Returns(lsC2G);
+            mockHttpClientProvider.Setup(p => p.GetSingleData<AppSettings>("http://test.url/webapi/cma/appsettings")).Returns(setting);
 
             APIChannel2GroupRepository channelRepo = new APIChannel2GroupRepository(mockHttpClientProvider.Object);
 
@@ -46,26 +54,24 @@ namespace West.Presence.CMA.Core.Tests.Repository
         [Fact]
         public void Test_Channel2Group_Get_No_Channel2Group()
         {
-            List<Channel2Group> lsC2G = new List<Channel2Group>();
-            for (int i = 0; i < 10; i++)
+            AppSettings setting = new AppSettings()
             {
-                lsC2G.Add(new Channel2Group()
-                {
-                    channelId = 123
-                });
-            }
-            var c2g = lsC2G.AsEnumerable();
+                Channel2Groups = null,
+                appId = 12,
+                endpoint = "asd",
+                sessionId = "asdfasdf"
+            };
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<Channel2Group>("http://test.url/presence/Api/CMA/Channel2Groupss")).Returns(lsC2G);
+            mockHttpClientProvider.Setup(p => p.GetSingleData<AppSettings>("http://test.url/webapi/cma/appsettings")).Returns(setting);
 
             APIChannel2GroupRepository channelRepo = new APIChannel2GroupRepository(mockHttpClientProvider.Object);
 
             var resultChannel2Group = channelRepo.GetChannel2Group("http://test.url/", 0);
 
-            Assert.NotNull(resultChannel2Group);
+            Assert.Null(resultChannel2Group);
 
-            Assert.Empty(resultChannel2Group);
+            //Assert.Empty(resultChannel2Group);
         }
     }
 }
