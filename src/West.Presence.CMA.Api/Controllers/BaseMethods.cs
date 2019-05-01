@@ -107,7 +107,6 @@ namespace West.Presence.CMA.Api.Controllers
                 links.prev += "&query=" + query;
             }
 
-            
             links.next = $"{RequestPath}?filter[categories]={filter.Categories}&filter[channels]={filter.Channels}&page[offset]={nextOffset}&page[limit]={page.Limit}";
             if (startTime != null)
             {
@@ -135,21 +134,15 @@ namespace West.Presence.CMA.Api.Controllers
 
         protected string GetBaseUrl(string baseUrl)
         {
-            if (baseUrl.Length > 0)
-            {
-                if (baseUrl.EndsWith('/'))
-                    return baseUrl;
-                else
-                    return baseUrl + '/';
-            }
+            if (string.IsNullOrEmpty(baseUrl))
+                return Request == null ? "" : Request.Scheme + "://" + Request.Host.Host + "/";
             else
-            {
-                if (Request != null)
-                    return Request.Scheme + "://" + Request.Host.Host + "/";
-                else
-                    return "";
-            }
-                
+                return baseUrl.EndsWith('/') ? baseUrl : baseUrl + '/';
+        }
+
+        protected string GetSearchKey(string filter, string query)
+        {
+            return $"{filter}{query}".ToLower().Trim();
         }
     }
 }

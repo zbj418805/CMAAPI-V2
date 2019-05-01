@@ -45,8 +45,11 @@ namespace West.Presence.CMA.Core.Servies
                     //Add to cache
                     _cacheProvider.Add(cacheKey, news, cacheDuration);
                 }
+
                 //Add to news collection
-                allNews.AddRange(searchKey == "" ? news : news.Where(n => n.Title.Contains(searchKey)));
+                allNews.AddRange(string.IsNullOrEmpty(searchKey) ? news : news.Where(n => n.Title.ToLower().Contains(searchKey) ||
+                                                                                            n.Summary.ToLower().Contains(searchKey) ||
+                                                                                              n.Body.ToLower().Contains(searchKey)));
             }
 
             return allNews.OrderByDescending(x => x.PublishedDate);

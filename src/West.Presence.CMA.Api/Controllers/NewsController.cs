@@ -24,7 +24,8 @@ namespace West.Presence.CMA.Api.Controllers {
 
             baseUrl = GetBaseUrl(baseUrl);
 
-            string search = string.IsNullOrEmpty (query) ? filter.Search == null ? "" : filter.Search.ToLower ().Trim () : query.ToLower ().Trim ();
+            string search = GetSearchKey(filter.Search, query);
+
             if (baseUrl.Length == 0) {
                 _logger.Error ("baseUrl not been provided");
                 return NoContent ();
@@ -32,49 +33,47 @@ namespace West.Presence.CMA.Api.Controllers {
 
             var schools = _schoolsService.GetSchools (baseUrl, "");
 
-            if (IsResourcesRequestValid (filter, schools, new List<int> () { 1, 2 })) {
+            if (IsResourcesRequestValid(filter, schools, new List<int>() { 1, 2 })) {
                 int total;
-                var news = _newsPresentation.GetNews (filter.ChannelServerIds, baseUrl, search, page.Offset, page.Limit, out total);
+                var news = _newsPresentation.GetNews(filter.ChannelServerIds, baseUrl, search, page.Offset, page.Limit, out total);
 
-                var links = string.IsNullOrEmpty (search) ? this.GetLinks (baseUrl, filter, page, "", true, total) : null;
+                var links = string.IsNullOrEmpty(search) ? this.GetLinks (baseUrl, filter, page, "", true, total) : null;
 
                 if (news.Count () == 0) {
-                    _logger.Information ("nocotent, success");
+                    _logger.Information ("no news found");
                     return Ok (new { Data = schools, Links = links });
                 }
 
-                List<string> lsTranslatableFields = new List<string> { "attributes.title", "attributes.summary", "attributes.body", "attributes.pageTitle" };
-
                 var dataList = from p in news
-                where string.IsNullOrEmpty (search) || p.Title.ToLower ().Contains (search) || p.Summary.ToLower ().Contains (search) || p.Body.ToLower ().Contains (search)
-                select new {
-                    id = p.Id.ToString (),
-                    type = "school-messenger.news",
-                    attributes = new {
-                    title = p.Title,
-                    featuredImage = string.IsNullOrEmpty (p.FeaturedImage) ? p.FeaturedImage : Uri.EscapeUriString (p.FeaturedImage),
-                    imageTitle = p.ImageTitle,
-                    summary = p.Summary,
-                    body = p.Body,
-                    linkOfCurrentPage = p.LinkOfCurrentPage,
-                    publishedDate = p.PublishedDate.ToString ("yyyy-MM-ddTHH:mm:ssZ"),
-                    pageLastModified = p.PageLastModified.ToString ("yyyy-MM-ddTHH:mm:ssZ"),
-                    pageTitle = p.PageTitle
-                    },
-                    meta = new {
-                        i18n = new {
-                            translatableFields = lsTranslatableFields
-                        }
-                    },
-                    relationships = new {
-                        categories = new { data = new object[] { new { type = "school-messenger.categories", id = "2" } } },
-                        channels = new { data = new object[] { new { type = "school-messenger.channels", id = p.ServerId.ToString () } } },
-                    }
-                };
+                                select new {
+                                    id = p.Id.ToString (),
+                                    type = "school-messenger.news",
+                                    attributes = new {
+                                    title = p.Title,
+                                    featuredImage = string.IsNullOrEmpty (p.FeaturedImage) ? p.FeaturedImage : Uri.EscapeUriString (p.FeaturedImage),
+                                    imageTitle = p.ImageTitle,
+                                    summary = p.Summary,
+                                    body = p.Body,
+                                    linkOfCurrentPage = p.LinkOfCurrentPage,
+                                    publishedDate = p.PublishedDate.ToString ("yyyy-MM-ddTHH:mm:ssZ"),
+                                    pageLastModified = p.PageLastModified.ToString ("yyyy-MM-ddTHH:mm:ssZ"),
+                                    pageTitle = p.PageTitle
+                                    },
+                                    meta = new {
+                                        i18n = new {
+                                            translatableFields = new List<string> { "attributes.title", "attributes.summary", "attributes.body", "attributes.pageTitle" }
+                                        }
+                                    },
+                                    relationships = new {
+                                        categories = new { data = new object[] { new { type = "school-messenger.categories", id = "2" } } },
+                                        channels = new { data = new object[] { new { type = "school-messenger.channels", id = p.ServerId.ToString () } } },
+                                    }
+                                };
 
                 return Ok (new { Data = dataList, Links = links });
             }
 
+            _logger.Error("validation failed");
             return NoContent ();
         }
     }

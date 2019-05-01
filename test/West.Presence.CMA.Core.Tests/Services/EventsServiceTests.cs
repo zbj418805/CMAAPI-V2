@@ -35,28 +35,10 @@ namespace West.Presence.CMA.Core.Tests.Services
         [Fact]
         public void Test_Events_From_CacheProvider_No_Search()
         {
-            List<Event> lsEvents1 = new List<Event>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsEvents1.Add(new Event()
-                {
-                    Name = $"Cached Events 1-{i}",
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow
-                });
-            }
+            List<Event> lsEvents1 = GetSampleEvents(10, "Cached ");
             var events1 = lsEvents1.AsEnumerable();
 
-            List<Event> lsEvents2 = new List<Event>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsEvents2.Add(new Event()
-                {
-                    Name = $"Cached Events 2-{i}",
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow
-                });
-            }
+            List<Event> lsEvents2 = GetSampleEvents(10, "Cached ");
             var events2 = lsEvents2.AsEnumerable();
 
             mockCacheProvider = new Mock<ICacheProvider>();
@@ -75,28 +57,10 @@ namespace West.Presence.CMA.Core.Tests.Services
         [Fact]
         public void Test_Events_From_Repo_No_Search()
         {
-            List<Event> lsEvents1 = new List<Event>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsEvents1.Add(new Event()
-                {
-                    Name = $"Repo Events 1-{i}",
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow
-                });
-            }
+            List<Event> lsEvents1 = GetSampleEvents(10, "Repo ");
             var events1 = lsEvents1.AsEnumerable();
 
-            List<Event> lsEvents2 = new List<Event>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsEvents2.Add(new Event()
-                {
-                    Name = $"Repo Events 2-{i}",
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow
-                });
-            }
+            List<Event> lsEvents2 = GetSampleEvents(10, "Repo ");
             var events2 = lsEvents2.AsEnumerable();
 
             //mock up cache provider
@@ -117,28 +81,10 @@ namespace West.Presence.CMA.Core.Tests.Services
         [Fact]
         public void Test_Events_From_Repo_And_Cache_No_Search()
         {
-            List<Event> lsEvents1 = new List<Event>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsEvents1.Add(new Event()
-                {
-                    Name = $"Cache Events 1-{i}",
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow
-                });
-            }
+            List<Event> lsEvents1 = GetSampleEvents(10, "Cache ");
             var events1 = lsEvents1.AsEnumerable();
 
-            List<Event> lsEvents2 = new List<Event>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsEvents2.Add(new Event()
-                {
-                    Name = $"Repo Events 1-{i}",
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow
-                });
-            }
+            List<Event> lsEvents2 = GetSampleEvents(10, "Repo ");
             var events2 = lsEvents2.AsEnumerable();
 
             //mock up cache provider
@@ -159,28 +105,10 @@ namespace West.Presence.CMA.Core.Tests.Services
         [Fact]
         public void Test_Events_From_Repo_And_Cache_Search()
         {
-            List<Event> lsEvents1 = new List<Event>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsEvents1.Add(new Event()
-                {
-                    Name = $"Cached Events 1-{i}",
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow
-                });
-            }
+            List<Event> lsEvents1 = GetSampleEvents(10, "Cache ");
             var events1 = lsEvents1.AsEnumerable();
 
-            List<Event> lsEvents2 = new List<Event>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsEvents2.Add(new Event()
-                {
-                    Name = $"Repo Events 1-{i}",
-                    StartTime = DateTime.UtcNow,
-                    EndTime = DateTime.UtcNow
-                });
-            }
+            List<Event> lsEvents2 = GetSampleEvents(10, "Repo ");
             var events2 = lsEvents2.AsEnumerable();
 
             //mock up cache provider
@@ -196,6 +124,22 @@ namespace West.Presence.CMA.Core.Tests.Services
 
             Assert.NotNull(resultEvents);
             Assert.Equal(2, resultEvents.Count());
+        }
+
+        private List<Event> GetSampleEvents(int count, string title)
+        {
+            List<Event> lsEvents = new List<Event>();
+            for (int i = 0; i < 10; i++)
+            {
+                lsEvents.Add(new Event()
+                {
+                    Name = $"{title} Events 1-{i}",
+                    StartTime = DateTime.UtcNow,
+                    EndTime = DateTime.UtcNow
+                });
+            }
+
+            return lsEvents;
         }
     }
 }

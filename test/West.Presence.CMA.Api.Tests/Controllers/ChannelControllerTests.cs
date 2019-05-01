@@ -33,6 +33,20 @@ namespace West.Presence.CMA.Api.Tests.Controllers
         }
 
         [Fact]
+        public void Test_ChannelEndpoint_WithUrlNotbackslash_Returns_OK()
+        {
+            // Arrange
+
+            _sut = new ChannelsController(mockSchoolsService.Object);
+            // Act
+            var result = _sut.GetChannels("http://localhost");
+
+            // Assert
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(0, _sut.ModelState.ErrorCount);
+        }
+
+        [Fact]
         public void Test_ChannelEndpoint_NoUrl_Returns_Contents()
         {
             // Arrange

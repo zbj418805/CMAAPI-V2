@@ -23,7 +23,7 @@ namespace West.Presence.CMA.Api.Controllers
         {
             baseUrl = GetBaseUrl(baseUrl);
 
-            string search = string.IsNullOrEmpty(query) ? filter.Search == null ? "" : filter.Search.ToLower().Trim() : query.ToLower().Trim();
+            string search = GetSearchKey(filter.Search, query);
 
             if (baseUrl.Length == 0)
             {
@@ -40,10 +40,10 @@ namespace West.Presence.CMA.Api.Controllers
 
                 if (schools.Count() == 0)
                 {
-                    _logger.Information("nocotent, success");
+                    _logger.Information("no schools");
                     return Ok(new { Data = schools, Links = links });
                 }
-
+                
                 var dataList = from sch in schools
                                select new
                                {
@@ -75,6 +75,7 @@ namespace West.Presence.CMA.Api.Controllers
                 return Ok(new { Data = dataList, Links = links });
             }
 
+            _logger.Information("validation failed");
             return NoContent();
         }
     }

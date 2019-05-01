@@ -29,7 +29,8 @@ namespace West.Presence.CMA.Api.Controllers
         {
             baseUrl = GetBaseUrl(baseUrl);
 
-            string search = string.IsNullOrEmpty(query) ? filter.Search == null ? "" : filter.Search.ToLower().Trim() : query.ToLower().Trim();
+            string search = GetSearchKey(filter.Search, query);
+
             if (baseUrl.Length == 0)
             {
                 _logger.Error("baseUrl not been provided");
@@ -64,10 +65,9 @@ namespace West.Presence.CMA.Api.Controllers
 
                 if (events.Count() == 0)
                 {
+                    _logger.Information("no events found");
                     return NoContent();
                 }
-
-                List<string> lsTranslatableFields = new List<string> { "attributes.name", "attributes.description" };
 
                 var eventsData = from c in events
                                        select new
@@ -88,7 +88,7 @@ namespace West.Presence.CMA.Api.Controllers
                                            {
                                                i18n = new
                                                {
-                                                   translatableFields = lsTranslatableFields
+                                                   translatableFields = new List<string> { "attributes.name", "attributes.description" }
                                                }
                                            },
                                            relationships = new
@@ -100,6 +100,7 @@ namespace West.Presence.CMA.Api.Controllers
                 return Ok(new { data = eventsData, links = links });
             }
 
+            _logger.Error("validation failed");
             return NoContent();
         }
     }

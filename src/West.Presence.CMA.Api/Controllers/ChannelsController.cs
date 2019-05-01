@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using West.Presence.CMA.Core.Servies;
 
 namespace West.Presence.CMA.Api.Controllers
@@ -8,6 +9,7 @@ namespace West.Presence.CMA.Api.Controllers
     public class ChannelsController : BaseMethods
     {
         private readonly ISchoolsService _schoolsService;
+        private readonly ILogger _logger = Log.ForContext<ChannelsController>();
 
         public ChannelsController(ISchoolsService schoolsService)
         {
@@ -17,17 +19,19 @@ namespace West.Presence.CMA.Api.Controllers
         [HttpGet("cmaapi/1/channels")]
         public IActionResult GetChannels([FromQuery] string baseUrl = "")
         {
+            baseUrl = GetBaseUrl(baseUrl);
+
             if (baseUrl.Length == 0)
             {
+                _logger.Error("baseUrl not been provided");
                 return NoContent();
             }
 
-            baseUrl = GetBaseUrl(baseUrl);
-
             var schools = _schoolsService.GetSchools(baseUrl, "");
 
-            if (schools.Count() == 0)
+            if (schools == null || schools.Count() == 0)
             {
+                _logger.Error("no schools been found");
                 return NoContent();
             }
 

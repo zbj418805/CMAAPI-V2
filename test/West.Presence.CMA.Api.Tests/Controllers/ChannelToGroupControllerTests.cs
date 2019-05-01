@@ -63,8 +63,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Arrange
             var c2gs = GetSamepleC2Gs(5);
             var appid = 123;
-            var endpointUrl = "http://endpoint";
-            var sessionId = "seccsiondi";
+            var endpoint = "http://endpoint";
+            var sessionId = "seccsioid";
             Dictionary<int, int> dicC2Gs = new Dictionary<int, int>();
             dicC2Gs.Add(1, 3);
             dicC2Gs.Add(4, 8);
@@ -73,12 +73,12 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             {
                 data = new {
                     channelsToGroups = dicC2Gs,
-                    endpointUrl = endpointUrl,
+                    endpoint = endpoint,
                     sessionId = sessionId
                 }
             };
 
-            mockIChannel2GroupRepository.Setup(p => p.SetChannel2Group("http://localhost/", 0, c2gs, appid, endpointUrl, sessionId));
+            mockIChannel2GroupRepository.Setup(p => p.SetChannel2Group("http://localhost/", 0, c2gs, appid, endpoint, sessionId));
 
             _sut = new ChannelToGroupController(mockIChannel2GroupRepository.Object);
 

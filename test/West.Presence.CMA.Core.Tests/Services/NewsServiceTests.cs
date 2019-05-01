@@ -33,26 +33,9 @@ namespace West.Presence.CMA.Core.Tests.Services
         [Fact]
         public void Test_News_From_CacheProvider_With_No_Search()
         {
-            List<News> lsNews1 = new List<News>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsNews1.Add(new News()
-                {
-                    Title = $"Cached News 1-{i}",
-                    Body = $"Happened at {1} ..."
-                });
-            }
+            List<News> lsNews1 = GetSampleNews(10, "Repo");
             var news1 = lsNews1.AsEnumerable();
-
-            List<News> lsNews2 = new List<News>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsNews2.Add(new News()
-                {
-                    Title = $"Cached News 2-{i}",
-                    Body = $"Happened at {1} ..."
-                });
-            }
+            List<News> lsNews2 = GetSampleNews(10, "Cached");
             var news2 = lsNews2.AsEnumerable();
 
             mockNewsRepository = new Mock<INewsRepository>();
@@ -72,26 +55,9 @@ namespace West.Presence.CMA.Core.Tests.Services
         [Fact]
         public void Test_News_From_Repo_With_No_Search()
         {
-            List<News> lsNews1 = new List<News>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsNews1.Add(new News()
-                {
-                    Title = $"Repo News 1-{i}",
-                    Body = $"Happened at {1} ..."
-                });
-            }
+            List<News> lsNews1 = GetSampleNews(10, "Repo");
             var news1 = lsNews1.AsEnumerable();
-
-            List<News> lsNews2 = new List<News>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsNews2.Add(new News()
-                {
-                    Title = $"Repo News 2-{i}",
-                    Body = $"Happened at {1} ..."
-                });
-            }
+            List<News> lsNews2 = GetSampleNews(10, "Repo");
             var news2 = lsNews2.AsEnumerable();
 
             mockCacheProvider = new Mock<ICacheProvider>();
@@ -112,26 +78,9 @@ namespace West.Presence.CMA.Core.Tests.Services
         [Fact]
         public void Test_News_From_CacheProvider_And_Repo_With_No_Search()
         {
-            List<News> lsNews1 = new List<News>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsNews1.Add(new News()
-                {
-                    Title = $"Cached News {i}",
-                    Body = $"Happened at {1} ..."
-                });
-            }
+            List<News> lsNews1 = GetSampleNews(10, "Cached");
             var news1 = lsNews1.AsEnumerable();
-
-            List<News> lsNews2 = new List<News>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsNews2.Add(new News()
-                {
-                    Title = $"Repo News {i}",
-                    Body = $"Happened at {1} ..."
-                });
-            }
+            List<News> lsNews2 = GetSampleNews(10, "Repo");
             var news2 = lsNews2.AsEnumerable();
 
             mockNewsRepository = new Mock<INewsRepository>();
@@ -150,26 +99,9 @@ namespace West.Presence.CMA.Core.Tests.Services
         [Fact]
         public void Test_News_From_CacheProvider_And_Repo_With_Search()
         {
-            List<News> lsNews1 = new List<News>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsNews1.Add(new News()
-                {
-                    Title = $"Cached News {i}",
-                    Body = $"Happened at {1} ..."
-                });
-            }
+            List<News> lsNews1 = GetSampleNews(10, "Cached");
             var news1 = lsNews1.AsEnumerable();
-
-            List<News> lsNews2 = new List<News>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsNews2.Add(new News()
-                {
-                    Title = $"Repo News {i}",
-                    Body = $"Happened at {1} ..."
-                });
-            }
+            List<News> lsNews2 = GetSampleNews(10, "Repo");
             var news2 = lsNews2.AsEnumerable();
 
             mockNewsRepository = new Mock<INewsRepository>();
@@ -183,6 +115,21 @@ namespace West.Presence.CMA.Core.Tests.Services
 
             Assert.NotNull(resultNews);
             Assert.Equal(2, resultNews.Count());
+        }
+
+        private List<News> GetSampleNews(int count, string title)
+        {
+            List<News> lsNews = new List<News>();
+            for(int i =0; i < count; i++)
+            {
+                lsNews.Add(new News()
+                {
+                    Title = $"{title} News {i}",
+                    Body = $"Happened at {i} ...",
+                    Summary = "asdfas"
+                });
+            }
+            return lsNews;
         }
     }
 }
