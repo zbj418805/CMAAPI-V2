@@ -9,10 +9,10 @@ namespace West.Presence.CMA.Api.Model
     {
         public QueryPagination()
         {
-            Offset = 0;
-            Limit = 20;
+            offset = 0;
+            limit = 20;
         }
-        public int Offset { get; set; }
-        public int Limit { get; set; }
+        public int offset { get; set; }
+        public int limit { get; set; }
     }
 }

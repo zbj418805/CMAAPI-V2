@@ -18,6 +18,7 @@ using West.Presence.CMA.Core.Models;
 using West.Presence.CMA.Core.Repositories;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
+using System.Net.Http.Headers;
 
 namespace West.Presence.CMA.Api
 {
@@ -25,6 +26,7 @@ namespace West.Presence.CMA.Api
     {
         private readonly IHostingEnvironment _env;
         private readonly ILogger _logger;
+        private readonly CMAOptions _options;
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
@@ -179,8 +181,6 @@ namespace West.Presence.CMA.Api
         //Dependency Injection for applciation services
         protected virtual void ConfigApplicationServices(IServiceCollection services)
         {
-            //var cmaOptions = Configuration.GetSection("CMAOptions").Get<CMAOptions>();
-
             services.AddSingleton<ICacheProvider, CacheProvider>();
             services.AddSingleton<IDatabaseProvider, DatabaseProvider>();
             services.AddSingleton<IHttpClientProvider, HttpClientProvider>();
@@ -194,31 +194,20 @@ namespace West.Presence.CMA.Api
             services.AddSingleton<INewsService, NewsService>();
             services.AddSingleton<IPeopleService, PeopleService>();
             services.AddSingleton<ISchoolsService, SchoolsService>();
-            //Add Repository Layer
+            //Add API Repository Layer
             services.AddSingleton<ISchoolsRepository, APISchoolsRepository>();
             services.AddSingleton<IEventsRepository, APIEventsRepository>();
             services.AddSingleton<INewsRepository, APINewsRepository>();
             services.AddSingleton<IPeopleRepository, APIPeopleRepository>();
             services.AddSingleton<IChannel2GroupRepository, APIChannel2GroupRepository>();
 
-            //if (cmaOptions.RepositoryFrom == "api")
-            //{
-            //    services.AddSingleton<ISchoolsRepository, APISchoolsRepository>();
-            //    services.AddSingleton<IEventsRepository, APIEventsRepository>();
-            //    services.AddSingleton<INewsRepository, APINewsRepository>();
-            //    services.AddSingleton<IPeopleRepository, APIPeopleRepository>();
-            //    services.AddSingleton<IChannel2GroupRepository, APIChannel2GroupRepository>();
-            //    services.AddSingleton<IChannelsRepository, APIChannelsRepository>();
-            //}
-            //else if(cmaOptions.RepositoryFrom == "db")
-            //{
+            //Add DBRepository Layer
             //    services.AddSingleton<ISchoolsRepository, DBSchoolsRepository>();
             //    services.AddSingleton<IEventsRepository, DBEventsRepository>();
             //    services.AddSingleton<INewsRepository, DBNewsRepository>();
             //    services.AddSingleton<IPeopleRepository, DBPeopleRepository>();
             //    services.AddSingleton<IChannel2GroupRepository, DBChannel2GroupRepository>();
-            //    services.AddSingleton<IChannelsRepository, DBChannelsRepository>();
-            //}
+
         }
 
         private void ConfigureDistributedCache(IServiceCollection services)
@@ -246,10 +235,14 @@ namespace West.Presence.CMA.Api
 
         private void ConfigureHttpclient(IServiceCollection services)
         {
+            var cmaOptions = Configuration.GetSection("CMAOptions").Get<CMAOptions>();
+
             services.AddHttpClient("PresenceApi", c =>
             {
                 //c.BaseAddress = new Uri("http://www.boredapi.com/api/");
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
+                c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", cmaOptions.PresenceAccessToken);
+
             });
         }
     }

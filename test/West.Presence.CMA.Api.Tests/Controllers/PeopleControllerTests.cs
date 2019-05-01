@@ -43,8 +43,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             
             _sut = new PeopleController(mockSchoolsService.Object, mockPeoplePresentation.Object, mockPeopleRepository.Object);
             // Act
-            var result = _sut.GetPeople(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 5, ChannelServerIds = schoolList }, "", "http://localhost/");
+            var result = _sut.GetPeople(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 5, channelServerIds = schoolList }, "", "http://localhost/");
 
             // Assert
             //Assert.IsType<NoContentResult>(result);
@@ -68,8 +68,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
 
             _sut = new PeopleController(mockSchoolsService.Object, mockPeoplePresentation.Object, mockPeopleRepository.Object);
             // Act
-            var result = _sut.GetPeople(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 5, ChannelServerIds = schoolList }, "", "http://localhost/");
+            var result = _sut.GetPeople(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 5, channelServerIds = schoolList }, "", "http://localhost/");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -92,8 +92,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             
             _sut = new PeopleController(mockSchoolsService.Object, mockPeoplePresentation.Object, mockPeopleRepository.Object);
             // Act
-            var result = _sut.GetPeople(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 5, ChannelServerIds = schoolList }, "", "");
+            var result = _sut.GetPeople(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 5, channelServerIds = schoolList }, "", "");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -116,8 +116,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             
             _sut = new PeopleController(mockSchoolsService.Object, mockPeoplePresentation.Object, mockPeopleRepository.Object);
             // Act
-            var result = _sut.GetPeople(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 0, ChannelServerIds = schoolList }, "", "http://localhost/");
+            var result = _sut.GetPeople(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 0, channelServerIds = schoolList }, "", "http://localhost/");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -139,8 +139,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             
             _sut = new PeopleController(mockSchoolsService.Object, mockPeoplePresentation.Object, mockPeopleRepository.Object);
             // Act
-            var result = _sut.GetPeople(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 0, ChannelServerIds = schoolList }, "", "http://localhost/");
+            var result = _sut.GetPeople(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 0, channelServerIds = schoolList }, "", "http://localhost/");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -163,8 +163,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             
             _sut = new PeopleController(mockSchoolsService.Object, mockPeoplePresentation.Object, mockPeopleRepository.Object);
             // Act
-            var result = _sut.GetPeople(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 0, ChannelServerIds = schoolList }, "", "http://localhost/");
+            var result = _sut.GetPeople(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 0, channelServerIds = schoolList }, "", "http://localhost/");
 
             // Assert
             Assert.IsType<NoContentResult>(result);

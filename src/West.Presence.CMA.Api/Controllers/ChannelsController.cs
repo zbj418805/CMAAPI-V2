@@ -21,7 +21,7 @@ namespace West.Presence.CMA.Api.Controllers
         {
             baseUrl = GetBaseUrl(baseUrl);
 
-            if (baseUrl.Length == 0)
+            if (string.IsNullOrEmpty(baseUrl))
             {
                 _logger.Error("baseUrl not been provided");
                 return NoContent();

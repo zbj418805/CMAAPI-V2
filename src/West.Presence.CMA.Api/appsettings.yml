@@ -56,6 +56,7 @@ management:
 CMAOptions:
     ConnectionString: data source=.;initial catelog=Presence_QA;User ID=sa;Password=P@ssw0rd;Persist Security=False;
     Environment: DEVQA
+    PresenceAccessToken: asdfasdfasdf
     CacheNewsKey: cma_news_cache
     CachePeopleKey: cma_people_cache
     CacheEventsKey: cma_event_cache
@@ -64,3 +65,4 @@ CMAOptions:
     CachePeopleDurationInSeconds: 300
     CacheEventsDurationInSeconds: 300
     CacheSchoolsDurationInSeconds: 300
+

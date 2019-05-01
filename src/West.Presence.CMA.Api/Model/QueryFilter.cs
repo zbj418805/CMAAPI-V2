@@ -7,12 +7,12 @@ namespace West.Presence.CMA.Api.Model
 {
     public class QueryFilter
     {
-        public string Search { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public int? Parent { get; set; }
-        public string Channels { get; set; }
-        public List<int> ChannelServerIds { get; set; }
-        public int Categories { get; set; }
+        public string search { get; set; }
+        public DateTime starttime { get; set; }
+        public DateTime endtime { get; set; }
+        public int? parent { get; set; }
+        public string channels { get; set; }
+        public List<int> channelServerIds { get; set; }
+        public int categories { get; set; }
     }
 }

@@ -111,7 +111,7 @@ namespace West.Presence.CMA.Api.Tests.Controllers
 
             // Act
 
-            var result = _sut.DeleteChannelToGroup(appid, new QueryFilter() { Categories = 1, ChannelServerIds = serverList }, "http://localhost/");
+            var result = _sut.DeleteChannelToGroup(appid, new QueryFilter() { categories = 1, channelServerIds = serverList }, "http://localhost/");
 
             // Assert
             Assert.IsType<OkObjectResult>(result);

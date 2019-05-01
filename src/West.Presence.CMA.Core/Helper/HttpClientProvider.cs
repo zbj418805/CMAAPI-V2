@@ -30,7 +30,7 @@ namespace West.Presence.CMA.Core.Helper
 
         public IEnumerable<T> GetData<T>(string url)
         {
-            using (var client = _httpClientFactory.CreateClient("PresnceApi"))
+            using (var client = _httpClientFactory.CreateClient("PresenceApi"))
             {
                 Uri u = new Uri(url);
 
@@ -58,7 +58,7 @@ namespace West.Presence.CMA.Core.Helper
 
         public T GetSingleData<T>(string url)
         {
-            using (var client = _httpClientFactory.CreateClient("PresnceApi"))
+            using (var client = _httpClientFactory.CreateClient("PresenceApi"))
             {
                 Uri u = new Uri(url);
 
@@ -86,7 +86,7 @@ namespace West.Presence.CMA.Core.Helper
 
         public IEnumerable<T> PostData<T>(string url, object data)
         {
-            using (var client = _httpClientFactory.CreateClient("PresnceApi"))
+            using (var client = _httpClientFactory.CreateClient("PresenceApi"))
             {
                 Uri u = new Uri(url);
                 if (u.Scheme == "https")
@@ -129,7 +129,7 @@ namespace West.Presence.CMA.Core.Helper
 
         public IEnumerable<T> SoapPostData<T>(string url, object data)
         {
-            using (var client = _httpClientFactory.CreateClient("PresnceApi"))
+            using (var client = _httpClientFactory.CreateClient("PresenceApi"))
             {
                 Uri u = new Uri(url);
                 if (u.Scheme == "https")
@@ -172,7 +172,7 @@ namespace West.Presence.CMA.Core.Helper
 
         public bool DeletetData(string url)
         {
-            using (var client = _httpClientFactory.CreateClient("PresnceApi"))
+            using (var client = _httpClientFactory.CreateClient("PresenceApi"))
             {
 
                 Uri u = new Uri(url);

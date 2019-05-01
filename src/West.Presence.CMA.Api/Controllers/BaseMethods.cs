@@ -15,9 +15,9 @@ namespace West.Presence.CMA.Api.Controllers
         protected bool IsChannelsRequestValid(QueryFilter filter)
         {
             List<int> requestChannels = new List<int>();
-            if (!string.IsNullOrEmpty(filter.Channels))
+            if (!string.IsNullOrEmpty(filter.channels))
             {
-                var channels = filter.Channels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var channels = filter.channels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 if (channels.Length > 0)
                     return true;
             }
@@ -29,7 +29,7 @@ namespace West.Presence.CMA.Api.Controllers
 
         protected bool IsResourcesRequestValid(QueryFilter filter, IEnumerable<School> schools, List<int> categories)
         {
-            if (!categories.Contains(filter.Categories))
+            if (!categories.Contains(filter.categories))
             {
                 _validateErrors.Add((int)ValidateErrors.RequestValidationCategoryNotValid);
                 //  ValidateErrorMsg = "categories filter in request is must have and in correct categore.";
@@ -38,9 +38,9 @@ namespace West.Presence.CMA.Api.Controllers
 
             //validaing category and channels.
             List<int> requestChannels = new List<int>();
-            if (!string.IsNullOrEmpty(filter.Channels))
+            if (!string.IsNullOrEmpty(filter.channels))
             {
-                var channels = filter.Channels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var channels = filter.channels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 int serverId;
                 foreach (var s in channels)
                 {
@@ -69,7 +69,7 @@ namespace West.Presence.CMA.Api.Controllers
 
             var allServerList = (requestChannels.Count > 0) ? requestChannels : schools.Select(x => x.ServerId).Take(5).ToList();
 
-            filter.ChannelServerIds = allServerList;
+            filter.channelServerIds = allServerList;
             return true;
         }
 
@@ -81,11 +81,11 @@ namespace West.Presence.CMA.Api.Controllers
                 RequestPath += Request.Path;
             }
 
-            int nextOffset = page.Offset + page.Limit;
-            int prevOffset = page.Offset - page.Limit;
+            int nextOffset = page.offset + page.limit;
+            int prevOffset = page.offset - page.limit;
             Links links = new Links();
 
-            links.prev = $"{RequestPath}?filter[categories]={filter.Categories}&filter[channels]={filter.Channels}&page[offset]={prevOffset}&page[limit]={page.Limit}";
+            links.prev = $"{RequestPath}?filter[categories]={filter.categories}&filter[channels]={filter.channels}&page[offset]={prevOffset}&page[limit]={page.limit}";
             if (startTime != null)
             {
                 links.prev += "&filter[starttime]=" + startTime.Value.ToString("yyyy-MM-dd");
@@ -98,7 +98,7 @@ namespace West.Presence.CMA.Api.Controllers
             {
                 links.prev += "&include=channels";
             }
-            if (page.Offset == 0)
+            if (page.offset == 0)
             {
                 links.prev = null;
             }
@@ -107,7 +107,7 @@ namespace West.Presence.CMA.Api.Controllers
                 links.prev += "&query=" + query;
             }
 
-            links.next = $"{RequestPath}?filter[categories]={filter.Categories}&filter[channels]={filter.Channels}&page[offset]={nextOffset}&page[limit]={page.Limit}";
+            links.next = $"{RequestPath}?filter[categories]={filter.categories}&filter[channels]={filter.channels}&page[offset]={nextOffset}&page[limit]={page.limit}";
             if (startTime != null)
             {
                 links.next += "&filter[starttime]=" + startTime.Value.ToString("yyyy-MM-dd");
@@ -125,7 +125,7 @@ namespace West.Presence.CMA.Api.Controllers
                 links.next += "&query=" + query;
             }
 
-            if (page.Offset + page.Limit >= totalItemNumber)
+            if (page.offset + page.limit >= totalItemNumber)
             {
                 links.next = null;
             }
@@ -143,6 +143,41 @@ namespace West.Presence.CMA.Api.Controllers
         protected string GetSearchKey(string filter, string query)
         {
             return $"{filter}{query}".ToLower().Trim();
+        }
+
+        protected QueryFilter GetQueryFilter()
+        {
+            if (Request != null)
+            {
+                DateTime sTime;
+                DateTime eTime;
+                int parent;
+                int categories;
+
+                if (!DateTime.TryParse(Request.Query["filter[starttime]"].ToString(), out sTime))
+                    sTime = DateTime.Today.AddDays(-10);
+
+                if(!DateTime.TryParse(Request.Query["filter[endtime]"].ToString(), out eTime))
+                    eTime = DateTime.Today.AddMonths(12);
+
+                if (!int.TryParse(Request.Query["filter[parent]"].ToString(), out parent))
+                    parent = -1;
+
+                if (!int.TryParse(Request.Query["filter[categories]"].ToString(), out categories))
+                    categories = 0;
+
+                return new QueryFilter()
+                {
+                    categories = categories,
+                    channels = Request.Query["filter[channels]"].ToString(),
+                    starttime = sTime,
+                    endtime = eTime,
+                    search = Request.Query["filter[search]"].ToString(),
+                    parent = parent
+                };
+            }
+            else
+                return new QueryFilter();
         }
     }
 }

@@ -33,8 +33,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Arrange
             _sut = new SchoolsController(mockSchoolsPresentation.Object);
             // Act
-            var result = _sut.GetSchools(new QueryPagination() { Limit = 20, Offset = 0 }, 
-                new QueryFilter() { Categories = 7, }, "", "http://localhost/");
+            var result = _sut.GetSchools(new QueryPagination() { limit = 20, offset = 0 }, 
+                new QueryFilter() { categories = 7, }, "", "http://localhost/");
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -49,8 +49,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Arrange
             _sut = new SchoolsController(mockSchoolsPresentation.Object);
             // Act
-            var result = _sut.GetSchools(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 0 }, "", "http://localhost/");
+            var result = _sut.GetSchools(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 0 }, "", "http://localhost/");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -65,8 +65,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Arrange
             _sut = new SchoolsController(mockSchoolsPresentation.Object);
             // Act
-            var result = _sut.GetSchools(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 0 }, "", "");
+            var result = _sut.GetSchools(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 0 }, "", "");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -81,8 +81,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Arrange
             _sut = new SchoolsController(mockSchoolsPresentation.Object);
             // Act
-            var result = _sut.GetSchools(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 0 }, "", "");
+            var result = _sut.GetSchools(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 0 }, "", "");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -97,8 +97,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
             // Arrange
             _sut = new SchoolsController(mockSchoolsPresentation.Object);
             // Act
-            var result = _sut.GetSchools(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 0 }, "", "");
+            var result = _sut.GetSchools(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 0 }, "", "");
 
             // Assert
             Assert.IsType<NoContentResult>(result);

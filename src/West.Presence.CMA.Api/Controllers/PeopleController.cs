@@ -23,13 +23,15 @@ namespace West.Presence.CMA.Api.Controllers {
         }
 
         [HttpGet ("cmaapi/1/resources/school-messenger.people")]
-        public IActionResult GetPeople ([FromQuery] QueryPagination page, [FromQuery] QueryFilter filter, [FromQuery] string query = "", [FromQuery] string baseUrl = "") {
-
+        public IActionResult GetPeople ([FromQuery] QueryPagination page, [FromQuery] QueryFilter filter, [FromQuery] string query = "", [FromQuery] string baseUrl = "")
+        {
             baseUrl = GetBaseUrl(baseUrl);
+            if (filter.categories == 0)
+                filter = GetQueryFilter();
+            query = GetSearchKey(filter.search, query);
 
-            string search = GetSearchKey(filter.Search, query);
-
-            if (baseUrl.Length == 0) {
+            if (string.IsNullOrEmpty(baseUrl))
+            {
                 _logger.Error ("baseUrl not been provided");
                 return NoContent ();
             }
@@ -38,9 +40,9 @@ namespace West.Presence.CMA.Api.Controllers {
 
             if (IsResourcesRequestValid (filter, schools, new List<int> () { 5, 6 })) {
                 int total;
-                IEnumerable<Person> simplePeople = _peoplePresentation.GetPeople(filter.ChannelServerIds, baseUrl, search, page.Offset, page.Limit, out total);
+                IEnumerable<Person> simplePeople = _peoplePresentation.GetPeople(filter.channelServerIds, baseUrl, query, page.offset, page.limit, out total);
 
-                var links = string.IsNullOrEmpty(search) ? this.GetLinks(baseUrl, filter, page, query, true, total) : null;
+                var links = string.IsNullOrEmpty(query) ? this.GetLinks(baseUrl, filter, page, query, true, total) : null;
 
                 if (simplePeople.Count () == 0) {
                     _logger.Information("no people found");

@@ -20,6 +20,8 @@ namespace West.Presence.CMA.Api.Controllers
         [HttpGet("cmaapi/1/categories")]
         public IActionResult GetAll([FromQuery]QueryFilter filter)
         {
+            filter = GetQueryFilter();
+
             var baseDir = AppDomain.CurrentDomain.RelativeSearchPath ?? Directory.GetCurrentDirectory();
             var file = Path.Combine(baseDir, "App_Data", "categories.json");
 
@@ -27,7 +29,7 @@ namespace West.Presence.CMA.Api.Controllers
                 return NoContent();
 
             var categories = JsonConvert.DeserializeObject<CategoriesResponse>(System.IO.File.ReadAllText(file));
-            string parentStr = filter.Parent == null ? "" : filter.Parent.ToString();
+            string parentStr = filter.parent == null ? "" : filter.parent.ToString();
 
             int parentId = -1;
             if (int.TryParse(parentStr, out parentId))

@@ -28,10 +28,11 @@ namespace West.Presence.CMA.Api.Controllers
         public IActionResult GetEvents([FromQuery]QueryPagination page, [FromQuery]QueryFilter filter, [FromQuery]string query = "", [FromQuery] string baseUrl = "")
         {
             baseUrl = GetBaseUrl(baseUrl);
+            if(filter.categories == 0)
+                filter = GetQueryFilter();
+            query = GetSearchKey(filter.search, query);
 
-            string search = GetSearchKey(filter.Search, query);
-
-            if (baseUrl.Length == 0)
+            if (string.IsNullOrEmpty(baseUrl))
             {
                 _logger.Error("baseUrl not been provided");
                 return NoContent();
@@ -41,27 +42,27 @@ namespace West.Presence.CMA.Api.Controllers
 
             if (IsResourcesRequestValid(filter, schools, new List<int>() { 3, 4 }))
             {
-                if (filter.StartTime == null || filter.StartTime.Year < DateTime.Today.AddYears(-2).Year)
+                if (filter.starttime == null || filter.starttime.Year < DateTime.Today.AddYears(-2).Year)
                 {
-                    filter.StartTime = DateTime.Today.AddDays(-10);
-                    filter.EndTime = DateTime.Today.AddMonths(ENDPROID);
+                    filter.starttime = DateTime.Today.AddDays(-10);
+                    filter.endtime = DateTime.Today.AddMonths(ENDPROID);
                 }
 
-                if (filter.EndTime == null || filter.StartTime.Year < DateTime.Today.AddYears(-2).Year)
+                if (filter.endtime == null || filter.starttime.Year < DateTime.Today.AddYears(-2).Year)
                 {
-                    filter.EndTime = DateTime.Today.AddMonths(ENDPROID);
+                    filter.endtime = DateTime.Today.AddMonths(ENDPROID);
                 }
 
-                if (filter.EndTime < filter.StartTime)
+                if (filter.endtime < filter.starttime)
                 {
-                    filter.StartTime = DateTime.Today.AddDays(-10);
-                    filter.EndTime = DateTime.Today.AddMonths(ENDPROID);
+                    filter.starttime = DateTime.Today.AddDays(-10);
+                    filter.endtime = DateTime.Today.AddMonths(ENDPROID);
                 }
 
                 int total;
-                var events = _eventsPresentation.GetEvents(filter.ChannelServerIds, baseUrl, search, filter.StartTime, filter.EndTime, page.Offset, page.Limit, out total);
+                var events = _eventsPresentation.GetEvents(filter.channelServerIds, baseUrl, query, filter.starttime, filter.endtime, page.offset, page.limit, out total);
 
-                var links = string.IsNullOrEmpty(search) ? this.GetLinks(baseUrl, filter, page, "", true, total) : null;
+                var links = string.IsNullOrEmpty(query) ? this.GetLinks(baseUrl, filter, page, "", true, total) : null;
 
                 if (events.Count() == 0)
                 {

@@ -62,16 +62,19 @@ namespace West.Presence.CMA.Api.Controllers
         }
 
         [HttpDelete("cmaapi/1/shoutem/integration/{appId}/groups")]
-        public IActionResult DeleteChannelToGroup(int appId, [FromQuery] QueryFilter filter, [FromQuery] string baseurl = "")
+        public IActionResult DeleteChannelToGroup(int appId, [FromQuery] QueryFilter filter, [FromQuery] string baseUrl = "")
         {
+            baseUrl = GetBaseUrl(baseUrl);
+            filter = GetQueryFilter();
+
             List<Channel2Group> lsGoups = new List<Channel2Group>();
 
-            foreach (string serverId in filter.Channels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (string serverId in filter.channels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 lsGoups.Add(new Channel2Group { channelId = int.Parse(serverId), groupId = 0} );
             }
 
-            _channel2GroupRepository.SetChannel2Group(baseurl, 0, lsGoups, appId, "", "");
+            _channel2GroupRepository.SetChannel2Group(baseUrl, 0, lsGoups, appId, "", "");
 
             return Ok();
         }

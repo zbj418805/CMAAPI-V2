@@ -36,8 +36,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
 
             _sut = new EventsController(mockSchoolsService.Object, mockEventsPresentation.Object);
             // Act
-            var result = _sut.GetEvents(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 3, ChannelServerIds = serverList }, "", "http://localhost/");
+            var result = _sut.GetEvents(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 3, channelServerIds = serverList }, "", "http://localhost/");
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -55,8 +55,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
 
             _sut = new EventsController(mockSchoolsService.Object, mockEventsPresentation.Object);
             // Act
-            var result = _sut.GetEvents(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 3, ChannelServerIds = serverList }, "", "http://noschools/");
+            var result = _sut.GetEvents(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 3, channelServerIds = serverList }, "", "http://noschools/");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -75,8 +75,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
 
             _sut = new EventsController(mockSchoolsService.Object, mockEventsPresentation.Object);
             // Act
-            var result = _sut.GetEvents(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 0, ChannelServerIds = serverList }, "", "http://localhost/");
+            var result = _sut.GetEvents(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 0, channelServerIds = serverList }, "", "http://localhost/");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -95,8 +95,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
 
             _sut = new EventsController(mockSchoolsService.Object, mockEventsPresentation.Object);
             // Act
-            var result = _sut.GetEvents(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 3, ChannelServerIds = serverList }, "", "http://localhost/");
+            var result = _sut.GetEvents(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 3, channelServerIds = serverList }, "", "http://localhost/");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
@@ -115,8 +115,8 @@ namespace West.Presence.CMA.Api.Tests.Controllers
 
             _sut = new EventsController(mockSchoolsService.Object, mockEventsPresentation.Object);
             // Act
-            var result = _sut.GetEvents(new QueryPagination() { Limit = 20, Offset = 0 },
-                new QueryFilter() { Categories = 3, ChannelServerIds = serverList }, "", "");
+            var result = _sut.GetEvents(new QueryPagination() { limit = 20, offset = 0 },
+                new QueryFilter() { categories = 3, channelServerIds = serverList }, "", "");
 
             // Assert
             Assert.IsType<NoContentResult>(result);
