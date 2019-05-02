@@ -34,7 +34,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
             var people = lsPeople.AsEnumerable();
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<Person>("http://test.url/presence/api/cma/people/1234")).Returns(people);
+            mockHttpClientProvider.Setup(p => p.GetData<Person>("http://test.url/presence/api/cma/people/1234","PresenceApi")).Returns(people);
 
             APIPeopleRepository peopleRepo = new APIPeopleRepository(mockHttpClientProvider.Object);
 
@@ -62,7 +62,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
             var people = lsPeople.AsEnumerable();
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetData<Person>("http://test.url/presence/api/cma/people/12334")).Returns(people);
+            mockHttpClientProvider.Setup(p => p.GetData<Person>("http://test.url/presence/api/cma/people/12334", "PresenceApi")).Returns(people);
 
             APIPeopleRepository peopleRepo = new APIPeopleRepository(mockHttpClientProvider.Object);
 

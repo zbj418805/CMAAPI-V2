@@ -40,7 +40,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
             };
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetSingleData<AppSettings>("http://test.url/webapi/cma/appsettings")).Returns(setting);
+            mockHttpClientProvider.Setup(p => p.GetSingleData<AppSettings>("http://test.url/webapi/cma/appsettings","PresenceApi")).Returns(setting);
 
             APIChannel2GroupRepository channelRepo = new APIChannel2GroupRepository(mockHttpClientProvider.Object);
 
@@ -63,7 +63,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
             };
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
-            mockHttpClientProvider.Setup(p => p.GetSingleData<AppSettings>("http://test.url/webapi/cma/appsettings")).Returns(setting);
+            mockHttpClientProvider.Setup(p => p.GetSingleData<AppSettings>("http://test.url/webapi/cma/appsettings", "PresenceApi")).Returns(setting);
 
             APIChannel2GroupRepository channelRepo = new APIChannel2GroupRepository(mockHttpClientProvider.Object);
 

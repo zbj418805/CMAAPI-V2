@@ -27,7 +27,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
                 serverId = 1234,
                 startTime = DateTime.Today,
                 endTime = DateTime.Today.AddMonths(12)
-            })).Returns(GetSampleEvents(10));
+            },"PresenceApi")).Returns(GetSampleEvents(10));
 
             APIEventsRepository eventsRepo = new APIEventsRepository(mockHttpClientProvider.Object);
 
@@ -47,7 +47,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
                 serverId = 1234,
                 startTime = DateTime.Today,
                 endTime = DateTime.Today.AddMonths(12)
-            })).Returns(GetSampleEvents(0));
+            }, "PresenceApi")).Returns(GetSampleEvents(0));
             
             APIEventsRepository eventsRepo = new APIEventsRepository(mockHttpClientProvider.Object);
 

@@ -19,6 +19,7 @@ using West.Presence.CMA.Core.Repositories;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
 using System.Net.Http.Headers;
+using System;
 
 namespace West.Presence.CMA.Api
 {
@@ -26,7 +27,7 @@ namespace West.Presence.CMA.Api
     {
         private readonly IHostingEnvironment _env;
         private readonly ILogger _logger;
-        private readonly CMAOptions _options;
+        //private readonly CMAOptions _options;
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
@@ -135,7 +136,7 @@ namespace West.Presence.CMA.Api
             //var loggingOptions = Configuration.GetSection("LoggingOptions").Get<LoggingOptions>();
             //_logger.Debug($"LoggingOptions:RollingFile:Enabled = {loggingOptions.RollingFile.Enabled}");
             //if (loggingOptions.RollingFile.Enabled)
-            //    _logger.Debug($"LoggingOptions:RollingFile:Filepath = {loggingOptions.RollingFile.FilePath}");
+            //_logger.Debug($"LoggingOptions:RollingFile:Filepath = {loggingOptions.RollingFile.FilePath}");
 
             //var configServerClientSettingsOptions = Configuration.GetSection("spring:cloud:config").Get<ConfigServerClientSettingsOptions>();
             //_logger.Debug($"spring:cloud:config:name = {configServerClientSettingsOptions.Name}");
@@ -207,6 +208,7 @@ namespace West.Presence.CMA.Api
             //    services.AddSingleton<INewsRepository, DBNewsRepository>();
             //    services.AddSingleton<IPeopleRepository, DBPeopleRepository>();
             //    services.AddSingleton<IChannel2GroupRepository, DBChannel2GroupRepository>();
+            //    services.AddSingleton<IConnectionRepository, APIConectionRepository>();
 
         }
 
@@ -220,17 +222,6 @@ namespace West.Presence.CMA.Api
                     option.Configuration = "localhost";
                     option.InstanceName = "CMAAPI";
                 });
-
-            //if (_env == null || _env.IsEnvironment("IntegrationTests"))
-            //    services.AddDistributedMemoryCache();
-            //else
-            //{
-            //    services.AddDistributedRedisCache(options =>
-            //    {
-            //        options.Configuration = "localhost";
-            //        options.InstanceName = "CMAAPI";
-            //    });
-            //}
         }
 
         private void ConfigureHttpclient(IServiceCollection services)
@@ -239,10 +230,14 @@ namespace West.Presence.CMA.Api
 
             services.AddHttpClient("PresenceApi", c =>
             {
-                //c.BaseAddress = new Uri("http://www.boredapi.com/api/");
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
                 c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", cmaOptions.PresenceAccessToken);
+            });
 
+            services.AddHttpClient("CentralServiceApi", c =>
+            {
+                c.BaseAddress = new Uri(cmaOptions.CentralServiceUrl);
+                c.DefaultRequestHeaders.Add("Accept", "application/json");
             });
         }
     }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
-
+using West.Presence.CMA.Core.Servies;
 
 namespace West.Presence.CMA.Core.Repositories
 {
@@ -17,21 +17,25 @@ namespace West.Presence.CMA.Core.Repositories
     public class DBSchoolsRepository : ISchoolsRepository
     {
         IDatabaseProvider _databaseProvider;
+        IDBConnectionService _dbConnectionService;
 
-        public DBSchoolsRepository(IDatabaseProvider databaseProvider)
+        public DBSchoolsRepository(IDatabaseProvider databaseProvider, IDBConnectionService dbConnectionService)
         {
             _databaseProvider = databaseProvider;
+            _dbConnectionService = dbConnectionService;
         }
 
         public IEnumerable<School> GetSchools(string baseUrl)
         {
-            int serverId = _databaseProvider.GetCellValue<int>("SELECT server_id FROM click_server_urls WHERE url = @url ", new { url = baseUrl }, CommandType.Text);
+            string connectionStr = _dbConnectionService.GetConnection(baseUrl);
 
-            var schools = _databaseProvider.GetData<School>("[dbo].[cma_server_get_v2]", new { district_server_id = serverId }, CommandType.StoredProcedure);
+            int serverId = _databaseProvider.GetCellValue<int>(connectionStr, "SELECT server_id FROM click_server_urls WHERE url = @url ", new { url = baseUrl }, CommandType.Text);
+
+            var schools = _databaseProvider.GetData<School>(connectionStr, "[dbo].[cma_server_get_v2]", new { district_server_id = serverId }, CommandType.StoredProcedure);
 
             foreach(School s in schools)
             {
-                var atts = _databaseProvider.GetData<MAttribute>("[dbo].[cma_server_attributes.get]", new { server_id = s.ServerId }, System.Data.CommandType.StoredProcedure);
+                var atts = _databaseProvider.GetData<MAttribute>(connectionStr, "[dbo].[cma_server_attributes.get]", new { server_id = s.ServerId }, System.Data.CommandType.StoredProcedure);
                 s.Address = new Address()
                 {
                     Address1 = atts.Where(a => a.attributeName == "org_address1").Select(x => x.attributeValue).FirstOrDefault(),
@@ -67,7 +71,7 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<School> GetSchools(string baseUrl)
         {
-            return _httpClientProvider.GetData<School>($"{baseUrl}webapi/cma/schools");
+            return _httpClientProvider.GetData<School>($"{baseUrl}webapi/cma/schools", "PresenceApi");
         }
     }
 }

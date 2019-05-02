@@ -23,7 +23,7 @@ namespace West.Presence.CMA.Core.Tests.Services
         {
             CMAOptions option = new CMAOptions
             {
-                Environment = "Dev",
+                //Environment = "Dev",
                 CacheEventsKey = "CMAEventsKey",
                 CacheEventsDurationInSeconds = 300
             };
