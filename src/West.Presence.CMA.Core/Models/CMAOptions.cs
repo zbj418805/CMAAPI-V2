@@ -8,7 +8,8 @@ namespace West.Presence.CMA.Core.Models
     {
         public string ConnectionString { get; set; }
         public string PresenceAccessToken { get; set; }
-        public string Environment { get; set; }
+        public string CentralServiceUrl { get; set; }
+        public string CacheConnKey { get; set; }
         public string CacheNewsKey { get; set; }
         public string CachePeopleKey { get; set; }
         public string CacheEventsKey { get; set; }

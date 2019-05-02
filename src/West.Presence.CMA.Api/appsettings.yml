@@ -57,6 +57,7 @@ CMAOptions:
     ConnectionString: data source=.;initial catelog=Presence_QA;User ID=sa;Password=P@ssw0rd;Persist Security=False;
     Environment: DEVQA
     PresenceAccessToken: asdfasdfasdf
+    CacheConnKey: cma_conn_cache
     CacheNewsKey: cma_news_cache
     CachePeopleKey: cma_people_cache
     CacheEventsKey: cma_event_cache

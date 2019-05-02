@@ -21,7 +21,7 @@ namespace West.Presence.CMA.Core.Tests.Services
         {
             CMAOptions option = new CMAOptions
             {
-                Environment = "Dev",
+                //Environment = "Dev",
                 CacheSchoolsKey = "CMASchoolKey",
                 CacheSchoolsDurationInSeconds = 300
             };

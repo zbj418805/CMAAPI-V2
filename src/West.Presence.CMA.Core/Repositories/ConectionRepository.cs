@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.Options;
+using Serilog;
+using West.Presence.CMA.Core.Helper;
+using West.Presence.CMA.Core.Models;
+using West.Presence.CMA.Core.Repositories;
+
+
+namespace West.Presence.CMA.Core.Repositories
+{
+    public interface IConnectionRepository
+    {
+        string GetConnection(string baseUrl);
+    }
+    public class APIConectionRepository : IConnectionRepository
+    {
+        IHttpClientProvider _httpClientProvider;
+        private readonly ILogger _logger = Log.ForContext<APIConectionRepository>();
+
+        public APIConectionRepository(IHttpClientProvider httpClientProvider)
+        {
+            _httpClientProvider = httpClientProvider;
+        }
+
+        public string GetConnection(string url)
+        {
+            string dbString = _httpClientProvider.GetSingleData<string>(url, "CentralServerApi");
+            if(string.IsNullOrEmpty(dbString))
+                _logger.Error("Get db connection tring failed");
+            return dbString;
+        }
+    }
+}
