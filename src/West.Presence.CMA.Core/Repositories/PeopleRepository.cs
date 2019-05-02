@@ -26,11 +26,13 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<Person> GetPeople(int serverId, string baseUrl)
         {
+            string connectionStr = _dbConnectionService.GetConnection(baseUrl);
             throw new NotImplementedException();
         }
 
         public IEnumerable<PersonInfo> GetPeopleInfo(string baseUrl, IEnumerable<Person> people)
         {
+            string connectionStr = _dbConnectionService.GetConnection(baseUrl);
             throw new NotImplementedException();
         }
     }
