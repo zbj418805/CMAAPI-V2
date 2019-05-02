@@ -4,6 +4,7 @@ using System.Text;
 
 namespace West.Presence.CMA.Core.Models
 {
+    [Serializable]
     public class Connection
     {
         public string baseUrl { get; set; }

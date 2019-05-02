@@ -51,8 +51,11 @@ namespace West.Presence.CMA.Core.Servies
                 if (string.IsNullOrEmpty(DBString)) {
                     List<Connection> lsConnections = connections.ToList();
                     DBString = _connectionRepository.GetConnection(baseUrl);
-                    lsConnections.Add(new Connection() { baseUrl = baseUrl, connectionString = DBString });
-                    _cacheProvider.Add(cacheKey, lsConnections, 0);
+                    if (!string.IsNullOrEmpty(DBString))
+                    {
+                        lsConnections.Add(new Connection() { baseUrl = baseUrl, connectionString = DBString });
+                        _cacheProvider.Add(cacheKey, lsConnections, 0);
+                    }
                 }
             }
 

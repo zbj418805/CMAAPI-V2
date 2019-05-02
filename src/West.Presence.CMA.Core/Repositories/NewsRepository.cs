@@ -31,9 +31,9 @@ namespace West.Presence.CMA.Core.Repositories
         {
             string connectionStr = _dbConnectionService.GetConnection(baseUrl);
 
-            string serverUrl = _databaseProvider.GetCellValue<string>(connectionStr, "SELECT url FROM click_server_urls where server_id=@serverId and default_p = 1", new { serverId  = serverId }, CommandType.Text) ;
+            string serverUrl = _databaseProvider.GetCellValue<string>(connectionStr, "SELECT url FROM click_server_urls where server_id=@serverId and default_p = 1", new { serverId = serverId }, CommandType.Text);
 
-            var rawNews = _databaseProvider.GetData<RawNews>(connectionStr, "[dbo].[cma_news_get]", new { server_id = serverId }, System.Data.CommandType.StoredProcedure);
+            var rawNews = _databaseProvider.GetData<RawNews>(connectionStr, "[dbo].[cma_news_get]", new { server_id = serverId }, CommandType.StoredProcedure);
 
             List<News> news = new List<News>();
             foreach(RawNews rn in rawNews)
@@ -73,7 +73,7 @@ namespace West.Presence.CMA.Core.Repositories
             XmlDocument xdata = new XmlDocument();
             try
             {
-                xdata.Load(new System.IO.StringReader(xml));
+                xdata.Load(new System.IO.StringReader(HttpUtility.HtmlDecode(xml)));
 
                 foreach (XmlNode cn in xdata.DocumentElement.ChildNodes)
                 {

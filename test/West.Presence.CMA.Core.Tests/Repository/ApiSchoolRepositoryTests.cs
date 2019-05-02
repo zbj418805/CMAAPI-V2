@@ -9,12 +9,12 @@ using Xunit;
 
 namespace West.Presence.CMA.Core.Tests.Repository
 {
-    public class SchoolRepositoryTests
+    public class ApiSchoolRepositoryTests
     {
         private Mock<IHttpClientProvider> mockHttpClientProvider;
 
 
-        public SchoolRepositoryTests()
+        public ApiSchoolRepositoryTests()
         {
 
         }

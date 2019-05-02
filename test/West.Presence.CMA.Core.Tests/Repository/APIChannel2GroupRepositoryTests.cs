@@ -9,17 +9,17 @@ using Xunit;
 
 namespace West.Presence.CMA.Core.Tests.Repository
 {
-    public class Channel2GroupRepositoryTests
+    public class ApiChannel2GroupRepositoryTests
     {
         private Mock<IHttpClientProvider> mockHttpClientProvider;
 
-        public Channel2GroupRepositoryTests()
+        public ApiChannel2GroupRepositoryTests()
         {
 
         }
 
         [Fact]
-        public void Test_Channel2Group_Get_Channel2Group()
+        public void Test_APIChannel2Group_Get_Channel2Group()
         {
             List<Channel2Group> lsC2G = new List<Channel2Group>();
             for (int i = 0; i < 10; i++)

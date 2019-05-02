@@ -29,19 +29,19 @@ namespace West.Presence.CMA.Core.Repositories
         {
             string connectionStr = _dbConnectionService.GetConnection(baseUrl);
 
-            int serverId = _databaseProvider.GetCellValue<int>(connectionStr, "SELECT server_id FROM click_server_urls WHERE url = @url ", new { url = baseUrl }, CommandType.Text);
+            int serverId = _databaseProvider.GetCellValue<int>(connectionStr, "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", new { url = baseUrl }, CommandType.Text);
 
             var schools = _databaseProvider.GetData<School>(connectionStr, "[dbo].[cma_server_get_v2]", new { district_server_id = serverId }, CommandType.StoredProcedure);
 
             foreach(School s in schools)
             {
-                var atts = _databaseProvider.GetData<MAttribute>(connectionStr, "[dbo].[cma_server_attributes.get]", new { server_id = s.ServerId }, System.Data.CommandType.StoredProcedure);
+                var atts = _databaseProvider.GetData<MAttribute>(connectionStr, "[dbo].[cma_server_attributes.get]", new { server_id = s.ServerId }, CommandType.StoredProcedure);
                 s.Address = new Address()
                 {
                     Address1 = atts.Where(a => a.attributeName == "org_address1").Select(x => x.attributeValue).FirstOrDefault(),
                     Address2 = atts.Where(a => a.attributeName == "org_address2").Select(x => x.attributeValue).FirstOrDefault(),
                     City = atts.Where(a => a.attributeName == "org_city").Select(x => x.attributeValue).FirstOrDefault(),
-                    Country = atts.Where(a => a.attributeName == "org_postal").Select(x => x.attributeValue).FirstOrDefault(),
+                    Country = atts.Where(a => a.attributeName == "org_country").Select(x => x.attributeValue).FirstOrDefault(),
                     PostCode = atts.Where(a => a.attributeName == "org_postal").Select(x => x.attributeValue).FirstOrDefault(),
                     Province = atts.Where(a => a.attributeName == "org_province").Select(x => x.attributeValue).FirstOrDefault()
                 };
@@ -53,7 +53,6 @@ namespace West.Presence.CMA.Core.Repositories
                 s.Twitter = atts.Where(a => a.attributeName == "org_twitter_website").Select(x => x.attributeValue).FirstOrDefault();
                 s.Youtube = atts.Where(a => a.attributeName == "org_youtube_channel").Select(x => x.attributeValue).FirstOrDefault();
                 s.Email = atts.Where(a => a.attributeName == "org_email_address").Select(x => x.attributeValue).FirstOrDefault();
-                s.Total = schools.Count();
             }
 
             return schools;

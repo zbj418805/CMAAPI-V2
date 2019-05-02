@@ -22,7 +22,6 @@ namespace West.Presence.CMA.Core.Models
         public string Youtube { get; set; }
         public string Email { get; set; } 
         public Address Address { get; set; }
-        public int Total { get; set; }
     }
 
     [Serializable]

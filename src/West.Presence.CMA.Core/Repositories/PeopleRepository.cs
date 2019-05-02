@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Net.Http;
+using System.Xml;
 using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
 using West.Presence.CMA.Core.Servies;
@@ -26,68 +29,49 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<Person> GetPeople(int serverId, string baseUrl)
         {
-            /*
-            //1.Get portlet Instance id
-            int portletInstanceId = Utility.ToInteger(Database.ExecuteScalar("Mobile.Cma", "GetStaffDirectoryInstanceId", serverId));
+            string connectionStr = _dbConnectionService.GetConnection(baseUrl);
+            
+            //1.Get portlet Instance Properties to [selectedGroups], [excludedUsers]
+            PortletSettings portletSettings = _databaseProvider.GetData<PortletSettings>(connectionStr, "[dbo].[staff_directory_get_settings_v2]",
+                new { server_id = serverId }, CommandType.StoredProcedure).FirstOrDefault();
 
+            string selectGroups = ExtractListFromXML(portletSettings.SelectGroups, "SelectedGroups", true, "id");
+            string excludedUsers = ExtractListFromXML(portletSettings.ExcludedUsers, "ExcludedUsers", false, "user_id");
 
-            //2.Get portlet Instance Properties to [selectedGroups], [excludedUsers](Using Presence Class)
-            PortletInstance ptlInstance = new PortletInstance(portletInstanceId);
-            if (!Utility.IsPositiveInteger(ptlInstance.PortletInstanceId))
+            //2.Get all users with [selectedGroups]
+            if (string.IsNullOrEmpty(selectGroups))
                 return null;
-            List<int> selectedGroups = new List<int>();
-            List<int> excludedUsers = new List<int>();
-            XmlDocument doc = new XmlDocument();
-            if (ptlInstance.Properties.ContainsProperty("SelectedGroups"))
+
+            var people = _databaseProvider.GetData<Person>(connectionStr, "[dbo].[staff_directory_get_basic_users_info_by_groups]", new
+            { group_ids = selectGroups }, CommandType.StoredProcedure);
+
+            //3.Convert table [dtSimpleUsers] to list [spUsers] and remove users of [excludedUsers]
+            if (string.IsNullOrEmpty(excludedUsers))
             {
-                doc.LoadXml(ptlInstance.Properties["SelectedGroups"]);
-                XmlNode node = doc.SelectSingleNode("SelectedGroups");
-                if (Utility.ToBoolean(node.Attributes["visible"].Value))
+                foreach (Person p in people)
+                    p.serverId = serverId;
+                return people;
+            }
+            else
+            {
+                var spUsers = new List<Person>();
+                var lsExcludedUsers = excludedUsers.Split(',').Select(int.Parse);
+                foreach (Person p in people)
                 {
-                    foreach (XmlNode groupNode in node.ChildNodes)
+                    if (!lsExcludedUsers.Contains(p.userId))
                     {
-                        selectedGroups.Add(Utility.ToInteger(groupNode.Attributes["id"].Value));
+                        spUsers.Add(new Person
+                        {
+                            userId = p.userId,
+                            firstName = p.firstName,
+                            lastName = p.lastName,
+                            jobTitle = p.jobTitle,
+                            serverId = serverId
+                        });
                     }
                 }
+                return spUsers;
             }
-            if (ptlInstance.Properties.ContainsProperty("ExcludedUsers"))
-            {
-                doc.LoadXml(ptlInstance.Properties["ExcludedUsers"]);
-                XmlNode node = doc.SelectSingleNode("ExcludedUsers");
-                foreach (XmlNode userNode in node.ChildNodes)
-                {
-                    excludedUsers.Add(Utility.ToInteger(userNode.Attributes["user_id"].Value));
-                }
-            }
-
-
-            //5.Get all users to [dtSimpleUsers] with [selectedGroups]
-            if (selectedGroups.Count == 0)
-                return null;
-            string groupIdsString = string.Join(",", selectedGroups.ToArray());
-            DataTable dtSimpleUsers = Database.Execute("Mobile.Cma", "GetSimpleUserInfoList", groupIdsString);
-
-            //6.Convert table [dtSimpleUsers] to list [spUsers] and remove users of [excludedUsers]
-            List<SimplePerson> spUsers = new List<SimplePerson>();
-            foreach (DataRow dr in dtSimpleUsers.Rows)
-            {
-                if (!excludedUsers.Contains(Utility.ToInteger(dr["user_id"])))
-                {
-                    spUsers.Add(new SimplePerson
-                    {
-                        userId = Utility.ToInteger(dr["user_id"]),
-                        firstName = Utility.ToString(dr["first_names"]),
-                        lastName = Utility.ToString(dr["last_name"]),
-                        jobTitle = Utility.ToString(dr["job_title"])
-                    });
-                }
-            }
-
-            //7.Return result [dtSimpleUsers]
-            return spUsers;
-            */
-
-            throw new NotImplementedException();
         }
 
         public IEnumerable<PersonInfo> GetPeopleInfo(string baseUrl, IEnumerable<Person> people)
@@ -95,6 +79,36 @@ namespace West.Presence.CMA.Core.Repositories
             string connectionStr = _dbConnectionService.GetConnection(baseUrl);
             throw new NotImplementedException();
         }
+
+        private string ExtractListFromXML(string xmlString, string nodeName, bool checkVisible,  string key)
+        {
+            if (string.IsNullOrEmpty(xmlString))
+                return string.Empty;
+            string listString ="";
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xmlString);
+            XmlNode node = doc.SelectSingleNode(nodeName);
+            if (checkVisible && node.Attributes["visible"].Value == "True")
+            {
+                foreach (XmlNode groupNode in node.ChildNodes)
+                {
+                    listString += groupNode.Attributes[key].Value + ",";
+                }
+            }
+            if (!string.IsNullOrEmpty(listString))
+            {
+                listString = listString.Substring(0, listString.Length - 1);
+            }
+
+            return listString;
+        }
+
+        class PortletSettings
+        {
+            public string SelectGroups { get; set; }
+            public string ExcludedUsers { get; set; }
+        }
+        
     }
 
     public class APIPeopleRepository : IPeopleRepository
