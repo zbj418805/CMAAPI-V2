@@ -185,30 +185,34 @@ namespace West.Presence.CMA.Api
             services.AddSingleton<ICacheProvider, CacheProvider>();
             services.AddSingleton<IDatabaseProvider, DatabaseProvider>();
             services.AddSingleton<IHttpClientProvider, HttpClientProvider>();
+
             //Add Presentation Layer
             services.AddSingleton<IEventsPresentation, EventsPresentation>();
             services.AddSingleton<INewsPresentation, NewsPresentation>();
             services.AddSingleton<IPeoplePresentation, PeoplePresentation>();
             services.AddSingleton<ISchoolsPresentation, SchoolsPresentation>();
+            
             //Add Service Layer
             services.AddTransient<IEventsService, EventsService>();
             services.AddSingleton<INewsService, NewsService>();
             services.AddSingleton<IPeopleService, PeopleService>();
             services.AddSingleton<ISchoolsService, SchoolsService>();
+            services.AddSingleton<IDBConnectionService, DBConnectionService>();
+
             //Add API Repository Layer
-            services.AddSingleton<ISchoolsRepository, APISchoolsRepository>();
-            services.AddSingleton<IEventsRepository, APIEventsRepository>();
-            services.AddSingleton<INewsRepository, APINewsRepository>();
-            services.AddSingleton<IPeopleRepository, APIPeopleRepository>();
-            services.AddSingleton<IChannel2GroupRepository, APIChannel2GroupRepository>();
+            //services.AddSingleton<ISchoolsRepository, APISchoolsRepository>();
+            //services.AddSingleton<IEventsRepository, APIEventsRepository>();
+            //services.AddSingleton<INewsRepository, APINewsRepository>();
+            //services.AddSingleton<IPeopleRepository, APIPeopleRepository>();
+            //services.AddSingleton<IChannel2GroupRepository, APIChannel2GroupRepository>();
 
             //Add DBRepository Layer
-            //    services.AddSingleton<ISchoolsRepository, DBSchoolsRepository>();
-            //    services.AddSingleton<IEventsRepository, DBEventsRepository>();
-            //    services.AddSingleton<INewsRepository, DBNewsRepository>();
-            //    services.AddSingleton<IPeopleRepository, DBPeopleRepository>();
-            //    services.AddSingleton<IChannel2GroupRepository, DBChannel2GroupRepository>();
-            //    services.AddSingleton<IConnectionRepository, APIConectionRepository>();
+            services.AddSingleton<ISchoolsRepository, DBSchoolsRepository>();
+            services.AddSingleton<IEventsRepository, APIEventsRepository>();
+            services.AddSingleton<INewsRepository, DBNewsRepository>();
+            services.AddSingleton<IPeopleRepository, DBPeopleRepository>();
+            services.AddSingleton<IChannel2GroupRepository, DBChannel2GroupRepository>();
+            services.AddSingleton<IConnectionRepository, APIConectionRepository>();
 
         }
 
