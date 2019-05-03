@@ -2,8 +2,9 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
+using West.Presence.CMA.Api.Integ.Tests;
 
-namespace West.Presence.CMA.Api.Integ.Tests.Controllers
+namespace West.Presence.CMA.Api.Controllers.Integ.Tests
 {
     public class SchemaControllerTests : IClassFixture<TestWebApplicationFactory<Startup>>
     {

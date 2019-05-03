@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using West.Presence.CMA.Core.Models;
 
-namespace West.Presence.CMA.Api.Tests.Controllers
+namespace West.Presence.CMA.Api.Controllers.Tests
 {
     public class BaseControllerTest
     {

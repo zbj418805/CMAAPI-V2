@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace West.Presence.CMA.Core.Repositories
     {
         IDatabaseProvider _databaseProvider;
         IDBConnectionService _dbConnectionService;
+        private readonly ILogger _logger = Log.ForContext<DBPeopleRepository>();
 
         public DBPeopleRepository(IDatabaseProvider databaseProvider, IDBConnectionService dbConnectionService)
         {
@@ -30,21 +32,26 @@ namespace West.Presence.CMA.Core.Repositories
         public IEnumerable<Person> GetPeople(int serverId, string baseUrl)
         {
             string connectionStr = _dbConnectionService.GetConnection(baseUrl);
-            
+
+            if (string.IsNullOrEmpty(connectionStr))
+            {
+                _logger.Error($"Get connection string based on {baseUrl} failed.");
+                return null;
+            }
+
             //1.Get portlet Instance Properties to [selectedGroups], [excludedUsers]
             PortletSettings portletSettings = _databaseProvider.GetData<PortletSettings>(connectionStr, "[dbo].[staff_directory_get_settings_v2]",
                 new { server_id = serverId }, CommandType.StoredProcedure).FirstOrDefault();
-
-            if (portletSettings == null)
-                return null;
 
             string selectGroups = ExtractListFromXML(portletSettings.SelectGroups, "SelectedGroups", true, "id");
             string excludedUsers = ExtractListFromXML(portletSettings.ExcludedUsers, "ExcludedUsers", false, "user_id");
 
             //2.Get all users with [selectedGroups]
             if (string.IsNullOrEmpty(selectGroups))
-                return null;
-
+            {
+                _logger.Error($"No selected groups found based on {baseUrl}.");
+                return new List<Person>();
+            }
             var people = _databaseProvider.GetData<Person>(connectionStr, "[dbo].[staff_directory_get_basic_users_info_by_groups]", new
             { group_ids = selectGroups }, CommandType.StoredProcedure);
 

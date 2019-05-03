@@ -8,7 +8,7 @@ using West.Presence.CMA.Core.Servies;
 using Xunit;
 using Moq;
 
-namespace West.Presence.CMA.Api.Tests.Controllers
+namespace West.Presence.CMA.Api.Controllers.Tests
 {
     public class EventsControllerTests : BaseControllerTest
     {

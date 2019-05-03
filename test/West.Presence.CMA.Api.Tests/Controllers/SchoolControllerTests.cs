@@ -7,7 +7,7 @@ using West.Presence.CMA.Core.Models;
 using West.Presence.CMA.Core.Presentations;
 using Xunit;
 
-namespace West.Presence.CMA.Api.Tests.Controllers
+namespace West.Presence.CMA.Api.Controllers.Tests
 {
     public class SchoolControllerTests : BaseControllerTest
     {

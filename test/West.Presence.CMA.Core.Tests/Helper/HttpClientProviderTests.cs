@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Net.Http;
 
-namespace West.Presence.CMA.Core.Tests.Helper
+namespace West.Presence.CMA.Core.Helper.Tests
 {
     public class HttpClientProviderTests
     {

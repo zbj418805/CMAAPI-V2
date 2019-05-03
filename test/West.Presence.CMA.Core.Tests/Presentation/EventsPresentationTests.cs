@@ -8,7 +8,7 @@ using West.Presence.CMA.Core.Servies;
 using Xunit;
 
 
-namespace West.Presence.CMA.Core.Tests.Presentation
+namespace West.Presence.CMA.Core.Presentation.Tests
 {
     public class EventsPresentationTests
     {

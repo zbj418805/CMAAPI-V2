@@ -4,7 +4,7 @@ using West.Presence.CMA.Api.Controllers;
 using West.Presence.CMA.Api.Model;
 using Xunit;
 
-namespace West.Presence.CMA.Api.Tests.Controllers
+namespace West.Presence.CMA.Api.Controllers.Tests
 {
     public class CategoriesControllerTests
     {

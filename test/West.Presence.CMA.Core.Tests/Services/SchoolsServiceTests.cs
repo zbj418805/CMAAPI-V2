@@ -8,7 +8,7 @@ using West.Presence.CMA.Core.Repositories;
 using West.Presence.CMA.Core.Helper;
 using Microsoft.Extensions.Options;
 
-namespace West.Presence.CMA.Core.Tests.Services
+namespace West.Presence.CMA.Core.Services.Tests
 {
     public class SchoolsServiceTests
     {

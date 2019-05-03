@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Net.Http;
@@ -20,6 +21,7 @@ namespace West.Presence.CMA.Core.Repositories
     {
         IDatabaseProvider _databaseProvider;
         IDBConnectionService _dbConnectionService;
+        private readonly ILogger _logger = Log.ForContext<DBNewsRepository>();
 
         public DBNewsRepository(IDatabaseProvider databaseProvider, IDBConnectionService dbConnectionService)
         {
@@ -31,7 +33,17 @@ namespace West.Presence.CMA.Core.Repositories
         {
             string connectionStr = _dbConnectionService.GetConnection(baseUrl);
 
+            if (string.IsNullOrEmpty(connectionStr))
+            {
+                _logger.Error($"Get connection string based on {baseUrl} failed.");
+                return null;
+            }
+
             string serverUrl = _databaseProvider.GetCellValue<string>(connectionStr, "SELECT url FROM click_server_urls where server_id=@serverId and default_p = 1", new { serverId = serverId }, CommandType.Text);
+            if(string.IsNullOrEmpty(serverUrl))
+            {
+                _logger.Information($"No url found based on server id {serverId}.");
+            }
 
             var rawNews = _databaseProvider.GetData<RawNews>(connectionStr, "[dbo].[cma_news_get]", new { server_id = serverId }, CommandType.StoredProcedure);
 
@@ -73,7 +85,7 @@ namespace West.Presence.CMA.Core.Repositories
             XmlDocument xdata = new XmlDocument();
             try
             {
-                xdata.Load(HttpUtility.HtmlDecode(xml));
+                xdata.Load(new System.IO.StringReader(HttpUtility.HtmlDecode(xml)));
 
                 foreach (XmlNode cn in xdata.DocumentElement.ChildNodes)
                 {
@@ -112,8 +124,9 @@ namespace West.Presence.CMA.Core.Repositories
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
+                _logger.Error("xml transformation error, " + e.Message);
             }
 
             if (news.Summary.Length == 0)

@@ -9,15 +9,15 @@ using West.Presence.CMA.Core.Repositories;
 using System.Data;
 using West.Presence.CMA.Core.Models;
 
-namespace West.Presence.CMA.Core.Tests.Repository
+namespace West.Presence.CMA.Core.Repository.Tests
 {
-    public class DbSchoolRepositoryTests
+    public class DBSchoolRepositoryTests
     {
         private Mock<IDatabaseProvider> mockDatabaseProvider;
         private Mock<IDBConnectionService> mockDBConnectionService;
         private ISchoolsRepository _schoolRepository;
 
-        public DbSchoolRepositoryTests()
+        public DBSchoolRepositoryTests()
         {
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
             mockDBConnectionService = new Mock<IDBConnectionService>();
@@ -33,51 +33,70 @@ namespace West.Presence.CMA.Core.Tests.Repository
             var _databaseProvider = new DatabaseProvider();
             _schoolRepository = new DBSchoolsRepository(_databaseProvider, mockDBConnectionService.Object);
             var schools = _schoolRepository.GetSchools(baseUrl);
+            Assert.NotEmpty(schools);
         }
 
         [Fact]
         public void Test_School_Reposity_Get_Schools()
         {
             string baseUrl = "http://presence.kingzad.local/";
-
+            string connectionString = "fake_connection_string";
             //arrange
-            mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns("");
+            mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(connectionString);
             IDatabaseProvider _databaseProvider = new DatabaseProvider();
             //
             List<School> schools = GetSampleSchools(5);
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
-            mockDatabaseProvider.Setup(p => p.GetCellValue<int>("", "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", new { url = baseUrl }, CommandType.Text)).Returns(10);
-            mockDatabaseProvider.Setup(p => p.GetData<School>("", "[dbo].[cma_server_get_v2]", new { district_server_id = 10 }, CommandType.StoredProcedure)).Returns(schools);
-            mockDatabaseProvider.Setup(p => p.GetData<MAttribute>("", "[dbo].[cma_server_attributes.get]", new { server_id = 1 }, CommandType.StoredProcedure)).Returns(GetSampleAttributes(1));
-            mockDatabaseProvider.Setup(p => p.GetData<MAttribute>("", "[dbo].[cma_server_attributes.get]", new { server_id = 2 }, CommandType.StoredProcedure)).Returns(GetSampleAttributes(2));
-            mockDatabaseProvider.Setup(p => p.GetData<MAttribute>("", "[dbo].[cma_server_attributes.get]", new { server_id = 3 }, CommandType.StoredProcedure)).Returns(GetSampleAttributes(3));
-            mockDatabaseProvider.Setup(p => p.GetData<MAttribute>("", "[dbo].[cma_server_attributes.get]", new { server_id = 4 }, CommandType.StoredProcedure)).Returns(GetSampleAttributes(4));
+            mockDatabaseProvider.Setup(p => p.GetCellValue<int>(connectionString, "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", It.IsAny<object>(), CommandType.Text)).Returns(10);
+            mockDatabaseProvider.Setup(p => p.GetData<School>(connectionString, "[dbo].[cma_server_get_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(schools);
+            mockDatabaseProvider.Setup(p => p.GetData<MAttribute>(connectionString, "[dbo].[cma_server_attributes.get]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSampleAttributes());
             _schoolRepository = new DBSchoolsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
             var resultSchools = _schoolRepository.GetSchools(baseUrl);
 
             //Assert
-            //Assert.Equal(4, resultSchools.Count());
-            Assert.Empty(resultSchools);
+            Assert.Equal(4, resultSchools.Count());
             
         }
 
         [Fact]
-        public void Test_School_Reposity_Url_Not_Exist_No_Schools_Return()
+        public void Test_School_Reposity_can_not_find_serverId_Return_null()
         {
             string baseUrl = "http://presence.kingzad.local/";
+            string connectionString = "fake_connection_string";
             //arrange
-            mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns("");
+            mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(connectionString);
             IDatabaseProvider _databaseProvider = new DatabaseProvider();
 
-            //
-            List<School> schools = GetSampleSchools(5);
+            
+            List<School> schools = GetSampleSchools(0);
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
-            mockDatabaseProvider.Setup(p => p.GetCellValue<int>("", "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", new { url = baseUrl }, CommandType.Text)).Returns(0);
-            mockDatabaseProvider.Setup(p => p.GetData<School>("", "[dbo].[cma_server_get_v2]", new { district_server_id = 10 }, CommandType.StoredProcedure)).Returns(schools);
-            mockDatabaseProvider.Setup(p => p.GetData<MAttribute>("", "[dbo].[cma_server_attributes.get]", new { server_id = 1 }, CommandType.StoredProcedure)).Returns(GetSampleAttributes(1));
-            mockDatabaseProvider.Setup(p => p.GetData<MAttribute>("", "[dbo].[cma_server_attributes.get]", new { server_id = 2 }, CommandType.StoredProcedure)).Returns(GetSampleAttributes(2));
-            mockDatabaseProvider.Setup(p => p.GetData<MAttribute>("", "[dbo].[cma_server_attributes.get]", new { server_id = 3 }, CommandType.StoredProcedure)).Returns(GetSampleAttributes(3));
-            mockDatabaseProvider.Setup(p => p.GetData<MAttribute>("", "[dbo].[cma_server_attributes.get]", new { server_id = 4 }, CommandType.StoredProcedure)).Returns(GetSampleAttributes(4));
+            mockDatabaseProvider.Setup(p => p.GetCellValue<int>(connectionString, "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", It.IsAny<object>(), CommandType.Text)).Returns(0);
+            mockDatabaseProvider.Setup(p => p.GetData<School>(connectionString, "[dbo].[cma_server_get_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(schools);
+            mockDatabaseProvider.Setup(p => p.GetData<MAttribute>(connectionString, "[dbo].[cma_server_attributes.get]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSampleAttributes());
+
+            _schoolRepository = new DBSchoolsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
+
+            var resultSchools = _schoolRepository.GetSchools(baseUrl);
+
+            //Assert
+            Assert.Null(resultSchools);
+        }
+
+        [Fact]
+        public void Test_School_Reposity_can_not_find_schools_Return_empty()
+        {
+            string baseUrl = "http://presence.kingzad.local/";
+            string connectionString = "fake_connection_string";
+            //arrange
+            mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(connectionString);
+            IDatabaseProvider _databaseProvider = new DatabaseProvider();
+
+
+            List<School> schools = GetSampleSchools(0);
+            mockDatabaseProvider = new Mock<IDatabaseProvider>();
+            mockDatabaseProvider.Setup(p => p.GetCellValue<int>(connectionString, "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", It.IsAny<object>(), CommandType.Text)).Returns(10);
+            mockDatabaseProvider.Setup(p => p.GetData<School>(connectionString, "[dbo].[cma_server_get_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(schools);
+            mockDatabaseProvider.Setup(p => p.GetData<MAttribute>(connectionString, "[dbo].[cma_server_attributes.get]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSampleAttributes());
 
             _schoolRepository = new DBSchoolsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
 
@@ -89,10 +108,12 @@ namespace West.Presence.CMA.Core.Tests.Repository
 
 
         [Fact]
-        public void Test_School_Reposity_No_Schools_Return()
+        public void Test_School_Reposity_Url_Not_Exist_No_Schools_Return()
         {
-            string baseUrl = "http://presence.kingzad.local/";
             //arrange
+            string baseUrl = "http://presence.kingzad.local/";
+            //string connectionString = "fake_connection_string";
+            
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns("");
             IDatabaseProvider _databaseProvider = new DatabaseProvider();
 
@@ -107,7 +128,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
             var resultSchools = _schoolRepository.GetSchools(baseUrl);
 
             //Assert
-            Assert.Empty(resultSchools);
+            Assert.Null(resultSchools);
         }
 
         private List<School> GetSampleSchools(int count)
@@ -127,7 +148,7 @@ namespace West.Presence.CMA.Core.Tests.Repository
             return schools;
         }
 
-        private List<MAttribute> GetSampleAttributes(int serverId) {
+        private List<MAttribute> GetSampleAttributes() {
             List<MAttribute> mAttributes = new List<MAttribute>();
             mAttributes.Add(new MAttribute() { attributeName = "org_address1", attributeValue = "123 akdasdf " });
             mAttributes.Add(new MAttribute() { attributeName = "org_address2", attributeValue = "123 akdasdf " });

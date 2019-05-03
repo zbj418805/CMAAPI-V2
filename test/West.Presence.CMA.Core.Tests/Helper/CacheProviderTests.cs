@@ -7,7 +7,7 @@ using West.Presence.CMA.Core.Helper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Caching.Distributed;
 
-namespace West.Presence.CMA.Core.Tests.Helper
+namespace West.Presence.CMA.Core.Helper.Tests
 {
     public class CacheProviderTests : IDisposable
     {

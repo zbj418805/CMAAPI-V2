@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace West.Presence.CMA.Core.Repositories
     {
         IDatabaseProvider _databaseProvider;
         IDBConnectionService _dbConnectionService;
+        private readonly ILogger _logger = Log.ForContext<DBSchoolsRepository>();
 
         public DBSchoolsRepository(IDatabaseProvider databaseProvider, IDBConnectionService dbConnectionService)
         {
@@ -29,9 +31,25 @@ namespace West.Presence.CMA.Core.Repositories
         {
             string connectionStr = _dbConnectionService.GetConnection(baseUrl);
 
-            int serverId = _databaseProvider.GetCellValue<int>(connectionStr, "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", null, CommandType.Text);
+            if (string.IsNullOrEmpty(connectionStr))
+            {
+                _logger.Error($"Get connection string based on {baseUrl} failed.");
+                return null;
+            }
+            int serverId = _databaseProvider.GetCellValue<int>(connectionStr, "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", new { url = baseUrl }, CommandType.Text);
 
+            if (serverId <= 0)
+            {
+                _logger.Error($"No server_id found based on {baseUrl}.");
+                return null;
+            }
             var schools = _databaseProvider.GetData<School>(connectionStr, "[dbo].[cma_server_get_v2]", new { district_server_id = serverId }, CommandType.StoredProcedure);
+
+            if (schools.Count() == 0)
+            {
+                _logger.Information($"No school found by based on {baseUrl} : {serverId}");
+                return schools;
+            }
 
             foreach(School s in schools)
             {

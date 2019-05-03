@@ -4,7 +4,7 @@ using West.Presence.CMA.Api.Controllers;
 using West.Presence.CMA.Core.Servies;
 using Xunit;
 
-namespace West.Presence.CMA.Api.Tests.Controllers
+namespace West.Presence.CMA.Api.Controllers.Tests
 {
     public class ChannelControllerTests : BaseControllerTest
     {

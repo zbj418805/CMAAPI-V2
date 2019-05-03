@@ -7,7 +7,7 @@ using West.Presence.CMA.Core.Models;
 using West.Presence.CMA.Core.Repositories;
 using Xunit;
 
-namespace West.Presence.CMA.Core.Tests.Repository
+namespace West.Presence.CMA.Core.Repository.Tests
 {
     public class ApiChannel2GroupRepositoryTests
     {

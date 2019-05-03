@@ -3,7 +3,7 @@ using Moq;
 using West.Presence.CMA.Api.Controllers;
 using Xunit;
 
-namespace West.Presence.CMA.Api.Tests.Controllers
+namespace West.Presence.CMA.Api.Controllers.Tests
 {
     public class HealthControllerTests
     {

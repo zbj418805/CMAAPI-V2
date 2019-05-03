@@ -26,7 +26,7 @@ namespace West.Presence.CMA.Core.Repositories
                 serverId = serverId,
                 startTime = startDate,
                 endTime = endDate
-            }, "PresnceApi");
+            }, "PresenceApi");
 
             List<Event> rerangeEvents = new List<Event>();
             foreach(Event ce in responseData)
