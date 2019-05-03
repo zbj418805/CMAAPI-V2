@@ -32,7 +32,7 @@ namespace West.Presence.CMA.Api.Controllers.Tests
             int total = 0;
             var serverList = new List<int>() { 0, 1, 2, 3, 4 };
 
-            mockEventsPresentation.Setup(p => p.GetEvents(serverList, "http://localhost/", "", DateTime.Today.AddDays(-10), DateTime.Today.AddMonths(12), 0, 20, out total)).Returns(GetSampleEvents(10));
+            mockEventsPresentation.Setup(p => p.GetEvents(serverList, "http://localhost/", "", DateTime.Today.AddDays(-10), DateTime.Today.AddMonths(12), 0, 20, true, out total)).Returns(GetSampleEvents(10));
 
             _sut = new EventsController(mockSchoolsService.Object, mockEventsPresentation.Object);
             // Act
@@ -51,7 +51,7 @@ namespace West.Presence.CMA.Api.Controllers.Tests
             int total = 0;
             var serverList = new List<int>() { 0, 1, 2, 3, 4 };
 
-            mockEventsPresentation.Setup(p => p.GetEvents(serverList, "http://noschools/", "", DateTime.Today, DateTime.Today.AddMonths(12), 0, 20, out total)).Returns(GetSampleEvents(10));
+            mockEventsPresentation.Setup(p => p.GetEvents(serverList, "http://noschools/", "", DateTime.Today, DateTime.Today.AddMonths(12), 0, 20, true, out total)).Returns(GetSampleEvents(10));
 
             _sut = new EventsController(mockSchoolsService.Object, mockEventsPresentation.Object);
             // Act
@@ -71,7 +71,7 @@ namespace West.Presence.CMA.Api.Controllers.Tests
             int total = 0;
             var serverList = new List<int>() { 0, 1, 2, 3, 4 };
 
-            mockEventsPresentation.Setup(p => p.GetEvents(serverList, "http://localhost/", "", DateTime.Today, DateTime.Today.AddMonths(12), 0, 20, out total)).Returns(GetSampleEvents(10));
+            mockEventsPresentation.Setup(p => p.GetEvents(serverList, "http://localhost/", "", DateTime.Today, DateTime.Today.AddMonths(12), 0, 20, true, out total)).Returns(GetSampleEvents(10));
 
             _sut = new EventsController(mockSchoolsService.Object, mockEventsPresentation.Object);
             // Act
@@ -91,7 +91,7 @@ namespace West.Presence.CMA.Api.Controllers.Tests
             int total = 0;
             var serverList = new List<int>() { 0, 1, 2, 3, 4 };
 
-            mockEventsPresentation.Setup(p => p.GetEvents(serverList, "http://localhost", "", DateTime.Today, DateTime.Today.AddMonths(12), 0, 20, out total)).Returns(GetSampleEvents(0));
+            mockEventsPresentation.Setup(p => p.GetEvents(serverList, "http://localhost", "", DateTime.Today, DateTime.Today.AddMonths(12), 0, 20, true, out total)).Returns(GetSampleEvents(0));
 
             _sut = new EventsController(mockSchoolsService.Object, mockEventsPresentation.Object);
             // Act
@@ -111,7 +111,7 @@ namespace West.Presence.CMA.Api.Controllers.Tests
             int total = 0;
             var serverList = new List<int>() { 0, 1, 2, 3, 4 };
 
-            mockEventsPresentation.Setup(p => p.GetEvents(serverList, "http://localhost", "", DateTime.Today, DateTime.Today.AddMonths(12), 0, 20, out total)).Returns(GetSampleEvents(10));
+            mockEventsPresentation.Setup(p => p.GetEvents(serverList, "http://localhost", "", DateTime.Today, DateTime.Today.AddMonths(12), 0, 20, true, out total)).Returns(GetSampleEvents(10));
 
             _sut = new EventsController(mockSchoolsService.Object, mockEventsPresentation.Object);
             // Act

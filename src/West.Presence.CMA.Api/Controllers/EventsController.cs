@@ -60,7 +60,7 @@ namespace West.Presence.CMA.Api.Controllers
                 }
 
                 int total;
-                var events = _eventsPresentation.GetEvents(filter.channelServerIds, baseUrl, query, filter.starttime, filter.endtime, page.offset, page.limit, out total);
+                var events = _eventsPresentation.GetEvents(filter.channelServerIds, baseUrl, query, filter.starttime, filter.endtime, page.offset, page.limit, true, out total);
 
                 var links = string.IsNullOrEmpty(query) ? this.GetLinks(baseUrl, filter, page, "", true, total) : null;
 
@@ -98,6 +98,88 @@ namespace West.Presence.CMA.Api.Controllers
                                                channels = new { data = new object[] { new { type = "school-messenger.channels", id = c.ServerId.ToString() } } },
                                            }
                                        };
+                return Ok(new { data = eventsData, links = links });
+            }
+
+            _logger.Error("validation failed");
+            return NoContent();
+        }
+
+
+        [HttpGet("cmaapi/1/resources/school-messenger.events.v2")]
+        public IActionResult GetEventsV2([FromQuery]QueryPagination page, [FromQuery]QueryFilter filter, [FromQuery]string query = "", [FromQuery] string baseUrl = "")
+        {
+            baseUrl = GetBaseUrl(baseUrl);
+            if (filter.categories == 0)
+                filter = GetQueryFilter();
+            query = GetSearchKey(filter.search, query);
+
+            if (string.IsNullOrEmpty(baseUrl))
+            {
+                _logger.Error("baseUrl not been provided");
+                return NoContent();
+            }
+
+            var schools = _schoolsService.GetSchools(baseUrl, "");
+
+            if (IsResourcesRequestValid(filter, schools, new List<int>() { 3, 4 }))
+            {
+                if (filter.starttime == null || filter.starttime.Year < DateTime.Today.AddYears(-2).Year)
+                {
+                    filter.starttime = DateTime.Today.AddDays(-10);
+                    filter.endtime = DateTime.Today.AddMonths(ENDPROID);
+                }
+
+                if (filter.endtime == null || filter.starttime.Year < DateTime.Today.AddYears(-2).Year)
+                {
+                    filter.endtime = DateTime.Today.AddMonths(ENDPROID);
+                }
+
+                if (filter.endtime < filter.starttime)
+                {
+                    filter.starttime = DateTime.Today.AddDays(-10);
+                    filter.endtime = DateTime.Today.AddMonths(ENDPROID);
+                }
+
+                int total;
+                var events = _eventsPresentation.GetEvents(filter.channelServerIds, baseUrl, query, filter.starttime, filter.endtime, page.offset, page.limit, false, out total);
+
+                var links = string.IsNullOrEmpty(query) ? this.GetLinks(baseUrl, filter, page, "", true, total) : null;
+
+                if (events.Count() == 0)
+                {
+                    _logger.Information("no events found");
+                    return NoContent();
+                }
+
+                var eventsData = from c in events
+                                 select new
+                                 {
+                                     id = c.EventId.ToString(),
+                                     type = "school-messenger.events",
+                                     attributes = new
+                                     {
+                                         name = c.Name,
+                                         description = c.Description,
+                                         starttime = c.StartTime,
+                                         endtime = c.EndTime,
+                                         starttimeutc = c.StartTimeUTC,
+                                         endtimeutc = c.EndTimeUTC,
+                                         isallday = c.IsAllDayEvent
+                                     },
+                                     meta = new
+                                     {
+                                         i18n = new
+                                         {
+                                             translatableFields = new List<string> { "attributes.name", "attributes.description" }
+                                         }
+                                     },
+                                     relationships = new
+                                     {
+                                         categories = new { data = new object[] { new { type = "school-messenger.categories", id = "4" } } },
+                                         channels = new { data = new object[] { new { type = "school-messenger.channels", id = c.ServerId.ToString() } } },
+                                     }
+                                 };
                 return Ok(new { data = eventsData, links = links });
             }
 

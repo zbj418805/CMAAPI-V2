@@ -9,7 +9,7 @@ namespace West.Presence.CMA.Core.Presentations
 {
     public interface IEventsPresentation
     {
-        IEnumerable<Event> GetEvents(List<int> serverIds, string baseUrl, string searchKey, DateTime startDate, DateTime endDate, int pageIndex, int pageSize, out int total);
+        IEnumerable<Event> GetEvents(List<int> serverIds, string baseUrl, string searchKey, DateTime startDate, DateTime endDate, int pageIndex, int pageSize, bool cutEvents, out int total);
     }
 
     public class EventsPresentation : PresentationBase, IEventsPresentation
@@ -21,9 +21,9 @@ namespace West.Presence.CMA.Core.Presentations
             _eventsServise = eventsServise;
         }
 
-        public IEnumerable<Event> GetEvents (List<int> serverIds, string baseUrl, string searchKey, DateTime startDate, DateTime endDate, int pageIndex, int pageSize, out int total)
+        public IEnumerable<Event> GetEvents (List<int> serverIds, string baseUrl, string searchKey, DateTime startDate, DateTime endDate, int pageIndex, int pageSize, bool cutEvents, out int total)
         {
-            var events = _eventsServise.GetEvents(serverIds, baseUrl, searchKey, startDate, endDate);
+            var events = _eventsServise.GetEvents(serverIds, baseUrl, searchKey, startDate, endDate, cutEvents);
             total = events.Count();
 
             return GetPageItems<Event>(events, pageIndex, pageSize);

@@ -8,7 +8,7 @@ namespace West.Presence.CMA.Core.Repositories
 {
     public interface IEventsRepository
     {
-        IEnumerable<Event> GetEvents(int serverId, string baseUrl, DateTime startDate, DateTime endDate);
+        IEnumerable<Event> GetEvents(int serverId, string baseUrl, DateTime startDate, DateTime endDate, bool cutEvents = true);
     }
 
     public class APIEventsRepository : IEventsRepository
@@ -19,7 +19,7 @@ namespace West.Presence.CMA.Core.Repositories
             _httpClientProvider = httpClientProvider;
         }
 
-        public IEnumerable<Event> GetEvents(int serverId, string baseUrl, DateTime startDate, DateTime endDate)
+        public IEnumerable<Event> GetEvents(int serverId, string baseUrl, DateTime startDate, DateTime endDate, bool cutEvents=true)
         {
             var responseData = _httpClientProvider.SoapPostData<Event>($"{baseUrl}common/controls/workspacecalendar/ws/workspacecalendarws.asmx/geteventsbyserverid", new
             {
@@ -28,36 +28,45 @@ namespace West.Presence.CMA.Core.Repositories
                 endTime = endDate
             }, "PresenceApi");
 
-            List<Event> rerangeEvents = new List<Event>();
-            foreach(Event ce in responseData)
+            if (cutEvents)
             {
-                if (ce.EndTime.Date > ce.StartTime.Date)
+                List<Event> rerangeEvents = new List<Event>();
+                foreach (Event ce in responseData)
                 {
-                    // Split Multiple Event for cross date event
-                    double days = Convert.ToInt32((ce.EndTime.Date - ce.StartTime.Date).TotalDays) + 1;
-                    for (int i = 1; i <= days; i++)
+                    if (ce.EndTime.Date > ce.StartTime.Date)
                     {
-                        DateTime tStartTime = i == 1 ? ce.StartTime : ce.StartTime.Date.AddDays(i - 1);
-                        DateTime tEndTime = i == days ? ce.EndTime : ce.StartTime.Date.AddDays(i).AddSeconds(-1);
-                        if (tStartTime == tEndTime && tStartTime.ToString("HH:mm:ss") == "23:59:59")
-                            continue;
-                        Event newCe = new Event();
-                        newCe.EventId = int.Parse(ce.EventId.ToString() + i.ToString());
-                        newCe.Description = ce.Description;
-                        newCe.StartTime = tStartTime;
-                        newCe.EndTime = tEndTime;
-                        newCe.ServerId = ce.ServerId;
-                        rerangeEvents.Add(newCe);
+                        // Split Multiple Event for cross date event
+                        double days = Convert.ToInt32((ce.EndTime.Date - ce.StartTime.Date).TotalDays) + 1;
+                        for (int i = 1; i <= days; i++)
+                        {
+                            DateTime tStartTime = i == 1 ? ce.StartTime : ce.StartTime.Date.AddDays(i - 1);
+                            DateTime tEndTime = i == days ? ce.EndTime : ce.StartTime.Date.AddDays(i).AddSeconds(-1);
+                            if (tStartTime == tEndTime && tStartTime.ToString("HH:mm:ss") == "23:59:59")
+                                continue;
+                            Event newCe = new Event();
+                            newCe.EventId = int.Parse(ce.EventId.ToString() + i.ToString());
+                            newCe.Description = ce.Description;
+                            newCe.StartTime = tStartTime;
+                            newCe.EndTime = tEndTime;
+                            newCe.ServerId = ce.ServerId;
+                            rerangeEvents.Add(newCe);
+                        }
+                    }
+                    else
+                    {
+                        ce.ServerId = serverId;
+                        rerangeEvents.Add(ce);
                     }
                 }
-                else
-                {
-                    ce.ServerId = serverId;
-                    rerangeEvents.Add(ce);
-                }
-            }
 
-            return rerangeEvents;
+                return rerangeEvents;
+            }
+            else {
+                foreach (Event e in responseData)
+                    e.ServerId = serverId;
+
+                return responseData;
+            }
         }
     }
 }
