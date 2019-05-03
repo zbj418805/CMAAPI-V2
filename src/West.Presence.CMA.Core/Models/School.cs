@@ -37,10 +37,12 @@ namespace West.Presence.CMA.Core.Models
 
     public class MAttribute
     {
+        public int objectId { get; set; }
         public int attributeId { get; set; }
         public string attributeKey { get; set; }
         public string attributeName { get; set; }
         public string prettyName { get; set; }
         public string attributeValue { get; set; }
+        public string category { get; set; }
     }
 }

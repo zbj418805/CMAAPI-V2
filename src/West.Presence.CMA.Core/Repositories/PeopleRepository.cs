@@ -43,8 +43,8 @@ namespace West.Presence.CMA.Core.Repositories
             PortletSettings portletSettings = _databaseProvider.GetData<PortletSettings>(connectionStr, "[dbo].[staff_directory_get_settings_v2]",
                 new { server_id = serverId }, CommandType.StoredProcedure).FirstOrDefault();
 
-            string selectGroups = ExtractListFromXML(portletSettings.SelectGroups, "SelectedGroups", true, "id");
-            string excludedUsers = ExtractListFromXML(portletSettings.ExcludedUsers, "ExcludedUsers", false, "user_id");
+            string selectGroups = ExtractListFromXML(portletSettings.SelectGroups, "SelectedGroups", true, false, "id");
+            string excludedUsers = ExtractListFromXML(portletSettings.ExcludedUsers, "ExcludedUsers", false, false,"user_id");
 
             //2.Get all users with [selectedGroups]
             if (string.IsNullOrEmpty(selectGroups))
@@ -86,11 +86,97 @@ namespace West.Presence.CMA.Core.Repositories
 
         public IEnumerable<PersonInfo> GetPeopleInfo(string baseUrl, IEnumerable<Person> people)
         {
+            string sqlscrpt_GetDefaultURL = "SELECT TOP 1 url FROM click_server_urls WHERE default_p=1 AND server_id=@serverId";
+            string sqlscrpt_GetUsersDetails = @"SELECT
+usr.user_id as Id ,   
+per.first_names as FirstName,    
+per.last_name as LastName, 
+ext.job_title as JobTitle,    
+ext.work_phone as PhoneNumber, 
+ext.description as Description,    
+ext.priv_profile_picture as ImageUrl , 
+par.email as Email      
+FROM       users                 AS usr WITH (NOLOCK)
+INNER JOIN persons               AS per WITH (NOLOCK)  ON usr.user_id=per.person_id
+INNER JOIN parties               AS par WITH (NOLOCK)  ON usr.user_id=par.party_id
+LEFT  JOIN user_extended         AS ext WITH (NOLOCK)  ON usr.user_id=ext.user_id
+WHERE      usr.user_id IN (SELECT value FROM string_split(@userIds, ','))";
+
+            string sqlscript_GetUsersAttributes = @"SELECT  
+   AV.[object_id] AS objectId
+  ,CA.[attribute_name] AS attributeName
+  ,AV.[attr_value] AS attributeValue
+  ,CA.[attribute_id] as attributeId
+  ,CA.[category] AS category
+
+  FROM         click_attribute_values AS AV WITH (NOLOCK)
+INNER JOIN    click_attributes       AS CA WITH (NOLOCK) ON CA.[attribute_id] = AV.[attribute_id] 
+                                                         AND CA.[category] IN ('Social Media','User Profile')                  
+WHERE   CA.enable_p = 1
+  AND   AV.object_id IN (SELECT value FROM string_split(@userIds, ','))
+  AND   CA.parent_id = 0";
+
             string connectionStr = _dbConnectionService.GetConnection(baseUrl);
-            throw new NotImplementedException();
+
+            string imageUrlFormat = "{0}common/pages/GalleryPhoto.aspx?photoId={1}&width=180&height=180";
+
+            int[] userIds = people.Select(s => s.userId).Distinct().ToArray();
+            int[] userFromServerIds = people.Select(s => s.serverId).Distinct().ToArray();
+            string strUserIds = string.Join(",", userIds);
+            //1. Load server information for [serverHiddenAttributes], [serverDefaultUrls]
+            Dictionary<int, List<string>> serverHiddenAttributes = new Dictionary<int, List<string>>();
+            Dictionary<int, string> serverDefaultUrls = new Dictionary<int, string>();
+            foreach (int serverId in userFromServerIds) {
+                PortletSettings portletSettings = _databaseProvider.GetData<PortletSettings>(connectionStr, "[dbo].[staff_directory_get_settings_v2]",
+                new { server_id = serverId }, CommandType.StoredProcedure).FirstOrDefault();
+                var attributes = ExtractListFromXML(portletSettings.Attributes, "Attributes", false, true, "key");
+                serverHiddenAttributes.Add(serverId, attributes.Split(',').ToList());
+                serverDefaultUrls.Add(serverId, _databaseProvider.GetCellValue<string>(connectionStr, sqlscrpt_GetDefaultURL, new { serverId = serverId }, CommandType.Text));
+            }
+
+            //2. Get data for all users details and attributes
+            var peopleList = _databaseProvider.GetData<PersonInfo>(connectionStr, sqlscrpt_GetUsersDetails, new { userIds = strUserIds }, CommandType.Text);
+            var peopleListAttributes = _databaseProvider.GetData<MAttribute>(connectionStr, sqlscript_GetUsersAttributes, new { userIds = strUserIds }, CommandType.Text);
+
+            //3. Loop by [simplePersonList], add details to person to [personList]
+            List<PersonInfo> resultPeople = new List<PersonInfo>();
+            foreach (Person p in people)
+            {
+                //3.1 Add person details
+                PersonInfo personInfo = peopleList.Where(x => x.id == p.userId).FirstOrDefault();
+                personInfo.serverId = p.serverId;
+                if(personInfo.imageUrl != null)
+                    personInfo.imageUrl = int.Parse(personInfo.imageUrl) > 0 ? string.Format(imageUrlFormat, serverDefaultUrls[p.serverId], int.Parse(personInfo.imageUrl)) : "";
+
+                if (!serverHiddenAttributes[p.serverId].Contains("youtube"))
+                    personInfo.youTube = peopleListAttributes.Where(x => x.objectId == p.userId && x.attributeName == "youtube").Select(v=>v.attributeValue).FirstOrDefault();
+
+                if (!serverHiddenAttributes[p.serverId].Contains("facebook"))
+                    personInfo.facebook = peopleListAttributes.Where(x => x.objectId == p.userId && x.attributeName == "facebook").Select(v => v.attributeValue).FirstOrDefault();
+
+                if (!serverHiddenAttributes[p.serverId].Contains("twitter"))
+                    personInfo.twitter = peopleListAttributes.Where(x => x.objectId == p.userId && x.attributeName == "twitter").Select(v => v.attributeValue).FirstOrDefault();
+
+               
+                if (!serverHiddenAttributes[p.serverId].Contains("blog"))
+                    personInfo.blog = peopleListAttributes.Where(x => x.objectId == p.userId && x.attributeName == "blog").Select(v => v.attributeValue).FirstOrDefault();
+
+                if (!serverHiddenAttributes[p.serverId].Contains("personal_message"))
+                    personInfo.personalMessage = peopleListAttributes.Where(x => x.objectId == p.userId && x.attributeName == "personal_message").Select(v => v.attributeValue).FirstOrDefault();
+
+                if (!serverHiddenAttributes[p.serverId].Contains("website"))
+                    personInfo.website = peopleListAttributes.Where(x => x.objectId == p.userId && x.attributeName == "website").Select(v => v.attributeValue).FirstOrDefault();
+
+                if (personInfo.website!=null && personInfo.website.StartsWith("/"))
+                    personInfo.website = serverDefaultUrls[p.serverId] + personInfo.website.Substring(1);
+
+                resultPeople.Add(personInfo);
+            }
+
+            return resultPeople;
         }
 
-        private string ExtractListFromXML(string xmlString, string nodeName, bool checkVisible,  string key)
+        private string ExtractListFromXML(string xmlString, string nodeName, bool checkRootVisible, bool checkNodeVisible, string key)
         {
             if (string.IsNullOrEmpty(xmlString))
                 return string.Empty;
@@ -98,11 +184,14 @@ namespace West.Presence.CMA.Core.Repositories
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xmlString);
             XmlNode node = doc.SelectSingleNode(nodeName);
-            if (checkVisible && node.Attributes["visible"].Value == "True")
+            if (checkRootVisible && node.Attributes["visible"].Value == "True")
             {
                 foreach (XmlNode groupNode in node.ChildNodes)
                 {
-                    listString += groupNode.Attributes[key].Value + ",";
+                    if(checkNodeVisible && groupNode.Attributes["visible"].Value == "False")
+                        listString += groupNode.Attributes[key].Value + ",";
+                    else
+                        listString += groupNode.Attributes[key].Value + ",";
                 }
             }
             if (!string.IsNullOrEmpty(listString))

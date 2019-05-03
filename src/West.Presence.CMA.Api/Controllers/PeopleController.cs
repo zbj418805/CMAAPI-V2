@@ -53,26 +53,26 @@ namespace West.Presence.CMA.Api.Controllers {
 
                 var dataList = from p in fullPeople
                             select new {
-                                id = p.Id.ToString (),
+                                id = p.id.ToString (),
                                 type = "school-messenger.people",
                                 attributes = new {
-                                firstName = p.FirstName,
-                                lastName = p.LastName,
-                                jobTitle = p.JobTitle,
-                                phoneNumber = p.PhoneNumber,
-                                email = p.Email,
-                                website = p.Website,
-                                twitter = p.Twitter,
-                                about = p.Description + p.PersonalMessage,
-                                image = p.ImageUrl,
-                                name = p.FirstName + " " + p.LastName,
-                                description = p.Description,
-                                blog = p.Blog,
-                                personalMessage = p.PersonalMessage
+                                firstName = p.firstName,
+                                lastName = p.lastName,
+                                jobTitle = p.jobTitle,
+                                phoneNumber = p.phoneNumber,
+                                email = p.email,
+                                website = p.website,
+                                twitter = p.twitter,
+                                about = p.description + p.personalMessage,
+                                image = p.imageUrl,
+                                name = p.firstName + " " + p.lastName,
+                                description = p.description,
+                                blog = p.blog,
+                                personalMessage = p.personalMessage
                                 },
                                 relationships = new {
                                 categories = new { data = new object[] { new { type = "school-messenger.categories", id = "6" } } },
-                                channels = new { data = new object[] { new { type = "school-messenger.channels", id = p.ServerId.ToString () } } },
+                                channels = new { data = new object[] { new { type = "school-messenger.channels", id = p.serverId.ToString () } } },
                                 }
                             };
 
