@@ -73,7 +73,7 @@ namespace West.Presence.CMA.Core.Repositories
             XmlDocument xdata = new XmlDocument();
             try
             {
-                xdata.Load(new System.IO.StringReader(HttpUtility.HtmlDecode(xml)));
+                xdata.Load(HttpUtility.HtmlDecode(xml));
 
                 foreach (XmlNode cn in xdata.DocumentElement.ChildNodes)
                 {

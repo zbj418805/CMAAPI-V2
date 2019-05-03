@@ -11,18 +11,6 @@ namespace West.Presence.CMA.Core.Repositories
         IEnumerable<Event> GetEvents(int serverId, string baseUrl, DateTime startDate, DateTime endDate);
     }
 
-    public class DBEventsRepository : IEventsRepository
-    {
-        public DBEventsRepository(string baseUrl)
-        {
-        }
-
-        public IEnumerable<Event> GetEvents(int serverId, string baseUrl, DateTime startDate, DateTime endDate)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class APIEventsRepository : IEventsRepository
     {
         private readonly IHttpClientProvider _httpClientProvider;

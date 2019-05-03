@@ -5,13 +5,6 @@ using Dapper;
 
 namespace West.Presence.CMA.Core.Helper
 {
-
-    public interface IDbConnectionFactory
-    {
-        IDbConnection CreateConnection();
-    }
-
-    
     public interface IDatabaseProvider
     {
         T GetCellValue<T>(string connectStr, string sql, object para, CommandType type);
@@ -21,13 +14,6 @@ namespace West.Presence.CMA.Core.Helper
 
     public class DatabaseProvider : IDatabaseProvider
     {
-        //private readonly IDbConnectionFactory _dbConnectionFactory;
-
-        //public DatabaseProvider(IDbConnectionFactory dbConnectionFactory)
-        //{
-        //    _dbConnectionFactory = dbConnectionFactory;
-        //}
-
         public DatabaseProvider()
         {
 
@@ -35,7 +21,6 @@ namespace West.Presence.CMA.Core.Helper
 
         public T GetCellValue<T>(string connectStr, string sql, object para, CommandType type)
         {
-            //using(var con = _dbConnectionFactory.CreateConnection())
             using (var con = new SqlConnection(connectStr))
             {
                 return con.ExecuteScalar<T>(sql, para, null, null, type);
@@ -44,7 +29,6 @@ namespace West.Presence.CMA.Core.Helper
 
         public IEnumerable<T> GetData<T>(string connectStr, string sql, object para, CommandType type)
         {
-            //using (var con = _dbConnectionFactory.CreateConnection())
             using (var con = new SqlConnection(connectStr))
             {
                 return con.Query<T>(sql, para, commandType: type) ?? new List<T>();
@@ -53,7 +37,6 @@ namespace West.Presence.CMA.Core.Helper
         
         public void Excute(string connectStr, string sql, object para, CommandType type)
         {
-            //using (var con = _dbConnectionFactory.CreateConnection())
             using (var con = new SqlConnection(connectStr))
             {
                 con.Execute(sql, para, commandType: type);
