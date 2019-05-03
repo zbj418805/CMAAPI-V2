@@ -33,61 +33,35 @@ namespace West.Presence.CMA.Core.Tests.Services
         [Fact]
         public void Test_GetConnection_From_Cached()
         {
-            List<Connection> conns = new List<Connection>();
-            conns.Add(new Connection() { baseUrl = "1111", connectionString = "conn_111"});
-            conns.Add(new Connection() { baseUrl = "2222", connectionString = "conn_222"});
-            IEnumerable<Connection> connE = conns.AsEnumerable();
+            string conn = "asdfa";
 
             mockCacheProvider = new Mock<ICacheProvider>();
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Connection>>("CMAConnections", out connE)).Returns(true);
+            mockCacheProvider.Setup(p => p.TryGetValue<string>("CMAConnections_localhost", out conn)).Returns(true);
 
             mockConnectionRepository = new Mock<IConnectionRepository>();
             //mockConnectionRepository.Setup(p => p.GetConnection("1111")).Returns("conn_111");
 
             dbConnectionService = new DBConnectionService(mockCacheProvider.Object, mockOptions.Object, mockConnectionRepository.Object);
-            string connStr = dbConnectionService.GetConnection("1111");
+            string connStr = dbConnectionService.GetConnection("http://localhost/");
 
-            Assert.Equal("conn_111", connStr);
+            Assert.Equal("asdfa", connStr);
         }
 
         [Fact]
         public void Test_GetConnection_From_Repository()
         {
-            List<Connection> conns = new List<Connection>();
-            //conns.Add(new Connection() { baseUrl = "1111", connectionString = "conn_111" });
-            //conns.Add(new Connection() { baseUrl = "2222", connectionString = "conn_222" });
-            IEnumerable<Connection> connE = conns.AsEnumerable();
+            string conn = "asdfa";
 
             mockCacheProvider = new Mock<ICacheProvider>();
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Connection>>("CMAConnections", out connE)).Returns(false);
+            mockCacheProvider.Setup(p => p.TryGetValue<string>("CMAConnections_localhost", out conn)).Returns(false);
 
             mockConnectionRepository = new Mock<IConnectionRepository>();
-            mockConnectionRepository.Setup(p => p.GetConnection("1111")).Returns("conn_111");
+            mockConnectionRepository.Setup(p => p.GetConnection("http://localhost/")).Returns("conn_111");
 
             dbConnectionService = new DBConnectionService(mockCacheProvider.Object, mockOptions.Object, mockConnectionRepository.Object);
-            string connStr = dbConnectionService.GetConnection("1111");
+            string connStr = dbConnectionService.GetConnection("http://localhost/");
 
             Assert.Equal("conn_111", connStr);
-        }
-
-        [Fact]
-        public void Test_GetConnection_CacheNotExist_Then_GET_Repository()
-        {
-            List<Connection> conns = new List<Connection>();
-            conns.Add(new Connection() { baseUrl = "1111", connectionString = "conn_111" });
-            conns.Add(new Connection() { baseUrl = "2222", connectionString = "conn_222" });
-            IEnumerable<Connection> connE = conns.AsEnumerable();
-
-            mockCacheProvider = new Mock<ICacheProvider>();
-            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<Connection>>("CMAConnections", out connE)).Returns(true);
-
-            mockConnectionRepository = new Mock<IConnectionRepository>();
-            mockConnectionRepository.Setup(p => p.GetConnection("3333")).Returns("conn_333");
-
-            dbConnectionService = new DBConnectionService(mockCacheProvider.Object, mockOptions.Object, mockConnectionRepository.Object);
-            string connStr = dbConnectionService.GetConnection("3333");
-
-            Assert.Equal("conn_333", connStr);
         }
     }
 }

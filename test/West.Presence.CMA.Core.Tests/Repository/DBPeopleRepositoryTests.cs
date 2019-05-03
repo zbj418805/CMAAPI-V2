@@ -34,14 +34,40 @@ namespace West.Presence.CMA.Core.Tests.Repository
             var people = _peopleRepository.GetPeople(1291956, baseUrl);
         }
 
-        public void Test_GetSimplePeople_Okay()
+        [Fact]
+        public void Test_GetSimplePeople_portletsetting_null_returns_null()
         {
-            string baseUrl = "http://presence.kingzad.local/";
+            string baseUrl = "http://localhost/";
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns("");
-            IDatabaseProvider _databaseProvider = new DatabaseProvider();
+
+            List<PortletSettings> settings = new List<PortletSettings>();
+            //settings.Add(new PortletSettings() { SelectGroups = "", ExcludedUsers = "" });
 
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
-            mockDatabaseProvider.Setup(p => p.GetData<School>("", "[dbo].[cma_server_get_v2]", new { district_server_id = 10 }, CommandType.StoredProcedure)).Returns(schools)
+            mockDatabaseProvider.Setup(p => p.GetData<PortletSettings>("", "[dbo].[staff_directory_get_settings_v2]", new { server_id = 1234 }, CommandType.StoredProcedure)).Returns(settings);
+            mockDatabaseProvider.Setup(p => p.GetData<Person>("", "[dbo].[staff_directory_get_basic_users_info_by_groups]", new { group_ids = "1234" }, CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
+
+            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
+
+            var people = _peopleRepository.GetPeople(1234, baseUrl);
+
+            Assert.Null(people);
+        }
+
+        private List<Person> GetSamplePeople(int count)
+        {
+            List<Person> people = new List<Person>();
+            for (int i = 0; i < count; i++)
+            {
+                people.Add(new Person()
+                {
+                    userId = i,
+                    firstName = "First",
+                    lastName = "Last",
+                    jobTitle = "jobs"
+                });
+            }
+            return people;
         }
     }
 }

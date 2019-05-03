@@ -29,7 +29,7 @@ namespace West.Presence.CMA.Core.Repositories
         {
             string connectionStr = _dbConnectionService.GetConnection(baseUrl);
 
-            int serverId = _databaseProvider.GetCellValue<int>(connectionStr, "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", new { url = baseUrl }, CommandType.Text);
+            int serverId = _databaseProvider.GetCellValue<int>(connectionStr, "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", null, CommandType.Text);
 
             var schools = _databaseProvider.GetData<School>(connectionStr, "[dbo].[cma_server_get_v2]", new { district_server_id = serverId }, CommandType.StoredProcedure);
 

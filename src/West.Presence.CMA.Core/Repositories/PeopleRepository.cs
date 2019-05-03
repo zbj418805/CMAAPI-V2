@@ -35,6 +35,9 @@ namespace West.Presence.CMA.Core.Repositories
             PortletSettings portletSettings = _databaseProvider.GetData<PortletSettings>(connectionStr, "[dbo].[staff_directory_get_settings_v2]",
                 new { server_id = serverId }, CommandType.StoredProcedure).FirstOrDefault();
 
+            if (portletSettings == null)
+                return null;
+
             string selectGroups = ExtractListFromXML(portletSettings.SelectGroups, "SelectedGroups", true, "id");
             string excludedUsers = ExtractListFromXML(portletSettings.ExcludedUsers, "ExcludedUsers", false, "user_id");
 
@@ -102,13 +105,6 @@ namespace West.Presence.CMA.Core.Repositories
 
             return listString;
         }
-
-        class PortletSettings
-        {
-            public string SelectGroups { get; set; }
-            public string ExcludedUsers { get; set; }
-        }
-        
     }
 
     public class APIPeopleRepository : IPeopleRepository

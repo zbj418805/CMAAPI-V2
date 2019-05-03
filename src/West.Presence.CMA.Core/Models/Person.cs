@@ -4,6 +4,7 @@ using System.Text;
 
 namespace West.Presence.CMA.Core.Models
 {
+    [Serializable]
     public class Person
     {
         public int userId { get; set; }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 using Dapper;
 
 namespace West.Presence.CMA.Core.Helper
@@ -35,7 +33,7 @@ namespace West.Presence.CMA.Core.Helper
 
         }
 
-        public T GetCellValue<T>(string connectStr, string sql, object para,CommandType type)
+        public T GetCellValue<T>(string connectStr, string sql, object para, CommandType type)
         {
             //using(var con = _dbConnectionFactory.CreateConnection())
             using (var con = new SqlConnection(connectStr))

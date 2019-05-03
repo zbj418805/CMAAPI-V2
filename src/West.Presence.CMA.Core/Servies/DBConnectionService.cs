@@ -28,34 +28,18 @@ namespace West.Presence.CMA.Core.Servies
 
         public string GetConnection(string baseUrl)
         {
+            Uri u = new Uri(baseUrl);
             string DBString;
-
-            string cacheKey = _options.Value.CacheConnKey;
-
-            IEnumerable<Connection> connections;
-
-            if (!_cacheProvider.TryGetValue<IEnumerable<Connection>>(cacheKey, out connections))
+            string cacheKey = $"{_options.Value.CacheConnKey}_{u.Host}";
+            //Check weather connection in Cache
+            if (!_cacheProvider.TryGetValue<string>(cacheKey, out DBString))
             {
-                List<Connection> lsConnections = new List<Connection>();
-                //Get connection  from repo
+                //Retrieve Connection String from Repo
                 DBString = _connectionRepository.GetConnection(baseUrl);
                 if (!string.IsNullOrEmpty(DBString))
                 {
-                    lsConnections.Add(new Connection() { baseUrl = baseUrl, connectionString = DBString });
-                    //Set to Cache
-                    _cacheProvider.Add(cacheKey, lsConnections, 0);
-                }
-            }
-            else {
-                DBString = connections.Where(c => c.baseUrl == baseUrl).Select(x => x.connectionString).FirstOrDefault();
-                if (string.IsNullOrEmpty(DBString)) {
-                    List<Connection> lsConnections = connections.ToList();
-                    DBString = _connectionRepository.GetConnection(baseUrl);
-                    if (!string.IsNullOrEmpty(DBString))
-                    {
-                        lsConnections.Add(new Connection() { baseUrl = baseUrl, connectionString = DBString });
-                        _cacheProvider.Add(cacheKey, lsConnections, 0);
-                    }
+                    //Add to Cache
+                    _cacheProvider.Add(cacheKey, DBString, 0);
                 }
             }
 
