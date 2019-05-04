@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using West.Presence.CMA.Api.Model;
 using West.Presence.CMA.Core.Models;
-using West.Presence.CMA.Core.Servies;
 
 namespace West.Presence.CMA.Api.Controllers
 {
@@ -75,7 +74,7 @@ namespace West.Presence.CMA.Api.Controllers
 
         protected Links GetLinks(string baseUrl, QueryFilter filter, QueryPagination page, string query, bool includeChannels, int totalItemNumber, DateTime? startTime = null, DateTime? endTime = null)
         {
-            var RequestPath = baseUrl;
+            var RequestPath = baseUrl.Substring(0, baseUrl.Length-1);
             if (Request != null)
             {
                 RequestPath += Request.Path;

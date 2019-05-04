@@ -1,15 +1,12 @@
 ﻿using Moq;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using West.Presence.CMA.Core.Helper;
-using West.Presence.CMA.Core.Servies;
-using Moq;
-using Xunit;
-using West.Presence.CMA.Core.Repositories;
 using System.Data;
+using System.Linq;
+using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
+using West.Presence.CMA.Core.Repositories;
+using West.Presence.CMA.Core.Servies;
+using Xunit;
 
 namespace West.Presence.CMA.Core.Repository.Tests
 {

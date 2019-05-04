@@ -22,6 +22,9 @@ namespace West.Presence.CMA.Core.Helper
 
         public T GetCellValue<T>(string connectStr, string sql, object para, CommandType type)
         {
+            if (string.IsNullOrEmpty(connectStr))
+                return default(T);
+
             using (var con = new SqlConnection(connectStr))
             {
                 return con.ExecuteScalar<T>(sql, para, null, null, type);
@@ -30,6 +33,9 @@ namespace West.Presence.CMA.Core.Helper
 
         public IEnumerable<T> GetData<T>(string connectStr, string sql, object para, CommandType type)
         {
+            if (string.IsNullOrEmpty(connectStr))
+                return null;
+
             using (var con = new SqlConnection(connectStr))
             {
                 return con.Query<T>(sql, para, commandType: type) ?? new List<T>();
@@ -38,6 +44,9 @@ namespace West.Presence.CMA.Core.Helper
         
         public void Excute(string connectStr, string sql, object para, CommandType type)
         {
+            if (string.IsNullOrEmpty(connectStr))
+                return;
+
             using (var con = new SqlConnection(connectStr))
             {
                 con.Execute(sql, para, commandType: type);

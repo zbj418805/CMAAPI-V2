@@ -16,12 +16,14 @@ namespace West.Presence.CMA.Core.Repository.Tests
     {
         private Mock<IDatabaseProvider> mockDatabaseProvider;
         private Mock<IDBConnectionService> mockDBConnectionService;
+        private Mock<IPeopleSettingsService> mockPeopleSettingServce;
         private IPeopleRepository _peopleRepository;
 
         public DBPeopleRepositoryTests()
         {
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
             mockDBConnectionService = new Mock<IDBConnectionService>();
+            mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
         }
 
         //[Fact]
@@ -31,7 +33,10 @@ namespace West.Presence.CMA.Core.Repository.Tests
             string dbString = "Data Source=.;Initial Catalog=Presence_QA;User Id=sa;Password=P@ssw0rd";
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(dbString);
             var _databaseProvider = new DatabaseProvider();
-            _peopleRepository = new DBPeopleRepository(_databaseProvider, mockDBConnectionService.Object);
+            mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1291956, baseUrl, dbString)).Returns(new PeopleSettings());
+
+
+            _peopleRepository = new DBPeopleRepository(_databaseProvider, mockDBConnectionService.Object, mockPeopleSettingServce.Object);
             var people = _peopleRepository.GetPeople(1291956, baseUrl);
 
             Assert.NotEmpty(people);
@@ -44,16 +49,17 @@ namespace West.Presence.CMA.Core.Repository.Tests
             string connectionString = "fake_connection_string";
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(connectionString);
 
-            List<PortletSettings> settings = new List<PortletSettings>();
-            settings.Add(new PortletSettings() { SelectGroups = @"<SelectedGroups visible=""True"">
-  <Group id=""1291957"" name =""Registered Users"" />
-</SelectedGroups>", ExcludedUsers = "" });
-
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
-            mockDatabaseProvider.Setup(p => p.GetData<PortletSettings>(connectionString, "[dbo].[staff_directory_get_settings_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(settings);
             mockDatabaseProvider.Setup(p => p.GetData<Person>(connectionString, "[dbo].[staff_directory_get_basic_users_info_by_groups]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
 
-            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
+            
+            mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
+            mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1234, baseUrl, connectionString)).Returns(new PeopleSettings() {
+                SelectGroups= "1291957"
+            });
+
+            //var _databaseProvider = new DatabaseProvider();
+            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockPeopleSettingServce.Object);
 
             var people = _peopleRepository.GetPeople(1234, baseUrl);
 
@@ -67,14 +73,13 @@ namespace West.Presence.CMA.Core.Repository.Tests
             string connectionString = "fake_connection_string";
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns("");
 
-            List<PortletSettings> settings = new List<PortletSettings>();
-            //settings.Add(new PortletSettings() { SelectGroups = "", ExcludedUsers = "" });
-
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
-            mockDatabaseProvider.Setup(p => p.GetData<PortletSettings>("", "[dbo].[staff_directory_get_settings_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(settings);
             mockDatabaseProvider.Setup(p => p.GetData<Person>("", "[dbo].[staff_directory_get_basic_users_info_by_groups]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
 
-            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
+            mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
+            mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1291956, baseUrl, connectionString)).Returns(new PeopleSettings());
+
+            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockPeopleSettingServce.Object);
 
             var people = _peopleRepository.GetPeople(1234, baseUrl);
 
@@ -88,14 +93,14 @@ namespace West.Presence.CMA.Core.Repository.Tests
             string connectionString = "fake_connection_string";
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(connectionString);
 
-            //List<PortletSettings> settings = new List<PortletSettings>();
-            //settings.Add(new PortletSettings() { SelectGroups = "", ExcludedUsers = "" });
-
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
-            mockDatabaseProvider.Setup(p => p.GetData<PortletSettings>(connectionString, "[dbo].[staff_directory_get_settings_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns((IList<PortletSettings>)null);
             mockDatabaseProvider.Setup(p => p.GetData<Person>(connectionString, "[dbo].[staff_directory_get_basic_users_info_by_groups]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
 
-            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
+            mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
+            mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1291956, baseUrl, connectionString)).Returns((PeopleSettings)null);
+
+
+            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockPeopleSettingServce.Object);
 
             var people = _peopleRepository.GetPeople(1234, baseUrl);
 
@@ -109,14 +114,14 @@ namespace West.Presence.CMA.Core.Repository.Tests
             string connectionString = "fake_connection_string";
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(connectionString);
 
-            List<PortletSettings> settings = new List<PortletSettings>();
-            settings.Add(new PortletSettings() { SelectGroups = "", ExcludedUsers = "" });
-
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
-            mockDatabaseProvider.Setup(p => p.GetData<PortletSettings>(connectionString, "[dbo].[staff_directory_get_settings_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(settings);
             mockDatabaseProvider.Setup(p => p.GetData<Person>(connectionString, "[dbo].[staff_directory_get_basic_users_info_by_groups]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
 
-            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
+            mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
+            mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1234, baseUrl, connectionString)).Returns( new PeopleSettings() { SelectGroups="", ExcludedUser="" });
+
+
+            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockPeopleSettingServce.Object);
 
             var people = _peopleRepository.GetPeople(1234, baseUrl);
 

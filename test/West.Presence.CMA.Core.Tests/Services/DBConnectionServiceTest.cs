@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.Options;
-using Moq;
+﻿using Microsoft.Extensions.Options;
 using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
 using West.Presence.CMA.Core.Repositories;
 using West.Presence.CMA.Core.Servies;
 using Xunit;
+using Moq;
 
 
 namespace West.Presence.CMA.Core.Services.Tests
@@ -23,7 +20,7 @@ namespace West.Presence.CMA.Core.Services.Tests
         {
             CMAOptions option = new CMAOptions
             {
-                CacheConnKey = "CMAConnections"
+                CacheConnectionKey = "CMAConnections"
             };
 
             mockOptions = new Mock<IOptions<CMAOptions>>();

@@ -21,12 +21,16 @@ namespace West.Presence.CMA.Core.Repositories
     {
         IDatabaseProvider _databaseProvider;
         IDBConnectionService _dbConnectionService;
+        IPeopleSettingsService _peopleSettingsService;
         private readonly ILogger _logger = Log.ForContext<DBPeopleRepository>();
 
-        public DBPeopleRepository(IDatabaseProvider databaseProvider, IDBConnectionService dbConnectionService)
+        public DBPeopleRepository(IDatabaseProvider databaseProvider, 
+            IDBConnectionService dbConnectionService, 
+            IPeopleSettingsService peopleSettingsService)
         {
             _databaseProvider = databaseProvider;
             _dbConnectionService = dbConnectionService;
+            _peopleSettingsService = peopleSettingsService;
         }
 
         public IEnumerable<Person> GetPeople(int serverId, string baseUrl)
@@ -39,24 +43,20 @@ namespace West.Presence.CMA.Core.Repositories
                 return null;
             }
 
-            //1.Get portlet Instance Properties to [selectedGroups], [excludedUsers]
-            PortletSettings portletSettings = _databaseProvider.GetData<PortletSettings>(connectionStr, "[dbo].[staff_directory_get_settings_v2]",
-                new { server_id = serverId }, CommandType.StoredProcedure).FirstOrDefault();
-
-            string selectGroups = ExtractListFromXML(portletSettings.SelectGroups, "SelectedGroups", true, false, "id");
-            string excludedUsers = ExtractListFromXML(portletSettings.ExcludedUsers, "ExcludedUsers", false, false,"user_id");
+            //1.Get portlet Instance Properties to [selectedGroups], [excludedUsers], [HiddenAttributes]
+            PeopleSettings peopleSetting = _peopleSettingsService.GetPeopleSettings(serverId, baseUrl, connectionStr);
 
             //2.Get all users with [selectedGroups]
-            if (string.IsNullOrEmpty(selectGroups))
+            if (peopleSetting == null || string.IsNullOrEmpty(peopleSetting.SelectGroups))
             {
                 _logger.Error($"No selected groups found based on {baseUrl}.");
                 return new List<Person>();
             }
             var people = _databaseProvider.GetData<Person>(connectionStr, "[dbo].[staff_directory_get_basic_users_info_by_groups]", new
-            { group_ids = selectGroups }, CommandType.StoredProcedure);
+            { group_ids = peopleSetting.SelectGroups }, CommandType.StoredProcedure);
 
             //3.Convert table [dtSimpleUsers] to list [spUsers] and remove users of [excludedUsers]
-            if (string.IsNullOrEmpty(excludedUsers))
+            if (string.IsNullOrEmpty(peopleSetting.ExcludedUser))
             {
                 foreach (Person p in people)
                     p.serverId = serverId;
@@ -65,7 +65,7 @@ namespace West.Presence.CMA.Core.Repositories
             else
             {
                 var spUsers = new List<Person>();
-                var lsExcludedUsers = excludedUsers.Split(',').Select(int.Parse);
+                var lsExcludedUsers = peopleSetting.ExcludedUser.Split(',').Select(int.Parse);
                 foreach (Person p in people)
                 {
                     if (!lsExcludedUsers.Contains(p.userId))
@@ -127,10 +127,8 @@ WHERE   CA.enable_p = 1
             Dictionary<int, List<string>> serverHiddenAttributes = new Dictionary<int, List<string>>();
             Dictionary<int, string> serverDefaultUrls = new Dictionary<int, string>();
             foreach (int serverId in userFromServerIds) {
-                PortletSettings portletSettings = _databaseProvider.GetData<PortletSettings>(connectionStr, "[dbo].[staff_directory_get_settings_v2]",
-                new { server_id = serverId }, CommandType.StoredProcedure).FirstOrDefault();
-                var attributes = ExtractListFromXML(portletSettings.Attributes, "Attributes", false, true, "key");
-                serverHiddenAttributes.Add(serverId, attributes.Split(',').ToList());
+                PeopleSettings peopleSetting = _peopleSettingsService.GetPeopleSettings(serverId, baseUrl, connectionStr);
+                serverHiddenAttributes.Add(serverId, peopleSetting.HiddenAttributres.Split(',').ToList());
                 serverDefaultUrls.Add(serverId, _databaseProvider.GetCellValue<string>(connectionStr, sqlscrpt_GetDefaultURL, new { serverId = serverId }, CommandType.Text));
             }
 
@@ -174,32 +172,6 @@ WHERE   CA.enable_p = 1
             }
 
             return resultPeople;
-        }
-
-        private string ExtractListFromXML(string xmlString, string nodeName, bool checkRootVisible, bool checkNodeVisible, string key)
-        {
-            if (string.IsNullOrEmpty(xmlString))
-                return string.Empty;
-            string listString ="";
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(xmlString);
-            XmlNode node = doc.SelectSingleNode(nodeName);
-            if (checkRootVisible && node.Attributes["visible"].Value == "True")
-            {
-                foreach (XmlNode groupNode in node.ChildNodes)
-                {
-                    if(checkNodeVisible && groupNode.Attributes["visible"].Value == "False")
-                        listString += groupNode.Attributes[key].Value + ",";
-                    else
-                        listString += groupNode.Attributes[key].Value + ",";
-                }
-            }
-            if (!string.IsNullOrEmpty(listString))
-            {
-                listString = listString.Substring(0, listString.Length - 1);
-            }
-
-            return listString;
         }
     }
 

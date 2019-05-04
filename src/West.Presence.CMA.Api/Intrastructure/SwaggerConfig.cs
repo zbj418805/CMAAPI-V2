@@ -19,8 +19,8 @@ namespace West.Presence.CMA.Api.Infrastructure
 			{
 				options.SwaggerDoc("v1", new Info
 				{
-					Version = "v1",
-					Title = "Presence GoogleUpdater API"
+					Version = "v2",
+					Title = "CMAAPI - PCF version,  API"
 				});
 
 				// determine base path fo the application

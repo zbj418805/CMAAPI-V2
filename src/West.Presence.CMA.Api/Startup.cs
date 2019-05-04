@@ -198,6 +198,8 @@ namespace West.Presence.CMA.Api
             services.AddSingleton<IPeopleService, PeopleService>();
             services.AddSingleton<ISchoolsService, SchoolsService>();
             services.AddSingleton<IDBConnectionService, DBConnectionService>();
+            services.AddSingleton<IPeopleSettingsService, PeopleSettingsService>();
+            //services.AddSingleton<IDefaultUrlService, DefaultUrlService>();
 
             //Add API Repository Layer
             //services.AddSingleton<ISchoolsRepository, APISchoolsRepository>();
@@ -213,6 +215,8 @@ namespace West.Presence.CMA.Api
             services.AddSingleton<IPeopleRepository, DBPeopleRepository>();
             services.AddSingleton<IChannel2GroupRepository, DBChannel2GroupRepository>();
             services.AddSingleton<IConnectionRepository, APIConectionRepository>();
+            services.AddSingleton<IPeopleSettingsRepository, PeopleSettingsRepository>();
+            services.AddSingleton<IDefaultUrlRepository, DefaultUrlRepository>();
 
         }
 
