@@ -197,9 +197,11 @@ namespace West.Presence.CMA.Api
             services.AddSingleton<INewsService, NewsService>();
             services.AddSingleton<IPeopleService, PeopleService>();
             services.AddSingleton<ISchoolsService, SchoolsService>();
+            
+            //Add DB Service Layer
             services.AddSingleton<IDBConnectionService, DBConnectionService>();
             services.AddSingleton<IPeopleSettingsService, PeopleSettingsService>();
-            //services.AddSingleton<IDefaultUrlService, DefaultUrlService>();
+            services.AddSingleton<IDefaultUrlService, DefaultUrlService>();
 
             //Add API Repository Layer
             //services.AddSingleton<ISchoolsRepository, APISchoolsRepository>();

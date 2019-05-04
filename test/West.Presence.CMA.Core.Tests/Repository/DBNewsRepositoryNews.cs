@@ -14,12 +14,14 @@ namespace West.Presence.CMA.Core.Repository.Tests
     {
         private Mock<IDatabaseProvider> mockDatabaseProvider;
         private Mock<IDBConnectionService> mockDBConnectionService;
+        private Mock<IDefaultUrlService> mockDefaultUrlService;
         private INewsRepository _newsRepository;
 
         public DBNewsRepositoryNews()
         {
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
             mockDBConnectionService = new Mock<IDBConnectionService>();
+            mockDefaultUrlService = new Mock<IDefaultUrlService>();
         }
 
         //[Fact]
@@ -29,7 +31,10 @@ namespace West.Presence.CMA.Core.Repository.Tests
             string dbString = "Data Source=.;Initial Catalog=Presence_QA;User Id=sa;Password=P@ssw0rd";
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(dbString);
             var _databaseProvider = new DatabaseProvider();
-            _newsRepository = new DBNewsRepository(_databaseProvider, mockDBConnectionService.Object);
+
+            mockDefaultUrlService.Setup(p => p.GetDefaultUrl(1291956, baseUrl, dbString)).Returns("http://sample.url/");
+
+            _newsRepository = new DBNewsRepository(_databaseProvider, mockDBConnectionService.Object, mockDefaultUrlService.Object);
             var news = _newsRepository.GetNews(1291956, baseUrl);
 
             Assert.NotEmpty(news);
@@ -39,8 +44,10 @@ namespace West.Presence.CMA.Core.Repository.Tests
         [Fact]
         public void Test_News_no_connection_string_found_return_null()
         {
+            //Arrange
             string baseUrl = "http://presence.kingzad.local/";
             string dbString = "fake_connection_string";
+            int serverId = 123;
 
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns("");
             IDatabaseProvider _databaseProvider = new DatabaseProvider();
@@ -48,18 +55,23 @@ namespace West.Presence.CMA.Core.Repository.Tests
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
             mockDatabaseProvider.Setup(p => p.GetCellValue<string>(dbString, "SELECT url FROM click_server_urls where server_id=@serverId and default_p = 1", It.IsAny<object>(), CommandType.Text)).Returns("http://test.ul/");
             mockDatabaseProvider.Setup(p => p.GetData<RawNews>(dbString, "[dbo].[cma_news_get]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSampleNews(2));
+            mockDefaultUrlService.Setup(p => p.GetDefaultUrl(serverId, baseUrl, dbString)).Returns("http://sample.url/");
 
-            _newsRepository = new DBNewsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
+            //Action
+            _newsRepository = new DBNewsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockDefaultUrlService.Object);
+            var news = _newsRepository.GetNews(serverId, baseUrl);
 
-            var news = _newsRepository.GetNews(123, baseUrl);
+            //Assert
             Assert.Null(news);
         }
 
         [Fact]
         public void Test_News_no_news_found_return_empty()
         {
+            //Arrange
             string baseUrl = "http://presence.kingzad.local/";
             string dbString = "fake_connection_string";
+            int serverId = 123;
 
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(dbString);
             IDatabaseProvider _databaseProvider = new DatabaseProvider();
@@ -68,17 +80,23 @@ namespace West.Presence.CMA.Core.Repository.Tests
             mockDatabaseProvider.Setup(p => p.GetCellValue<string>(dbString, "SELECT url FROM click_server_urls where server_id=@serverId and default_p = 1", It.IsAny<object>(), CommandType.Text)).Returns("http://test.ul/");
             mockDatabaseProvider.Setup(p => p.GetData<RawNews>(dbString, "[dbo].[cma_news_get]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSampleNews(0));
 
-            _newsRepository = new DBNewsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
+            mockDefaultUrlService.Setup(p => p.GetDefaultUrl(serverId, baseUrl, dbString)).Returns("http://sample.url/");
 
-            var news = _newsRepository.GetNews(123, baseUrl);
+            //Action
+            _newsRepository = new DBNewsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockDefaultUrlService.Object);
+            var news = _newsRepository.GetNews(serverId, baseUrl);
+
+            //Assert
             Assert.Empty(news);
         }
 
         [Fact]
         public void Test_News_Repository_Okay()
         {
+            //Arragne
             string baseUrl = "http://presence.kingzad.local/";
             string dbString = "fake_connection_string";
+            int serverId = 123;
 
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(dbString);
             IDatabaseProvider _databaseProvider = new DatabaseProvider();
@@ -87,10 +105,13 @@ namespace West.Presence.CMA.Core.Repository.Tests
             mockDatabaseProvider.Setup(p => p.GetCellValue<string>(dbString, "SELECT url FROM click_server_urls where server_id=@serverId and default_p = 1", It.IsAny<object>(), CommandType.Text)).Returns("http://test.ul/");
             mockDatabaseProvider.Setup(p => p.GetData<RawNews>(dbString, "[dbo].[cma_news_get]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSampleNews(5));
 
-            _newsRepository = new DBNewsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
+            mockDefaultUrlService.Setup(p => p.GetDefaultUrl(serverId, baseUrl, dbString)).Returns("http://sample.url/");
 
-            var news = _newsRepository.GetNews(123, baseUrl);
+            //Action
+            _newsRepository = new DBNewsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockDefaultUrlService.Object);
+            var news = _newsRepository.GetNews(serverId, baseUrl);
 
+            //Assert
             Assert.NotEmpty(news);
             Assert.Equal(5, news.Count());
         }

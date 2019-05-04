@@ -21,12 +21,14 @@ namespace West.Presence.CMA.Core.Repositories
     {
         IDatabaseProvider _databaseProvider;
         IDBConnectionService _dbConnectionService;
+        IDefaultUrlService _defaultUrlService;
         private readonly ILogger _logger = Log.ForContext<DBNewsRepository>();
 
-        public DBNewsRepository(IDatabaseProvider databaseProvider, IDBConnectionService dbConnectionService)
+        public DBNewsRepository(IDatabaseProvider databaseProvider, IDBConnectionService dbConnectionService, IDefaultUrlService defaultUrlService)
         {
             _databaseProvider = databaseProvider;
             _dbConnectionService = dbConnectionService;
+            _defaultUrlService = defaultUrlService;
         }
 
         public IEnumerable<News> GetNews(int serverId, string baseUrl)
@@ -39,8 +41,9 @@ namespace West.Presence.CMA.Core.Repositories
                 return null;
             }
 
-            string serverUrl = _databaseProvider.GetCellValue<string>(connectionStr, "SELECT url FROM click_server_urls where server_id=@serverId and default_p = 1", new { serverId = serverId }, CommandType.Text);
-            if(string.IsNullOrEmpty(serverUrl))
+            string serverUrl = _defaultUrlService.GetDefaultUrl(serverId, baseUrl, connectionStr);
+
+            if (string.IsNullOrEmpty(serverUrl))
             {
                 _logger.Information($"No url found based on server id {serverId}.");
             }
