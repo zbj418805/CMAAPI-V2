@@ -1,10 +1,9 @@
-﻿using Serilog;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
 using System.Xml;
 using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
-using West.Presence.CMA.Core.Servies;
+using Serilog;
 
 namespace West.Presence.CMA.Core.Repositories
 {

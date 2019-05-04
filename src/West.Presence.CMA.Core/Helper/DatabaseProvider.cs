@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Dynamic;
 using Dapper;
+using Serilog;
 
 namespace West.Presence.CMA.Core.Helper
 {
@@ -15,6 +16,8 @@ namespace West.Presence.CMA.Core.Helper
 
     public class DatabaseProvider : IDatabaseProvider
     {
+        private readonly ILogger _logger = Log.ForContext<DatabaseProvider>();
+
         public DatabaseProvider()
         {
 
@@ -23,33 +26,63 @@ namespace West.Presence.CMA.Core.Helper
         public T GetCellValue<T>(string connectStr, string sql, object para, CommandType type)
         {
             if (string.IsNullOrEmpty(connectStr))
+            {
+                _logger.Error("Conection String not set");
                 return default(T);
+            }
 
             using (var con = new SqlConnection(connectStr))
             {
-                return con.ExecuteScalar<T>(sql, para, null, null, type);
+                try
+                {
+                    return con.ExecuteScalar<T>(sql, para, null, null, type);
+                }
+                catch (Exception e) {
+                    _logger.Error("DB Excuse Error!" + e.Message);
+                    return default(T);
+                }
             }
         }
 
         public IEnumerable<T> GetData<T>(string connectStr, string sql, object para, CommandType type)
         {
             if (string.IsNullOrEmpty(connectStr))
+            {
+                _logger.Error("Conection String not set");
                 return null;
+            }
 
             using (var con = new SqlConnection(connectStr))
             {
-                return con.Query<T>(sql, para, commandType: type) ?? new List<T>();
+                try
+                {
+                    return con.Query<T>(sql, para, commandType: type) ?? new List<T>();
+                }
+                catch (Exception e)
+                {
+                    _logger.Error("DB Excuse Error!" + e.Message);
+                    return null;
+                }
             }
         }
         
         public void Excute(string connectStr, string sql, object para, CommandType type)
         {
             if (string.IsNullOrEmpty(connectStr))
+            {
+                _logger.Error("Conection String not set");
                 return;
-
+            }
             using (var con = new SqlConnection(connectStr))
             {
-                con.Execute(sql, para, commandType: type);
+                try
+                {
+                    con.Execute(sql, para, commandType: type);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error("DB Excuse Error!" + e.Message);
+                }
             }
         }
     }

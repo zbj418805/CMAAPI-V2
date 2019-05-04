@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
-using System.Data;
 using West.Presence.CMA.Core.Servies;
 
 namespace West.Presence.CMA.Core.Repositories
@@ -54,16 +52,16 @@ namespace West.Presence.CMA.Core.Repositories
         public int GetGroupId(string baseUrl, int serverId)
         {
             string connectionStr = _dbConnectionService.GetConnection(baseUrl);
-            return _databaseProvider.GetCellValue<int>(connectionStr, "SELECT TOP 1 shoutem_group_id FROM cma_entries WHERE server_id=@sId and content_type='news'",
-                new { sId = serverId },
+            return _databaseProvider.GetCellValue<int>(connectionStr, "SELECT TOP 1 shoutem_group_id FROM cma_entries WHERE server_id=@serverId and content_type='news'",
+                new { serverId },
                 CommandType.Text);
         }
         public AppSettings GetAppExtended(string baseUrl, int districtServerId)
         {
             string connectionStr = _dbConnectionService.GetConnection(baseUrl);
-            return _databaseProvider.GetData<AppSettings>(connectionStr, "SELECT app_id as appId, endpoint, session_id as sessionId, last_modified as lastModified, district_server_id as dictrictServerId FROM cma_extended WHERE district_server_id=@dsi ",
-                new { dsi = districtServerId },
-                System.Data.CommandType.Text).FirstOrDefault();
+            return _databaseProvider.GetData<AppSettings>(connectionStr, "SELECT app_id as appId, endpoint, session_id as sessionId, last_modified as lastModified, district_server_id as dictrictServerId FROM cma_extended WHERE district_server_id=@destrictServerId ",
+                new { districtServerId },
+                CommandType.Text).FirstOrDefault();
         }
     }
 

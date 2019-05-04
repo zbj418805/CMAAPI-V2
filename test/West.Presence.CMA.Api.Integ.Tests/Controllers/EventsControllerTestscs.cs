@@ -24,5 +24,16 @@ namespace West.Presence.CMA.Api.Controllers.Integ.Tests
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
+
+        [Fact]
+        public async Task Test_Get_Events_v2()
+        {
+            var client = _factory.CreateClient();
+
+            var response = await client.GetAsync("cmaapi/1/resources/school-messenger.events.v2");
+
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        }
     }
 }

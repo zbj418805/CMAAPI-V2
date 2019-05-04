@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.Options;
+﻿using West.Presence.CMA.Core.Helper;
 using Serilog;
-using West.Presence.CMA.Core.Helper;
-using West.Presence.CMA.Core.Models;
-using West.Presence.CMA.Core.Repositories;
 
 
 namespace West.Presence.CMA.Core.Repositories

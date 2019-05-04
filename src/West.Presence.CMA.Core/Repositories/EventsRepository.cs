@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using West.Presence.CMA.Core.Helper;
 using West.Presence.CMA.Core.Models;
 
