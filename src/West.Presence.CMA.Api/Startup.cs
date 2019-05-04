@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Serilog;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
+using Steeltoe.CloudFoundry.Connector.Redis;
 using System.Diagnostics.CodeAnalysis;
 using West.Presence.CMA.Api.Infrastructure;
 using West.Presence.CMA.Api.Utilities;
@@ -48,6 +49,7 @@ namespace West.Presence.CMA.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Config Logging
             LogConfig();
 
             //Config Mvc
@@ -224,14 +226,22 @@ namespace West.Presence.CMA.Api
 
         private void ConfigureDistributedCache(IServiceCollection services)
         {
-            if (_env.IsEnvironment("IntegrationTests")|| _env.IsEnvironment("Development"))
-                services.AddDistributedMemoryCache();
+            var isPcf = Utility.IsPcf(); 
+            if (isPcf)
+            {
+                services.AddDistributedRedisCache(Configuration);
+            }
             else
-                services.AddDistributedRedisCache(option =>
-                {
-                    option.Configuration = "localhost";
-                    option.InstanceName = "CMAAPI";
-                });
+            {
+                if (_env.IsEnvironment("IntegrationTests") || _env.IsEnvironment("Development"))
+                    services.AddDistributedMemoryCache();
+                else
+                    services.AddDistributedRedisCache(option =>
+                    {
+                        option.Configuration = "localhost";
+                        option.InstanceName = "CMAAPI";
+                    });
+            }
         }
 
         private void ConfigureHttpclient(IServiceCollection services)
@@ -249,6 +259,15 @@ namespace West.Presence.CMA.Api
                 c.BaseAddress = new Uri(cmaOptions.CentralServiceUrl);
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
             });
+        }
+
+        private void ConfigureCloudFoundryServicesAndActuators(IServiceCollection services)
+        {
+            //services.AddDistributedTracing(Configuration);
+            //services.addCloudFoundryActuators(Configuration);
+            //services.AddRefreshActuator(Configuration);
+            //if (!_env.IsEnvironment("IntegrationTests"))
+            //    services.AddConfigurationDiscoveryClient(Configuration);
         }
     }
 }

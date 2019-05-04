@@ -30,7 +30,7 @@ namespace West.Presence.CMA.Core.Servies
         {
             Uri u = new Uri(baseUrl);
             string DBString;
-            string cacheKey = $"{_options.Value.CacheConnectionKey}_{u.Host}";
+            string cacheKey = $"{_options.Value.CacheConnStrKey}_{u.Host}";
             //Check weather connection in Cache
             if (!_cacheProvider.TryGetValue<string>(cacheKey, out DBString))
             {

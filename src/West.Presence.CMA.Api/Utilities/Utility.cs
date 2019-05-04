@@ -13,5 +13,12 @@ namespace West.Presence.CMA.Api.Utilities
         {
             return AppDomain.CurrentDomain.FriendlyName.Replace(".exe", "");
         }
+
+        public static bool IsPcf() {
+            //var env = Environment.GetEnvironmentVariables("VCAP_APPLICATION");
+            //return !string.IsNullOrWhiteSpace(env);
+
+            return false;
+        }
     }
 }

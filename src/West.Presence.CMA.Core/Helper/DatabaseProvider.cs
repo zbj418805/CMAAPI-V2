@@ -27,7 +27,7 @@ namespace West.Presence.CMA.Core.Helper
         {
             if (string.IsNullOrEmpty(connectStr))
             {
-                _logger.Error("Conection String not set");
+                _logger.Error("Conection string empty");
                 return default(T);
             }
 
@@ -48,7 +48,7 @@ namespace West.Presence.CMA.Core.Helper
         {
             if (string.IsNullOrEmpty(connectStr))
             {
-                _logger.Error("Conection String not set");
+                _logger.Error("Conection string empty");
                 return null;
             }
 
@@ -70,7 +70,7 @@ namespace West.Presence.CMA.Core.Helper
         {
             if (string.IsNullOrEmpty(connectStr))
             {
-                _logger.Error("Conection String not set");
+                _logger.Error("Conection string empty");
                 return;
             }
             using (var con = new SqlConnection(connectStr))

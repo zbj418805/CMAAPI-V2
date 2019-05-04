@@ -20,7 +20,7 @@ namespace West.Presence.CMA.Core.Services.Tests
         {
             CMAOptions option = new CMAOptions
             {
-                CacheConnectionKey = "CMAConnections"
+                CacheConnStrKey = "CMAConnections"
             };
 
             mockOptions = new Mock<IOptions<CMAOptions>>();

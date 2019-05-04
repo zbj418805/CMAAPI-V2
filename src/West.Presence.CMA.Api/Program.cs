@@ -8,10 +8,10 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Pivotal.Extensions.Configuration.ConfigServer;
 using Serilog;
 using Serilog.Formatting.Json;
 using Steeltoe.Extensions.Logging;
+using Steeltoe.Extensions.Configuration.ConfigServer;
 using West.Presence.CMA.Api.Utilities;
 using West.Presence.CMA.Core.Models;
 
@@ -32,7 +32,7 @@ namespace West.Presence.CMA.Api
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
-                //.UseCloudFoundryHosting()
+                .UseCloudFoundryHosting()
                 .ConfigureAppConfiguration((hostingContext, config)=>{
                     config.Sources.Clear();
                     var env = hostingContext.HostingEnvironment;
@@ -64,7 +64,7 @@ namespace West.Presence.CMA.Api
                         .Enrich.WithMachineName();
 
                     // check to see if deployed to PCF
-                    var isPcf =  false; //Core.Utilities.Utility.IsPcf();
+                    var isPcf = Utility.IsPcf();
 
                     if (isPcf)
                         loggerConfiguration.WriteTo.Console(new JsonFormatter(renderMessage: true));

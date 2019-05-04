@@ -54,16 +54,20 @@ management:
 
 #Configration for CMAAPI
 CMAOptions:
-    ConnectionString: data source=.;initial catelog=Presence_QA;User ID=sa;Password=P@ssw0rd;Persist Security=False;
-    Environment: DEVQA
     PresenceAccessToken: asdfasdfasdf
-    CacheConnKey: cma_conn_cache
+    CentralServiceUrl: "http://centralServie.com/"
+    CacheConnectionKey: cma_conn_cache
     CacheNewsKey: cma_news_cache
     CachePeopleKey: cma_people_cache
     CacheEventsKey: cma_event_cache
     CacheSchoolsKey: cma_school_cache
+    CachePeopleSettingsKey: cma_peple_settings_cache
+    CacheDefaultUrlsKey: cma_default_url
+    CacheConnectionDurationInSeconds: 0
     CacheNewsDurationInSeconds : 300
     CachePeopleDurationInSeconds: 300
     CacheEventsDurationInSeconds: 300
     CacheSchoolsDurationInSeconds: 300
+    CachePeopleSettingsDurationInSeconds: 0
+    CacheDefaultUrlsDurationInSceconds: 0
 
