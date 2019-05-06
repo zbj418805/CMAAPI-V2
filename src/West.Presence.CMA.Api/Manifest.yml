@@ -1,0 +1,19 @@
+﻿applications:
+- name: CMAAPI-PCF
+  path: ((path))
+  random-route: false
+  health-check-type: http
+  health-check-http-endpoint: /api/health/ping
+  memory: 512M
+  buildpacks: 
+  - dotnet_core_buildpack
+  routes:
+  - route: ((app_name)).((domain))
+  services:
+  - Presence-Redis
+  env:
+    ASPNETCORE_ENVIRONMENT: Production
+    spring:cloud:config:name: ((configserver_app_name)) 
+    spring:cloud:config:env: ((configserver_env)) 
+    spring:cloud:config:enabled: true 
+    spring:cloud:config:failFast: true 

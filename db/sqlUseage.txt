@@ -1,0 +1,14 @@
+other Sql Stored Procedures used in System
+1) [dbo].[cma_c2g.get_all]  @district_server_Id
+2) [dbo].[cma_c2g.set] @server_id , @group_id
+3) [dbo].[cma_extended.set] @district_server_id, @app_id, @endpoint_url, @session_id
+4) [dbo].[cma_news_get] @serverId
+5) [dbo].[cma_server_attributes.get] @server_id
+
+
+Other Sql Script Used in System
+1) SELECT TOP 1 shoutem_group_id FROM cma_entries WHERE server_id=@serverId and content_type='news'
+2) SELECT app_id as appId, endpoint, session_id as sessionId, last_modified as lastModified, district_server_id as  dictrictServerId FROM cma_extended WHERE district_server_id=@destrictServerId 
+3) SELECT TOP 1 url FROM click_server_urls WHERE default_p=1 AND server_id=@serverId
+4) SELECT TOP 1 object_id FROM cma_entries WHERE server_id=@serverId AND content_type='calendar'
+5) SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url

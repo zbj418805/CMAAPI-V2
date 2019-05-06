@@ -56,7 +56,7 @@ namespace West.Presence.CMA.Core.Repositories
             var people = _databaseProvider.GetData<Person>(connectionStr, "[dbo].[cma_people_simple]", new
             { group_ids = peopleSetting.SelectGroups }, CommandType.StoredProcedure);
 
-            //3.Convert table [dtSimpleUsers] to list [spUsers] and remove users of [excludedUsers]
+            //3.Remove excluded users
             if (string.IsNullOrEmpty(peopleSetting.ExcludedUser))
             {
                 foreach (Person p in people)

@@ -30,7 +30,7 @@ namespace West.Presence.CMA.Core.Repositories
             if (string.IsNullOrEmpty(connectionStr))
                 return new List<Event>();
 
-            int calendarId = _databaseProvider.GetCellValue<int>(connectionStr, "select TOP 1 object_id from cma_entries where server_id=@serverId and content_type='calendar'",new { serverId = serverId }, CommandType.Text);
+            int calendarId = _databaseProvider.GetCellValue<int>(connectionStr, "SELECT TOP 1 object_id FROM cma_entries WHERE server_id=@serverId AND content_type='calendar'",new { serverId = serverId }, CommandType.Text);
             if(calendarId<=0)
                 return new List<Event>();
 

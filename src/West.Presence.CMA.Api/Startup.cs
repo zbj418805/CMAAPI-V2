@@ -216,6 +216,7 @@ namespace West.Presence.CMA.Api
             //Add DBRepository Layer
             services.AddSingleton<ISchoolsRepository, DBSchoolsRepository>();
             services.AddSingleton<IEventsRepository, APIEventsRepository>();
+            //services.AddSingleton<IEventsRepository, APIEventsRepositoryOld>();
             services.AddSingleton<INewsRepository, DBNewsRepository>();
             services.AddSingleton<IPeopleRepository, DBPeopleRepository>();
             services.AddSingleton<IChannel2GroupRepository, DBChannel2GroupRepository>();
