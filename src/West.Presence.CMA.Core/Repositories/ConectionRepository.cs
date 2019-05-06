@@ -20,12 +20,12 @@ namespace West.Presence.CMA.Core.Repositories
 
         public string GetConnection(string url)
         {
-            return "Data Source=.;Initial Catalog=Presence_QA;User Id=sa;Password=P@ssw0rd";
+            //return "Data Source=.;Initial Catalog=Presence_QA;User Id=sa;Password=P@ssw0rd";
 
-            //string dbString = _httpClientProvider.GetSingleData<string>(url, "CentralServerApi");
-            //if (string.IsNullOrEmpty(dbString))
-            //    _logger.Error("Get db connection tring failed");
-            //return dbString;
+            string dbString = _httpClientProvider.GetSingleData<string>(url, "CentralServerApi");
+            if (string.IsNullOrEmpty(dbString))
+                _logger.Error("Get db connection tring failed");
+            return dbString;
         }
     }
 }
