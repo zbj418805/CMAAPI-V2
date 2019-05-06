@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Formatting.Json;
-using Steeltoe.Extensions.Logging;
 using Steeltoe.Extensions.Configuration.ConfigServer;
 using West.Presence.CMA.Api.Utilities;
 using West.Presence.CMA.Core.Models;

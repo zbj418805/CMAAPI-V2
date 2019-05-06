@@ -29,10 +29,10 @@ namespace West.Presence.CMA.Api.Controllers.Tests
             {
                 people.Add(new Person()
                 {
-                    userId = i,
-                    firstName = $"First_{i}",
-                    lastName = $"Last_{i}",
-                    serverId = 1
+                    UserId = i,
+                    FirstName = $"First_{i}",
+                    LastName = $"Last_{i}",
+                    ServerId = 1
                 });
             }
 
@@ -46,9 +46,9 @@ namespace West.Presence.CMA.Api.Controllers.Tests
             {
                 peopleinfo.Add(new PersonInfo()
                 {
-                    userId = i,
-                    firstName = $"First_{i}",
-                    lastName = $"Last_{i}"
+                    UserId = i,
+                    FirstName = $"First_{i}",
+                    LastName = $"Last_{i}"
                 });
             }
 

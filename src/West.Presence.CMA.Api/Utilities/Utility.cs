@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace West.Presence.CMA.Api.Utilities
 {
@@ -15,10 +12,7 @@ namespace West.Presence.CMA.Api.Utilities
         }
 
         public static bool IsPcf() {
-            //var env = Environment.GetEnvironmentVariables("VCAP_APPLICATION");
-            //return !string.IsNullOrWhiteSpace(env);
-
-            return false;
+            return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("VCAP_APPLICATION"));
         }
     }
 }

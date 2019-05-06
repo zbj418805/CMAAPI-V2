@@ -33,28 +33,10 @@ namespace West.Presence.CMA.Core.Services.Tests
         [Fact]
         public void Test_News_From_CacheProvider_With_No_Search()
         {
-            List<Person> lsPeople1 = new List<Person>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsPeople1.Add(new Person()
-                {
-                     userId = i,
-                     firstName = $"First{i}",
-                     lastName = $"Last{i}"
-                });
-            }
+            List<Person> lsPeople1 = GetSamplePeople(10);
             var people1 = lsPeople1.AsEnumerable();
 
-            List<Person> lsPeople2 = new List<Person>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsPeople2.Add(new Person()
-                {
-                    userId = i+100,
-                    firstName = $"First{i}",
-                    lastName = $"Last{i}"
-                });
-            }
+            List<Person> lsPeople2 = GetSamplePeople(10);
             var people2 = lsPeople2.AsEnumerable();
 
             mockPeopleRepository = new Mock<IPeopleRepository>();
@@ -75,29 +57,8 @@ namespace West.Presence.CMA.Core.Services.Tests
         [Fact]
         public void Test_News_From_Repo_With_No_Search()
         {
-            List<Person> lsPeople1 = new List<Person>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsPeople1.Add(new Person()
-                {
-                    userId = i,
-                    firstName = $"First{i}",
-                    lastName = $"Last{i}"
-                });
-            }
-            //var people1 = lsPeople1.AsEnumerable();
-
-            List<Person> lsPeople2 = new List<Person>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsPeople2.Add(new Person()
-                {
-                    userId = i + 100,
-                    firstName = $"First{i}",
-                    lastName = $"Last{i}"
-                });
-            }
-            //var people2 = lsPeople2.AsEnumerable();
+            List<Person> lsPeople1 = GetSamplePeople(10);
+            List<Person> lsPeople2 = GetSamplePeople(20);
 
             mockPeopleRepository = new Mock<IPeopleRepository>();
             mockPeopleRepository.Setup(p => p.GetPeople(1, "http://localhost/")).Returns(lsPeople1);
@@ -117,28 +78,10 @@ namespace West.Presence.CMA.Core.Services.Tests
         [Fact]
         public void Test_News_From_Repo_And_CacheProvider_With_No_Search()
         {
-            List<Person> lsPeople1 = new List<Person>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsPeople1.Add(new Person()
-                {
-                    userId = i,
-                    firstName = $"First{i}",
-                    lastName = $"Last{i}"
-                });
-            }
+            List<Person> lsPeople1 = GetSamplePeople(10);
             var people1 = lsPeople1.AsEnumerable();
 
-            List<Person> lsPeople2 = new List<Person>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsPeople2.Add(new Person()
-                {
-                    userId = i + 100,
-                    firstName = $"First{i}",
-                    lastName = $"Last{i}"
-                });
-            }
+            List<Person> lsPeople2 = GetSamplePeople(10);
             var people2 = lsPeople2.AsEnumerable();
 
             mockPeopleRepository = new Mock<IPeopleRepository>();
@@ -159,15 +102,10 @@ namespace West.Presence.CMA.Core.Services.Tests
         [Fact]
         public void Test_News_From_Repo_And_CacheProvider_With_Search()
         {
-            List<Person> lsPeople1 = new List<Person>() {
-                new Person() { userId = 1, firstName = "First1", lastName = "Last1" }
-            };
+            List<Person> lsPeople1 = GetSamplePeople(10);
             var people1 = lsPeople1.AsEnumerable();
 
-            List<Person> lsPeople2 = new List<Person>()
-            {
-                new Person() { userId = 2, firstName = "First1", lastName = "Last1" }
-            };
+            List<Person> lsPeople2 = GetSamplePeople(10);
 
             var people2 = lsPeople2.AsEnumerable();
 
@@ -184,8 +122,18 @@ namespace West.Presence.CMA.Core.Services.Tests
 
             Assert.NotNull(resultPeople);
             Assert.Equal(2,resultPeople.Count());
-            Assert.Equal("First1", resultPeople.FirstOrDefault().firstName);
-            Assert.Equal("First1", resultPeople.LastOrDefault().firstName);
+            Assert.Equal("First1", resultPeople.FirstOrDefault().FirstName);
+            Assert.Equal("First1", resultPeople.LastOrDefault().FirstName);
+        }
+
+        private List<Person> GetSamplePeople(int count)
+        {
+            List<Person> people = new List<Person>();
+            for (int i = 0; i < count; i++) {
+                people.Add( new Person() { UserId = i, FirstName = $"First{i}", LastName = $"Last{i}" } );
+            }
+
+            return people;
         }
     }
 }

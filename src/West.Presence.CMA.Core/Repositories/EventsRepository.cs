@@ -27,6 +27,9 @@ namespace West.Presence.CMA.Core.Repositories
                 endTime = endDate
             }, "PresenceApi");
 
+            if (responseData == null)
+                return responseData;
+
             if (cutEvents)
             {
                 List<Event> rerangeEvents = new List<Event>();

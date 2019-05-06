@@ -17,6 +17,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
         private Mock<IDatabaseProvider> mockDatabaseProvider;
         private Mock<IDBConnectionService> mockDBConnectionService;
         private Mock<IPeopleSettingsService> mockPeopleSettingServce;
+        private Mock<IDefaultUrlService> mockDefaultUrlService;
         private IPeopleRepository _peopleRepository;
 
         public DBPeopleRepositoryTests()
@@ -24,6 +25,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
             mockDBConnectionService = new Mock<IDBConnectionService>();
             mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
+            mockDefaultUrlService = new Mock<IDefaultUrlService>();
         }
 
         //[Fact]
@@ -35,8 +37,10 @@ namespace West.Presence.CMA.Core.Repository.Tests
             var _databaseProvider = new DatabaseProvider();
             mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1291956, baseUrl, dbString)).Returns(new PeopleSettings());
 
+            mockDefaultUrlService.Setup(p=>p.GetDefaultUrl(1291956, baseUrl, dbString)).Returns("http://test.url/");
 
-            _peopleRepository = new DBPeopleRepository(_databaseProvider, mockDBConnectionService.Object, mockPeopleSettingServce.Object);
+            _peopleRepository = new DBPeopleRepository(_databaseProvider, mockDBConnectionService.Object, mockPeopleSettingServce.Object, mockDefaultUrlService.Object);
+
             var people = _peopleRepository.GetPeople(1291956, baseUrl);
 
             Assert.NotEmpty(people);
@@ -52,14 +56,16 @@ namespace West.Presence.CMA.Core.Repository.Tests
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
             mockDatabaseProvider.Setup(p => p.GetData<Person>(connectionString, "[dbo].[staff_directory_get_basic_users_info_by_groups]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
 
-            
+
             mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
             mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1234, baseUrl, connectionString)).Returns(new PeopleSettings() {
                 SelectGroups= "1291957"
             });
 
+            mockDefaultUrlService.Setup(p => p.GetDefaultUrl(1291956, baseUrl, connectionString)).Returns("http://test.url/");
+
             //var _databaseProvider = new DatabaseProvider();
-            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockPeopleSettingServce.Object);
+            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockPeopleSettingServce.Object, mockDefaultUrlService.Object);
 
             var people = _peopleRepository.GetPeople(1234, baseUrl);
 
@@ -79,7 +85,9 @@ namespace West.Presence.CMA.Core.Repository.Tests
             mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
             mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1291956, baseUrl, connectionString)).Returns(new PeopleSettings());
 
-            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockPeopleSettingServce.Object);
+            mockDefaultUrlService.Setup(p => p.GetDefaultUrl(1291956, baseUrl, connectionString)).Returns("http://test.url/");
+
+            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockPeopleSettingServce.Object, mockDefaultUrlService.Object);
 
             var people = _peopleRepository.GetPeople(1234, baseUrl);
 
@@ -99,8 +107,9 @@ namespace West.Presence.CMA.Core.Repository.Tests
             mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
             mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1291956, baseUrl, connectionString)).Returns((PeopleSettings)null);
 
+            mockDefaultUrlService.Setup(p => p.GetDefaultUrl(1291956, baseUrl, connectionString)).Returns("http://test.url/");
 
-            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockPeopleSettingServce.Object);
+            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockPeopleSettingServce.Object, mockDefaultUrlService.Object);
 
             var people = _peopleRepository.GetPeople(1234, baseUrl);
 
@@ -120,8 +129,9 @@ namespace West.Presence.CMA.Core.Repository.Tests
             mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
             mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1234, baseUrl, connectionString)).Returns( new PeopleSettings() { SelectGroups="", ExcludedUser="" });
 
+            mockDefaultUrlService.Setup(p => p.GetDefaultUrl(1291956, baseUrl, connectionString)).Returns("http://test.url/");
 
-            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockPeopleSettingServce.Object);
+            _peopleRepository = new DBPeopleRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object, mockPeopleSettingServce.Object, mockDefaultUrlService.Object);
 
             var people = _peopleRepository.GetPeople(1234, baseUrl);
 
@@ -135,10 +145,10 @@ namespace West.Presence.CMA.Core.Repository.Tests
             {
                 people.Add(new Person()
                 {
-                    userId = i,
-                    firstName = "First",
-                    lastName = "Last",
-                    jobTitle = "jobs"
+                    UserId = i,
+                    FirstName = "First",
+                    LastName = "Last",
+                    JobTitle = "jobs"
                 });
             }
             return people;

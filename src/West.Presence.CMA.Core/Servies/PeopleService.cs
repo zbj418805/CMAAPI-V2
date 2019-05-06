@@ -44,7 +44,7 @@ namespace West.Presence.CMA.Core.Servies
                     _cacheProvider.Add(cacheKey, people, cacheDuration);
                 }
                 //Add to collection
-                allPeople.AddRange(searchKey == "" ? people : people.Where(p => p.firstName.Contains(searchKey) || p.lastName.Contains(searchKey)||p.jobTitle.Contains(searchKey)));
+                allPeople.AddRange(searchKey == "" ? people : people.Where(p => p.FirstName.Contains(searchKey) || p.LastName.Contains(searchKey)||p.JobTitle.Contains(searchKey)));
             }
 
 
@@ -70,7 +70,7 @@ namespace West.Presence.CMA.Core.Servies
             //    foreach (string serverId in serverIds.Split(','))
             //        allPeople.AddRange(_peopleRepository.GetPeople(int.Parse(serverId), baseUrl, searchKey));
 
-            return allPeople.OrderBy(x => x.firstName);
+            return allPeople.OrderBy(x => x.FirstName);
         }
     }
 }

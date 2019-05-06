@@ -74,7 +74,6 @@ namespace West.Presence.CMA.Core.Services.Tests
 
             Assert.NotNull(url);
             Assert.Equal("http://test2.url", url);
-
         }
 
         [Fact]
@@ -98,7 +97,52 @@ namespace West.Presence.CMA.Core.Services.Tests
 
             Assert.NotNull(url);
             Assert.Equal("http://test2.url", url);
+        }
 
+        [Fact]
+        public void Test_DefaultUrl_Cahce_Not_Exist_From_Repo_Return_Empty()
+        {
+            var baseUrl = "http://localhost/";
+            var connectionStr = "fake_connection_string";
+            List<ServerDefaultUrl> lsUrls = new List<ServerDefaultUrl>();
+            //lsUrls.Add(new ServerDefaultUrl() { defaultUrl = "http://test.url/", serverId = 1 });
+            var retUrlSet = lsUrls.AsEnumerable();
+
+            mockCacheProvider = new Mock<ICacheProvider>();
+            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<ServerDefaultUrl>>("CMADefaultUrl_localhost", out retUrlSet)).Returns(false);
+
+            mockDefaultUrlRepository = new Mock<IDefaultUrlRepository>();
+            mockDefaultUrlRepository.Setup(p => p.GetDefaultUrl(2, connectionStr)).Returns("");
+
+            defaultUrlService = new DefaultUrlService(mockCacheProvider.Object, mockOptions.Object, mockDefaultUrlRepository.Object);
+
+            var url = defaultUrlService.GetDefaultUrl(2, baseUrl, connectionStr);
+
+            Assert.NotNull(url);
+            Assert.Empty(url);
+        }
+
+        [Fact]
+        public void Test_DefaultUrl_Cahce_From_Repo_Return_Empty()
+        {
+            var baseUrl = "http://localhost/";
+            var connectionStr = "fake_connection_string";
+            List<ServerDefaultUrl> lsUrls = new List<ServerDefaultUrl>();
+            //lsUrls.Add(new ServerDefaultUrl() { defaultUrl = "http://test.url/", serverId = 1 });
+            var retUrlSet = lsUrls.AsEnumerable();
+
+            mockCacheProvider = new Mock<ICacheProvider>();
+            mockCacheProvider.Setup(p => p.TryGetValue<IEnumerable<ServerDefaultUrl>>("CMADefaultUrl_localhost", out retUrlSet)).Returns(true);
+
+            mockDefaultUrlRepository = new Mock<IDefaultUrlRepository>();
+            mockDefaultUrlRepository.Setup(p => p.GetDefaultUrl(2, connectionStr)).Returns("");
+
+            defaultUrlService = new DefaultUrlService(mockCacheProvider.Object, mockOptions.Object, mockDefaultUrlRepository.Object);
+
+            var url = defaultUrlService.GetDefaultUrl(2, baseUrl, connectionStr);
+
+            Assert.NotNull(url);
+            Assert.Empty(url);
         }
     }
 }

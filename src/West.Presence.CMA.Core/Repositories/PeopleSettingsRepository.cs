@@ -31,7 +31,7 @@ namespace West.Presence.CMA.Core.Repositories
                 return null;
             }
                        
-            PeopleSettingsXML portletSettingsXml = _databaseProvider.GetData<PeopleSettingsXML>(connectionStr, "[dbo].[staff_directory_get_settings_v2]",
+            PeopleSettingsXML portletSettingsXml = _databaseProvider.GetData<PeopleSettingsXML>(connectionStr, "[dbo].[cma_people_settings]",
                 new { server_id = serverId }, CommandType.StoredProcedure).FirstOrDefault();
 
             if (portletSettingsXml == null)

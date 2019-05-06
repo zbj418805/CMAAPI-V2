@@ -1,4 +1,7 @@
-﻿using GlobalExceptionHandler.WebApi;
+﻿using System.IO.Compression;
+using System.Net.Http.Headers;
+using System;
+using GlobalExceptionHandler.WebApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +21,7 @@ using West.Presence.CMA.Core.Presentations;
 using West.Presence.CMA.Core.Models;
 using West.Presence.CMA.Core.Repositories;
 using Microsoft.AspNetCore.ResponseCompression;
-using System.IO.Compression;
-using System.Net.Http.Headers;
-using System;
+
 
 namespace West.Presence.CMA.Api
 {
@@ -226,8 +227,7 @@ namespace West.Presence.CMA.Api
 
         private void ConfigureDistributedCache(IServiceCollection services)
         {
-            var isPcf = Utility.IsPcf(); 
-            if (isPcf)
+            if (Utility.IsPcf())
             {
                 services.AddDistributedRedisCache(Configuration);
             }

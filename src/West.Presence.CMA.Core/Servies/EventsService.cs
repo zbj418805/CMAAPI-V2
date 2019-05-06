@@ -42,8 +42,11 @@ namespace West.Presence.CMA.Core.Servies
                 {
                     //Get Events From Repo
                     events = _eventsRepository.GetEvents(serverId, baseUrl, startDate, endDate, cutEvents);
-                    //Set Cache
-                    _cacheProvider.Add(cacheKey, events, cacheDuration);
+                    if (events != null)
+                    {//Set Cache
+                        _cacheProvider.Add(cacheKey, events, cacheDuration);
+                    }
+                    events = new List<Event>();
                 }
                 //Add to news collection
                 allEvents.AddRange(searchKey == "" ? events : events.Where(e => e.Name.Contains(searchKey)));

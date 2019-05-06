@@ -2,6 +2,7 @@
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -152,7 +153,7 @@ namespace West.Presence.CMA.Core.Helper
                     {
                         string body = response.Content.ReadAsStringAsync().Result;
                         if (string.IsNullOrEmpty(body))
-                            return null;
+                            return new List<T>();
 
                         var results =  JsonConvert.DeserializeObject<SoapReturnData<T>>(body);
                         return results.d;

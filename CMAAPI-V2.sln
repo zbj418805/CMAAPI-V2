@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "West.Presence.CMA.Api.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "West.Presence.CMA.Core.Tests", "test\West.Presence.CMA.Core.Tests\West.Presence.CMA.Core.Tests.csproj", "{A9EB42DA-7EA4-4EC7-89B9-CD03FEB35597}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{84D71C14-5D33-4C28-BF55-5321F5F816A4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
