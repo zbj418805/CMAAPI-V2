@@ -47,7 +47,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
             List<School> schools = GetSampleSchools(5);
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
             mockDatabaseProvider.Setup(p => p.GetCellValue<int>(connectionString, "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", It.IsAny<object>(), CommandType.Text)).Returns(10);
-            mockDatabaseProvider.Setup(p => p.GetData<School>(connectionString, "[dbo].[cma_server_get_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(schools);
+            mockDatabaseProvider.Setup(p => p.GetData<School>(connectionString, "[dbo].[cma_server_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(schools);
             mockDatabaseProvider.Setup(p => p.GetData<MAttribute>(connectionString, "[dbo].[cma_server_attributes.get]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSampleAttributes());
             _schoolRepository = new DBSchoolsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
             var resultSchools = _schoolRepository.GetSchools(baseUrl);
@@ -70,7 +70,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
             List<School> schools = GetSampleSchools(0);
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
             mockDatabaseProvider.Setup(p => p.GetCellValue<int>(connectionString, "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", It.IsAny<object>(), CommandType.Text)).Returns(0);
-            mockDatabaseProvider.Setup(p => p.GetData<School>(connectionString, "[dbo].[cma_server_get_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(schools);
+            mockDatabaseProvider.Setup(p => p.GetData<School>(connectionString, "[dbo].[cma_server_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(schools);
             mockDatabaseProvider.Setup(p => p.GetData<MAttribute>(connectionString, "[dbo].[cma_server_attributes.get]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSampleAttributes());
 
             _schoolRepository = new DBSchoolsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
@@ -94,7 +94,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
             List<School> schools = GetSampleSchools(0);
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
             mockDatabaseProvider.Setup(p => p.GetCellValue<int>(connectionString, "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", It.IsAny<object>(), CommandType.Text)).Returns(10);
-            mockDatabaseProvider.Setup(p => p.GetData<School>(connectionString, "[dbo].[cma_server_get_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(schools);
+            mockDatabaseProvider.Setup(p => p.GetData<School>(connectionString, "[dbo].[cma_server_v2]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(schools);
             mockDatabaseProvider.Setup(p => p.GetData<MAttribute>(connectionString, "[dbo].[cma_server_attributes.get]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSampleAttributes());
 
             _schoolRepository = new DBSchoolsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
@@ -120,7 +120,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
             List<School> schools = GetSampleSchools(0);
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
             mockDatabaseProvider.Setup(p => p.GetCellValue<int>("", "SELECT TOP 1 server_id FROM click_server_urls WHERE url = @url", new { url = baseUrl }, CommandType.Text)).Returns(10);
-            mockDatabaseProvider.Setup(p => p.GetData<School>("", "[dbo].[cma_server_get_v2]", new { district_server_id = 10 }, CommandType.StoredProcedure)).Returns(schools);
+            mockDatabaseProvider.Setup(p => p.GetData<School>("", "[dbo].[cma_server_v2]", new { district_server_id = 10 }, CommandType.StoredProcedure)).Returns(schools);
             
             _schoolRepository = new DBSchoolsRepository(mockDatabaseProvider.Object, mockDBConnectionService.Object);
 
@@ -149,19 +149,19 @@ namespace West.Presence.CMA.Core.Repository.Tests
 
         private List<MAttribute> GetSampleAttributes() {
             List<MAttribute> mAttributes = new List<MAttribute>();
-            mAttributes.Add(new MAttribute() { attributeName = "org_address1", attributeValue = "123 akdasdf " });
-            mAttributes.Add(new MAttribute() { attributeName = "org_address2", attributeValue = "123 akdasdf " });
-            mAttributes.Add(new MAttribute() { attributeName = "org_city", attributeValue = "123 akdasdf " });
-            mAttributes.Add(new MAttribute() { attributeName = "org_country", attributeValue = "123 akdasdf " });
-            mAttributes.Add(new MAttribute() { attributeName = "org_postal", attributeValue = "123 akdasdf " });
-            mAttributes.Add(new MAttribute() { attributeName = "org_province", attributeValue = "123 akdasdf " });
-            mAttributes.Add(new MAttribute() { attributeName = "org_phone", attributeValue = "123 akdasdf " });
-            mAttributes.Add(new MAttribute() { attributeName = "org_slogan", attributeValue = "123 akdasdf " });
-            mAttributes.Add(new MAttribute() { attributeName = "org_fax", attributeValue = "123 akdasdf " });
-            mAttributes.Add(new MAttribute() { attributeName = "org_facebook_website", attributeValue = "123 akdasdf " });
-            mAttributes.Add(new MAttribute() { attributeName = "org_twitter_website", attributeValue = "123 akdasdf " });
-            mAttributes.Add(new MAttribute() { attributeName = "org_youtube_channel", attributeValue = "123 akdasdf " });
-            mAttributes.Add(new MAttribute() { attributeName = "org_email_address", attributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_address1", AttributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_address2", AttributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_city", AttributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_country", AttributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_postal", AttributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_province", AttributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_phone", AttributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_slogan", AttributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_fax", AttributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_facebook_website", AttributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_twitter_website", AttributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_youtube_channel", AttributeValue = "123 akdasdf " });
+            mAttributes.Add(new MAttribute() { AttributeName = "org_email_address", AttributeValue = "123 akdasdf " });
 
             return mAttributes;
         }

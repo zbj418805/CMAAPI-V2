@@ -12,7 +12,7 @@ AS
 SET NOCOUNT ON
 
 SELECT  A.user_id as UserId
-	   ,A.job_title as JobTitle
+	   ,ISNULL(A.job_title,'') as JobTitle
        ,P.first_names as FirstName
 	   ,P.last_name as LastName
   FROM        group_approved_member_map  AS R WITH (NOLOCK)    

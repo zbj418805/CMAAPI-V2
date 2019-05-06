@@ -16,20 +16,8 @@ namespace West.Presence.CMA.Core.Presentation.Tests
 
         public PeoplePresentationTests()
         {
-            List<Person> people = new List<Person>();
-
-            for (int i = 0; i < 10; i++)
-            {
-                people.Add(new Person()
-                {
-                    userId = i,
-                    firstName = $"First_{i}",
-                    lastName = $"Last_{i}"
-                });
-            }
-
             mockPeopleService = new Mock<IPeopleService>();
-            mockPeopleService.Setup(p => p.GetPeople(new List<int>() { 1, 2 }, "", "")).Returns(people);
+            mockPeopleService.Setup(p => p.GetPeople(new List<int>() { 1, 2 }, "", "")).Returns(GetSamplePeople(10));
             peoplePresentation = new PeoplePresentation(mockPeopleService.Object);
         }
 
@@ -51,9 +39,9 @@ namespace West.Presence.CMA.Core.Presentation.Tests
 
             Assert.NotNull(samplePeople);
             Assert.Equal(3, samplePeople.Count());
-            Assert.Equal("First_3", samplePeople.FirstOrDefault().firstName);
-            Assert.Equal("First_4", samplePeople.Skip(1).Take(1).FirstOrDefault().firstName);
-            Assert.Equal("First_5", samplePeople.LastOrDefault().firstName);
+            Assert.Equal("First_3", samplePeople.FirstOrDefault().FirstName);
+            Assert.Equal("First_4", samplePeople.Skip(1).Take(1).FirstOrDefault().FirstName);
+            Assert.Equal("First_5", samplePeople.LastOrDefault().FirstName);
         }
 
 
@@ -65,6 +53,22 @@ namespace West.Presence.CMA.Core.Presentation.Tests
             
             Assert.NotNull(samplePeople);
             Assert.Empty(samplePeople);
+        }
+
+        private List<Person> GetSamplePeople(int count)
+        {
+            List<Person> people = new List<Person>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                people.Add(new Person()
+                {
+                    UserId = i,
+                    FirstName = $"First_{i}",
+                    LastName = $"Last_{i}"
+                });
+            }
+            return people;
         }
     }
 }

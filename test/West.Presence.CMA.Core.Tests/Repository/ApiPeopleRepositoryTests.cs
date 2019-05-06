@@ -20,17 +20,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
         [Fact]
         public void Test_People_Repository_Get_People()
         {
-            List<Person> lsPeople = new List<Person>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsPeople.Add(new Person()
-                {
-                    userId = i,
-                    firstName = $"MyFirstName_{i}",
-                    lastName = $"LastName--{i}",
-                    jobTitle = $"JobTitle"
-                });
-            }
+            List<Person> lsPeople = GetSamplePeople(10);
             var people = lsPeople.AsEnumerable();
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
@@ -48,17 +38,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
         [Fact]
         public void Test_People_Repository_Get_No_People()
         {
-            List<Person> lsPeople = new List<Person>();
-            for (int i = 0; i < 10; i++)
-            {
-                lsPeople.Add(new Person()
-                {
-                    userId = i,
-                    firstName = $"MyFirstName_{i}",
-                    lastName = $"LastName--{i}",
-                    jobTitle = $"JobTitle"
-                });
-            }
+            List<Person> lsPeople = GetSamplePeople(10);
             var people = lsPeople.AsEnumerable();
 
             mockHttpClientProvider = new Mock<IHttpClientProvider>();
@@ -71,6 +51,23 @@ namespace West.Presence.CMA.Core.Repository.Tests
             Assert.NotNull(peopleRepo);
 
             Assert.Empty(resultPeople);
+        }
+
+        private List<Person> GetSamplePeople(int count)
+        {
+            List<Person> lsPeople = new List<Person>();
+            for (int i = 0; i < count; i++)
+            {
+                lsPeople.Add(new Person()
+                {
+                    UserId = i,
+                    FirstName = $"MyFirstName_{i}",
+                    LastName = $"LastName--{i}",
+                    JobTitle = $"JobTitle"
+                });
+            }
+
+            return lsPeople;
         }
     }
 }

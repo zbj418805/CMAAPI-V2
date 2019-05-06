@@ -54,7 +54,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(connectionString);
 
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
-            mockDatabaseProvider.Setup(p => p.GetData<Person>(connectionString, "[dbo].[staff_directory_get_basic_users_info_by_groups]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
+            mockDatabaseProvider.Setup(p => p.GetData<Person>(connectionString, "[dbo].[cma_people_simple]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
 
 
             mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
@@ -80,7 +80,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns("");
 
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
-            mockDatabaseProvider.Setup(p => p.GetData<Person>("", "[dbo].[staff_directory_get_basic_users_info_by_groups]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
+            mockDatabaseProvider.Setup(p => p.GetData<Person>("", "[dbo].[cma_people_simple]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
 
             mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
             mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1291956, baseUrl, connectionString)).Returns(new PeopleSettings());
@@ -102,7 +102,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(connectionString);
 
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
-            mockDatabaseProvider.Setup(p => p.GetData<Person>(connectionString, "[dbo].[staff_directory_get_basic_users_info_by_groups]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
+            mockDatabaseProvider.Setup(p => p.GetData<Person>(connectionString, "[dbo].[cma_people_simple]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
 
             mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
             mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1291956, baseUrl, connectionString)).Returns((PeopleSettings)null);
@@ -124,7 +124,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
             mockDBConnectionService.Setup(p => p.GetConnection(baseUrl)).Returns(connectionString);
 
             mockDatabaseProvider = new Mock<IDatabaseProvider>();
-            mockDatabaseProvider.Setup(p => p.GetData<Person>(connectionString, "[dbo].[staff_directory_get_basic_users_info_by_groups]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
+            mockDatabaseProvider.Setup(p => p.GetData<Person>(connectionString, "[dbo].[cma_people_simple]", It.IsAny<object>(), CommandType.StoredProcedure)).Returns(GetSamplePeople(5));
 
             mockPeopleSettingServce = new Mock<IPeopleSettingsService>();
             mockPeopleSettingServce.Setup(p => p.GetPeopleSettings(1234, baseUrl, connectionString)).Returns( new PeopleSettings() { SelectGroups="", ExcludedUser="" });

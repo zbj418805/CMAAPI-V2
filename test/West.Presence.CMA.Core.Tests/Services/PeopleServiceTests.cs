@@ -58,7 +58,7 @@ namespace West.Presence.CMA.Core.Services.Tests
         public void Test_News_From_Repo_With_No_Search()
         {
             List<Person> lsPeople1 = GetSamplePeople(10);
-            List<Person> lsPeople2 = GetSamplePeople(20);
+            List<Person> lsPeople2 = GetSamplePeople(10);
 
             mockPeopleRepository = new Mock<IPeopleRepository>();
             mockPeopleRepository.Setup(p => p.GetPeople(1, "http://localhost/")).Returns(lsPeople1);
@@ -102,10 +102,10 @@ namespace West.Presence.CMA.Core.Services.Tests
         [Fact]
         public void Test_News_From_Repo_And_CacheProvider_With_Search()
         {
-            List<Person> lsPeople1 = GetSamplePeople(10);
+            List<Person> lsPeople1 = GetSamplePeople(2);
             var people1 = lsPeople1.AsEnumerable();
 
-            List<Person> lsPeople2 = GetSamplePeople(10);
+            List<Person> lsPeople2 = GetSamplePeople(2);
 
             var people2 = lsPeople2.AsEnumerable();
 
@@ -130,7 +130,7 @@ namespace West.Presence.CMA.Core.Services.Tests
         {
             List<Person> people = new List<Person>();
             for (int i = 0; i < count; i++) {
-                people.Add( new Person() { UserId = i, FirstName = $"First{i}", LastName = $"Last{i}" } );
+                people.Add( new Person() { UserId = i, FirstName = $"First{i}", LastName = $"Last{i}", JobTitle="" } );
             }
 
             return people;

@@ -44,7 +44,7 @@ namespace West.Presence.CMA.Core.Servies
                     _cacheProvider.Add(cacheKey, people, cacheDuration);
                 }
                 //Add to collection
-                allPeople.AddRange(searchKey == "" ? people : people.Where(p => p.FirstName.Contains(searchKey) || p.LastName.Contains(searchKey)||p.JobTitle.Contains(searchKey)));
+                allPeople.AddRange(searchKey == "" ? people : people.Where(p => p.FirstName.Contains(searchKey) || p.LastName.Contains(searchKey)|| p.JobTitle.Contains(searchKey)));
             }
 
 

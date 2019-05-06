@@ -22,7 +22,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
         public void Test_PeopleSettingsReposity_Okay()
         {
             string connectionString = "fake_connection_string";
-            string sqlscript = "[dbo].[staff_directory_get_settings_v2]";
+            string sqlscript = "[dbo].[cma_people_settings]";
             PeopleSettingsXML settings = new PeopleSettingsXML();
             settings.SelectGroupsXML = "";
             settings.ExcludedUsersXML = "";
@@ -44,7 +44,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
         public void Test_PeopleSettingsReposity_NoServerId_return_null()
         {
             string connectionString = "fake_connection_string";
-            string sqlscript = "[dbo].[staff_directory_get_settings_v2]";
+            string sqlscript = "[dbo].[cma_people_settings]";
             PeopleSettingsXML settings = new PeopleSettingsXML();
             settings.SelectGroupsXML = "";
             settings.ExcludedUsersXML = "";
@@ -66,7 +66,7 @@ namespace West.Presence.CMA.Core.Repository.Tests
         public void Test_PeopleSettingsReposity_NoConnectionString_return_null()
         {
             string connectionString = "fake_connection_string";
-            string sqlscript = "[dbo].[staff_directory_get_settings_v2]";
+            string sqlscript = "[dbo].[cma_people_settings]";
             PeopleSettingsXML settings = new PeopleSettingsXML();
             settings.SelectGroupsXML = "";
             settings.ExcludedUsersXML = "";
